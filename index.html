@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kim Milyoner Olmak İster? - 200 Soru Hardcore Edition</title>
+    <title>Kim Milyoner Olmak İster? - Sitcom & Ardıç Ultimate Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -20,7 +20,6 @@
 
         .orbitron { font-family: 'Orbitron', sans-serif; }
 
-        /* Oyun Alanı Glassmorphism ve Butonlar */
         .glass-panel {
             background: rgba(17, 24, 39, 0.75);
             backdrop-filter: blur(12px);
@@ -56,7 +55,6 @@
             color: #fff !important;
         }
 
-        /* Para Ağacı Stili */
         .money-step { transition: all 0.3s ease; }
         .money-step.active {
             background: linear-gradient(90deg, #ca8a04 0%, #eab308 100%);
@@ -71,7 +69,6 @@
         .money-step.safe { color: #38bdf8; font-weight: 700; }
         .money-step.active.safe { color: #000; }
 
-        /* Siyah Beyaz Konfeti Efekti */
         .confetti {
             position: fixed;
             width: 14px;
@@ -87,7 +84,6 @@
             100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
         }
 
-        /* Sağ Alt Beşiktaş Formalı Taraftar Butonu */
         .bjk-fan-btn {
             position: fixed;
             bottom: 20px;
@@ -155,41 +151,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Sol Alt Radyo Butonu */
-        .radio-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 60px;
-            height: 60px;
-            background: #111827;
-            border: 2px solid #eab308;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: #eab308;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.9), 0 0 15px rgba(234, 179, 8, 0.3);
-            transition: all 0.3s ease;
-        }
-        .radio-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 25px rgba(234, 179, 8, 0.8);
-            color: #fff;
-            border-color: #fff;
-        }
-        .radio-btn.playing {
-            background: #eab308;
-            color: #000;
-            border-color: #fff;
-            animation: pulse 1.5s infinite;
-            box-shadow: 0 0 30px rgba(234, 179, 8, 1);
-        }
-
-        /* Uçan Kutlama Yazıları */
         .celebrate-text {
             position: fixed;
             font-family: 'Orbitron', sans-serif;
@@ -208,7 +169,6 @@
             100% { opacity: 0; transform: translateY(-150px) scale(0.8); }
         }
 
-        /* Dil Seçim Butonları */
         .lang-btn {
             background: rgba(31, 41, 55, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -220,21 +180,11 @@
             font-weight: 800;
             border-color: #facc15;
         }
-        
-        /* Özelleştirilmiş Audio Oynatıcı */
-        audio::-webkit-media-controls-panel {
-            background-color: #1f2937;
-            border: 1px solid #eab308;
-        }
-        audio::-webkit-media-controls-current-time-display,
-        audio::-webkit-media-controls-time-remaining-display {
-            color: #facc15;
-        }
     </style>
 </head>
 <body class="flex flex-col justify-between relative">
 
-    <!-- SOL ÜST DİL SEÇİMİ (TR / DE) -->
+    <!-- SOL ÜST DİL SEÇİMİ -->
     <div class="fixed top-4 left-4 z-50 flex space-x-1 bg-gray-900/90 p-1.5 rounded-xl border border-gray-700 shadow-xl">
         <button onclick="setLanguage('TR')" id="lang-TR" class="lang-btn active px-3 py-1 rounded-lg text-xs md:text-sm font-bold flex items-center space-x-1">
             <span>🇹🇷 TR</span>
@@ -250,19 +200,13 @@
         <div class="fan-avatar-jersey"></div>
     </button>
 
-    <!-- SOL ALT RADYO BUTONU (TELİFSİZ HIZLI AKSİYON/YARIŞMA MÜZİĞİ İÇİN) -->
-    <button id="radio-btn" class="radio-btn" onclick="toggleRadioMusic()" title="Heyecanlı Yarışma Müziği Çal/Durdur">
-        <i class="fa-solid fa-radio"></i>
-    </button>
-
-    <!-- ARKA PLAN GİZLİ SES OYNATICILARI -->
-    <audio id="bgm-player" loop preload="auto"></audio>
-    <audio id="radio-player" loop preload="auto" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=epic-suspense-112152.mp3"></audio>
+    <!-- ARKA PLAN GİZLİ SES OYNATICISI -->
+    <audio id="bgm-player" loop preload="auto" src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Suspense_01.ogg"></audio>
 
     <!-- ANA İÇERİK ALANI -->
     <main class="container mx-auto px-4 py-8 flex-grow flex items-center justify-center relative z-20 mb-20 mt-12 md:mt-4">
         
-        <!-- 1. EKRAN: KATEGORİ VE OYUN BAŞLANGICI (TEMİZ VE DEV BAŞLIKLI) -->
+        <!-- 1. EKRAN: LOBİ -->
         <div id="screen-lobby" class="w-full max-w-4xl glass-panel rounded-2xl p-6 md:p-12 text-center border-t-4 border-yellow-500 shadow-2xl">
             <h1 id="ui-title" class="text-4xl md:text-7xl font-black tracking-tight mb-10 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-200 to-yellow-500 orbitron drop-shadow-lg">
                 KİM MİLYONER OLMAK İSTER?
@@ -272,14 +216,17 @@
                 <label id="ui-select-label" class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Oynamak İstediğin Temayı Seç:</label>
                 <div class="inline-block relative w-full max-w-md">
                     <select id="category-select" class="w-full bg-gray-900/90 text-yellow-400 border-2 border-yellow-500/50 rounded-xl px-5 py-4 font-bold text-lg focus:outline-none focus:border-yellow-400 transition cursor-pointer shadow-inner">
-                        <option value="Karışık">🎲 Tüm Kategoriler (Karışık)</option>
-                        <option value="Müzik & Sanat">🎵 Müzik & Sanat</option>
+                        <option value="Karışık">🎲 Tüm Kategoriler (Akıllı Dağılım)</option>
+                        <option value="Yabancı Sitcom">📺 Yabancı Sitcom (Maks. 2 Soru)</option>
+                        <option value="Mitoloji Efsaneleri">⚡ Mitoloji Efsaneleri</option>
+                        <option value="Müzik & Sanat">🎵 Müzik & Sanat (Maks. 2 Soru)</option>
+                        <option value="Türk Sineması">🎬 Türk Sineması (Maks. 1 Soru)</option>
+                        <option value="Sinema & TV">🎥 Sinema & TV</option>
+                        <option value="Edebiyat & Yazarlar">📚 Edebiyat & Yazarlar</option>
                         <option value="Coğrafya">🌍 Coğrafya</option>
                         <option value="Biyoloji & Bilim">🔬 Biyoloji & Bilim</option>
-                        <option value="Edebiyat & Yazarlar">📚 Edebiyat & Yazarlar</option>
                         <option value="Matematik & Mantık">📐 Matematik & Mantık</option>
                         <option value="Tarih & Medeniyet">📜 Tarih & Medeniyet</option>
-                        <option value="Sinema & TV">🎬 Sinema & TV</option>
                         <option value="Genel Kültür">💡 Genel Kültür</option>
                         <option value="Spor & Oyun">⚽ Spor & Oyun</option>
                     </select>
@@ -294,7 +241,7 @@
         <!-- 2. EKRAN: OYUN EKRANI -->
         <div id="screen-game" class="w-full max-w-6xl hidden grid-cols-1 lg:grid-cols-4 gap-6">
             
-            <!-- Sol ve Orta: Soru Alanı (3 Kolon) -->
+            <!-- Sol ve Orta: Soru Alanı -->
             <div class="lg:col-span-3 flex flex-col justify-between glass-panel rounded-2xl p-6 md:p-8 relative border-t-2 border-yellow-500/30">
                 
                 <!-- Üst Bilgi Barı & Jokerler -->
@@ -328,26 +275,20 @@
                         <button id="joker-2x" onclick="useJoker2X()" title="2X Jokeri" disabled class="bg-gray-900 border border-gray-700 text-gray-600 font-extrabold w-10 h-10 rounded-full flex items-center justify-center transition cursor-not-allowed">
                             2X
                         </button>
+                        <button id="joker-ardic" onclick="useJokerArdic()" title="Ardıç'a Sor Jokeri" disabled class="bg-gray-900 border border-gray-700 text-gray-600 font-extrabold px-3 h-10 rounded-full flex items-center justify-center transition cursor-not-allowed text-xs orbitron tracking-wider">
+                            ARDIÇ
+                        </button>
                     </div>
                 </div>
 
-                <!-- Soru Metni & YEREL GÖMÜLÜ ŞARKI ÇALAR (HTML5 Audio) -->
-                <div class="my-auto py-4">
-                    <h2 id="question-text" class="text-xl md:text-2xl font-semibold text-center leading-relaxed mb-4 min-h-[80px] flex items-center justify-center">
+                <!-- Soru Metni -->
+                <div class="my-auto py-6">
+                    <h2 id="question-text" class="text-xl md:text-2xl font-semibold text-center leading-relaxed mb-4 min-h-[100px] flex items-center justify-center">
                         Soru yükleniyor...
                     </h2>
-                    
-                    <!-- Doğrudan Sitede Çalan Hızlı Müzik Oynatıcı -->
-                    <div id="music-player-container" class="hidden my-4 p-5 bg-gray-900/95 rounded-2xl border-2 border-yellow-500/60 flex flex-col items-center justify-center shadow-2xl w-full max-w-md mx-auto">
-                        <div class="flex items-center space-x-2 text-yellow-400 font-bold mb-3 text-sm md:text-base animate-pulse">
-                            <i class="fa-solid fa-compact-disc text-xl text-red-500 animate-spin" style="animation-duration: 3s;"></i>
-                            <span id="ui-intro-text">🎵 Şarkı Doğrudan Sitede Çalıyor (Dinle & Cevapla!)</span>
-                        </div>
-                        <audio id="intro-player" controls preload="auto" class="w-full rounded-lg shadow-inner"></audio>
-                    </div>
                 </div>
 
-                <!-- Şıklar Grid -->
+                <!-- Şıklar -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                     <button id="btn-0" onclick="selectOption(0)" class="btn-option rounded-xl p-4 text-left font-semibold flex items-center text-sm md:text-base">
                         <span class="text-yellow-400 font-bold mr-3 orbitron text-lg">A:</span>
@@ -369,7 +310,7 @@
 
             </div>
 
-            <!-- Sağ: Para Ağacı (1 Kolon) -->
+            <!-- Sağ: Para Ağacı -->
             <div class="glass-panel rounded-2xl p-6 flex flex-col justify-between border-t-2 border-yellow-500/30 order-first lg:order-last">
                 <h3 id="ui-tree-title" class="text-sm font-bold uppercase tracking-wider text-gray-400 border-b border-gray-800 pb-2 mb-3 text-center orbitron">
                     Para Ağacı
@@ -384,7 +325,7 @@
 
         </div>
 
-        <!-- 3. EKRAN: OYUN BİTTİ / SONUÇ EKRANI -->
+        <!-- 3. EKRAN: SONUÇ -->
         <div id="screen-result" class="w-full max-w-xl hidden glass-panel rounded-2xl p-8 text-center border-t-4 border-yellow-500 shadow-2xl">
             <div id="result-icon" class="text-6xl mb-4">🏆</div>
             <h2 id="result-title" class="text-3xl font-extrabold text-white mb-2">TEBRİKLER!</h2>
@@ -402,7 +343,7 @@
 
     </main>
 
-    <!-- TR / DE DİL SÖZLÜĞÜ VE YÖNETİMİ -->
+    <!-- DİL SÖZLÜĞÜ -->
     <script>
         let currentLang = 'TR';
 
@@ -413,7 +354,6 @@
                 startBtn: "<i class='fa-solid fa-play mr-2'></i> Yarışmaya Başla",
                 treeTitle: "Para Ağacı",
                 withdrawBtn: "<i class='fa-solid fa-sack-dollar mr-1'></i> Çekil ve Parayı Al",
-                introText: "🎵 Şarkı Doğrudan Sitede Çalıyor (Dinle & Cevapla!)",
                 wonPrize: "Kazanılan Ödül",
                 playAgain: "<i class='fa-solid fa-rotate-right mr-2'></i> Yeniden Oyna",
                 questionPrefix: "Soru",
@@ -427,15 +367,19 @@
                 audienceDesc: "Seyircimiz büyük oranda [ANS] şıkkına güveniyor dostum!",
                 phoneSure: "📞 TELEFONDAKİ DOSTUN:\n\n'Kanka selam! Soruyu duydum. Bence cevap kesinlikle [ANS]. Hiç düşünme işaretle digga!'",
                 phoneUnsure: "📞 TELEFONDAKİ DOSTUN:\n\n'Dostum selam... Ya tam emin olamadım ama bana [ANS] gibi geliyor. Yine de son karar senin.'",
+                ardicText: "🦅 ARDIÇ JOKERİ AKTİF!\n\n'Dostum, bu soru tam bir şampiyonluk sorusu! Hemen Ardıç'a özel olarak ulaşın ve soruyu sorun. O bu işin üstadı, kesin bilir digga!'",
                 cats: {
-                    "Karışık": "🎲 Tüm Kategoriler (Karışık)",
+                    "Karışık": "🎲 Tüm Kategoriler (Akıllı Dağılım)",
+                    "Yabancı Sitcom": "📺 Yabancı Sitcom",
+                    "Mitoloji Efsaneleri": "⚡ Mitoloji Efsaneleri",
                     "Müzik & Sanat": "🎵 Müzik & Sanat",
+                    "Türk Sineması": "🎬 Türk Sineması",
+                    "Sinema & TV": "🎥 Sinema & TV",
+                    "Edebiyat & Yazarlar": "📚 Edebiyat & Yazarlar",
                     "Coğrafya": "🌍 Coğrafya",
                     "Biyoloji & Bilim": "🔬 Biyoloji & Bilim",
-                    "Edebiyat & Yazarlar": "📚 Edebiyat & Yazarlar",
                     "Matematik & Mantık": "📐 Matematik & Mantık",
                     "Tarih & Medeniyet": "📜 Tarih & Medeniyet",
-                    "Sinema & TV": "🎬 Sinema & TV",
                     "Genel Kültür": "💡 Genel Kültür",
                     "Spor & Oyun": "⚽ Spor & Oyun"
                 }
@@ -446,7 +390,6 @@
                 startBtn: "<i class='fa-solid fa-play mr-2'></i> Spiel Starten",
                 treeTitle: "Gewinnbaum",
                 withdrawBtn: "<i class='fa-solid fa-sack-dollar mr-1'></i> Geld nehmen & aussteigen",
-                introText: "🎵 Musik läuft direkt auf der Seite (Anhören & Antworten!)",
                 wonPrize: "Gewonnener Preis",
                 playAgain: "<i class='fa-solid fa-rotate-right mr-2'></i> Nochmal spielen",
                 questionPrefix: "Frage",
@@ -460,15 +403,19 @@
                 audienceDesc: "Unser Publikum vertraut größtenteils auf Option [ANS], digga!",
                 phoneSure: "📞 DEIN TELEFONJOKER:\n\n'Hi digga! Habe die Frage gehört. Die Antwort ist definitiv [ANS]. Logg das direkt ein, mein Bester!'",
                 phoneUnsure: "📞 DEIN TELEFONJOKER:\n\n'Hey dostum... Ich bin mir nicht ganz sicher, aber ich tippe stark auf [ANS]. Die letzte Entscheidung liegt bei dir.'",
+                ardicText: "🦅 ARDIÇ-JOKER AKTIV!\n\n'Mein Bester, das ist eine echte Meisterfrage! Kontaktiere sofort Ardıç persönlich und stelle ihm die Frage. Er ist der absolute Experte, digga!'",
                 cats: {
-                    "Karışık": "🎲 Alle Kategorien (Gemischt)",
+                    "Karışık": "🎲 Alle Kategorien",
+                    "Yabancı Sitcom": "📺 Sitcoms",
+                    "Mitoloji Efsaneleri": "⚡ Mythologie & Legenden",
                     "Müzik & Sanat": "🎵 Musik & Kunst",
+                    "Türk Sineması": "🎬 Türkisches Kino",
+                    "Sinema & TV": "🎥 Kino & TV",
+                    "Edebiyat & Yazarlar": "📚 Literatur & Autoren",
                     "Coğrafya": "🌍 Geographie",
                     "Biyoloji & Bilim": "🔬 Biologie & Wissenschaft",
-                    "Edebiyat & Yazarlar": "📚 Literatur & Autoren",
                     "Matematik & Mantık": "📐 Mathematik & Logik",
                     "Tarih & Medeniyet": "📜 Geschichte & Zivilisation",
-                    "Sinema & TV": "🎬 Kino & TV",
                     "Genel Kültür": "💡 Allgemeinwissen",
                     "Spor & Oyun": "⚽ Sport & Spiele"
                 }
@@ -495,7 +442,6 @@
             document.getElementById('ui-start-btn').innerHTML = d.startBtn;
             document.getElementById('ui-tree-title').innerHTML = d.treeTitle;
             document.getElementById('ui-withdraw-btn').innerHTML = d.withdrawBtn;
-            document.getElementById('ui-intro-text').innerHTML = d.introText;
             document.getElementById('ui-won-prize').innerHTML = d.wonPrize;
             document.getElementById('ui-play-again').innerHTML = d.playAgain;
 
@@ -521,70 +467,65 @@
         }
     </script>
 
-    <!-- Ses, Stüdyo Gerilim BGM, Sol Alt Radyo ve Beşiktaş Kutlama Efektleri -->
+    <!-- ZIRHLI SES VE EFEKT YÖNETİMİ -->
     <script>
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let audioCtx = null;
         function playSound(type) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
 
-            if (type === 'select') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-            } else if (type === 'correct') {
-                osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
-                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.6);
-            } else if (type === 'wrong') {
-                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.4);
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.4);
-            } else if (type === 'cheer') {
-                osc.type = 'square'; osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.2);
-                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-            }
-        }
-
-        // Sol Alt Radyo Butonu (Sıkıştırılmış MP3 Aksiyon/Yarışma Müziği Toggle)
-        let isRadioPlaying = false;
-        function toggleRadioMusic() {
-            playSound('select');
-            isRadioPlaying = !isRadioPlaying;
-            const btn = document.getElementById('radio-btn');
-            const radioPlayer = document.getElementById('radio-player');
-            
-            if (isRadioPlaying) {
-                btn.classList.add('playing');
-                handleBGM('pause');
-                radioPlayer.volume = 0.5;
-                radioPlayer.play().catch(() => {});
-            } else {
-                btn.classList.remove('playing');
-                radioPlayer.pause();
-                if (!document.getElementById('screen-game').classList.contains('hidden') && (!currentQuestion || !currentQuestion.audioUrl)) {
-                    handleBGM('play');
+                if (type === 'select') {
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+                } else if (type === 'correct') {
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+                    osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.6);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.4);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+                } else if (type === 'cheer') {
+                    osc.type = 'square'; osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
                 }
-            }
+            } catch(e) {}
         }
 
-        // Hem Yazı Çıkaran Hem Siyah-Beyaz Konfeti Patlatan Beşiktaş Fonksiyonu!
+        function handleBGM(action) {
+            const bgm = document.getElementById('bgm-player');
+            if (!bgm) return;
+            try {
+                if (action === 'play') {
+                    bgm.volume = 0.25;
+                    bgm.play().catch(() => {});
+                } else if (action === 'pause') {
+                    bgm.pause();
+                } else if (action === 'stop') {
+                    bgm.pause();
+                    bgm.currentTime = 0;
+                }
+            } catch(e) {}
+        }
+
         function celebrateBJK(btn) {
             playSound('cheer');
-
             for (let i = 0; i < 70; i++) {
                 let conf = document.createElement('div');
                 conf.className = 'confetti';
@@ -610,7 +551,7 @@
         }
     </script>
 
-    <!-- OYUN VERİTABANI: 200 SORULUK HARDCORE HAVUZ & İPUÇSUZ ŞIKLAR! -->
+    <!-- YENİLİKÇİ VE SİTCOMLU SORU VERİTABANI & OYUN MANTIĞI -->
     <script>
         const MONEY_TREE = [
             { level: 1, amount: "5.000 TL", safe: false },
@@ -630,237 +571,53 @@
             { level: 15, amount: "5.000.000 TL", safe: true }
         ];
 
-        // 200 Soruluk Benzersiz Dev Veritabanı! Orta alanlar (1-3) ile başlar, 4-9 ZOR, 10-15 ÇOK ZOR!
+        // Tam senin istediğin gibi: Absürt kolaylık yok, L1-2 saygın, L3-5 orta, L6-9 zor, L10-15 çok zor! Sitcomlar geniş!
         const RAW_QUESTIONS = [
-            // ==================== SEVİYE 1 (13 Soru - Doğrudan Orta Seviye ile Başlar!) ====================
-            { c: "Biyoloji & Bilim", l: 1, a: 2, q_tr: "Atmosferimizde oran olarak en fazla bulunan gaz hangisidir?", q_de: "Welches Gas hat den größten Volumenanteil in unserer Erdatmosphäre?", o_tr: ["Oksijen", "Karbondioksit", "Azot", "Hidrojen"], o_de: ["Sauerstoff", "Kohlendioxid", "Stickstoff", "Wasserstoff"] },
-            { c: "Coğrafya", l: 1, a: 2, q_tr: "Türkiye'nin en büyük gölü hangisidir?", q_de: "Welcher ist der größte See der Türkei?", o_tr: ["Tuz Gölü", "Beyşehir Gölü", "Van Gölü", "Eğirdir Gölü"], o_de: ["Tuz-See", "Beyşehir-See", "Van-See", "Eğirdir-See"] },
-            { c: "Matematik & Mantık", l: 1, a: 0, q_tr: "Bir dairenin çevresinin çapına bölümüyle elde edilen ve yaklaşık değeri 3.14 olan matematiksel sabit nedir?", q_de: "Wie heißt die mathematische Konstante mit dem ungefähren Wert 3,14, die das Verhältnis von Umfang zu Durchmesser eines Kreises beschreibt?", o_tr: ["Pi Sayısı", "Euler Sayısı", "Altın Oran", "Tau Sayısı"], o_de: ["Kreiszahl Pi", "Eulersche Zahl", "Goldener Schnitt", "Tau-Zahl"] },
-            { c: "Tarih & Medeniyet", l: 1, a: 1, q_tr: "1453 yılında İstanbul'u fethederek Bizans İmparatorluğu'na son veren Osmanlı Padişahı kimdir?", q_de: "Welcher osmanische Sultan eroberte 1453 Konstantinopel und beendete das Byzantinische Reich?", o_tr: ["I. Süleyman", "II. Mehmed", "II. Bayezid", "I. Selim"], o_de: ["Süleyman I.", "Mehmed II.", "Bayezid II.", "Selim I."] },
-            { c: "Coğrafya", l: 1, a: 0, q_tr: "1869 yılında açılarak Akdeniz ile Kızıldeniz'i birbirine bağlayan ve dünya deniz ticaretini kökünden değiştiren yapay kanal hangisidir?", q_de: "Welcher 1869 eröffnete künstliche Wasserweg verbindet das Mittelmeer mit dem Roten Meer und veränderte den Welthandel radikal?", o_tr: ["Süveyş Kanalı", "Panama Kanalı", "Kiel Kanalı", "Korint Kanalı"], o_de: ["Suezkanal", "Panamakanal", "Nord-Ostsee-Kanal", "Kanal von Korinth"] },
-            { c: "Biyoloji & Bilim", l: 1, a: 1, q_tr: "Bitkilerin güneş ışığını kullanarak besin üretmesi sürecine ne ad verilir?", q_de: "Wie nennt man den Prozess, bei dem Pflanzen Sonnenlicht in Energie umwandeln?", o_tr: ["Solunum", "Fotosentez", "Terleme", "Fermantasyon"], o_de: ["Atmung", "Fotosynthese", "Transpiration", "Fermentation"] },
-            { c: "Biyoloji & Bilim", l: 1, a: 2, q_tr: "DNA'nın ikili sarmal yapısını 1953 yılında keşfeden ve Nobel Ödülü alan ikili kimdir?", q_de: "Welche zwei Wissenschaftler entdeckten 1953 die Doppelhelix-Struktur der DNA?", o_tr: ["Newton & Einstein", "Curie & Pasteur", "Watson & Crick", "Fleming & Koch"], o_de: ["Newton & Einstein", "Curie & Pasteur", "Watson & Crick", "Fleming & Koch"] },
-            { c: "Tarih & Medeniyet", l: 1, a: 1, q_tr: "1071 yılında Türklerin Anadolu'ya girişini sağlayan Meydan Muharebesi'nin adı nedir?", q_de: "Wie heißt die Schlacht von 1071, die den Türken die Tore nach Anatolien öffnete?", o_tr: ["Miryokefalon", "Malazgirt", "Dandanakan", "Pasinler"], o_de: ["Myriokephalon", "Manzikert", "Dandanaqan", "Kapetron"] },
-            { c: "Coğrafya", l: 1, a: 0, q_tr: "Dünyanın en uzun nehirlerinden biri sayılan ve Afrika kıtasını güneyden kuzeye kat ederek Akdeniz'e dökülen nehir hangisidir?", q_de: "Welcher Fluss gilt als einer der längsten der Erde, durchfließt den afrikanischen Kontinent von Süden nach Norden und mündet ins Mittelmeer?", o_tr: ["Nil Nehri", "Amazon Nehri", "Mississippi Nehri", "Kongo Nehri"], o_de: ["Nil", "Amazonas", "Mississippi", "Kongo"] },
-            { c: "Spor & Oyun", l: 1, a: 2, q_tr: "Dünya Kupası'nı tarihte en çok kazanan milli futbol takımı hangisidir?", q_de: "Welche Fußballnationalmannschaft hat bis heute die meisten Weltmeistertitel gewonnen?", o_tr: ["Almanya", "İtalya", "Brezilya", "Arjantin"], o_de: ["Deutschland", "Italien", "Brasilien", "Argentinien"] },
-            { c: "Edebiyat & Yazarlar", l: 1, a: 1, q_tr: "'Sherlock Holmes' karakterinin ev adresi Londra'da hangi sokaktadır?", q_de: "Wie lautet die berühmte Adresse von Sherlock Holmes in London?", o_tr: ["Oxford Street 10", "Baker Street 221B", "Downing Street 10", "Fleet Street 5"], o_de: ["10 Oxford Street", "221B Baker Street", "10 Downing Street", "5 Fleet Street"] },
-            { c: "Biyoloji & Bilim", l: 1, a: 2, q_tr: "Işık hızının saniyede yaklaşık değeri kaç kilometredir?", q_de: "Wie beträgt die Lichtgeschwindigkeit pro Sekunde ungefähr?", o_tr: ["100.000 km/s", "200.000 km/s", "300.000 km/s", "500.000 km/s"], o_de: ["100.000 km/s", "200.000 km/s", "300.000 km/s", "500.000 km/s"] },
-            { c: "Biyoloji & Bilim", l: 1, a: 0, q_tr: "İnsan kanında bulunan ve kana kırmızı rengini veren protein molekülü hangisidir?", q_de: "Wie heißt das Protein im menschlichen Blut, das ihm seine rote Farbe verleiht?", o_tr: ["Hemoglobin", "İnsülin", "Adrenalin", "Kolajen"], o_de: ["Hämoglobin", "Insulin", "Adrenalin", "Kollagen"] },
+            // === SEVİYE 1-2 (Saygın ve Dengeli Başlangıç) ===
+            { c: "Coğrafya", l: 1, a: 2, q_tr: "Türkiye'nin yüzölçümü bakımından en büyük gölü hangisidir?", q_de: "Welcher ist der größte See der Türkei?", o_tr: ["Tuz Gölü", "Beyşehir Gölü", "Van Gölü", "Eğirdir Gölü"], o_de: ["Tuz-See", "Beyşehir-See", "Van-See", "Eğirdir-See"] },
+            { c: "Genel Kültür", l: 1, a: 0, q_tr: "Damlayan su taşı deler; gücüyle değil... atasözünün doğru devamı hangisidir?", q_de: "Wie endet das bekannte Sprichwort Der stete Tropfen höhlt den Stein; nicht durch seine Kraft, sondern durch...?", o_tr: ["Sürekliliğiyle", "Sıcaklığıyla", "Ağırlığıyla", "Hızıyla"], o_de: ["Seine Ausdauer", "Seine Wärme", "Sein Gewicht", "Seine Schnelligkeit"] },
+            { c: "Biyoloji & Bilim", l: 2, a: 1, q_tr: "Bitkilerin güneş ışığını kullanarak besin üretmesi sürecine ne ad verilir?", q_de: "Wie nennt man den Prozess, bei dem Pflanzen Sonnenlicht in Energie umwandeln?", o_tr: ["Solunum", "Fotosentez", "Terleme", "Fermantasyon"], o_de: ["Atmung", "Fotosynthese", "Transpiration", "Fermentation"] },
+            { c: "Spor & Oyun", l: 2, a: 0, q_tr: "Futbolda bir takımın sahadaki kalecisi hariç standart olarak kaç oyuncusu bulunur?", q_de: "Wie viele Feldspieler hat eine Fußballmannschaft standardmäßig auf dem Platz?", o_tr: ["10", "9", "11", "8"], o_de: ["10", "9", "11", "8"] },
+            { c: "Yabancı Sitcom", l: 2, a: 0, q_tr: "Efsanevi sitcom Friends dizisinde, kahramanların sürekli vakit geçirdiği ve Rachel karakterinin garsonluk yaptığı kahve dükkanının adı nedir?", q_de: "Wie heißt das berühmte Cafe, in dem sich die Freunde in der Sitcom Friends ständig treffen?", o_tr: ["Central Perk", "MacLaren Pub", "Monk Cafe", "Dunder Mifflin"], o_de: ["Central Perk", "MacLaren Pub", "Monk Cafe", "Dunder Mifflin"] },
 
-            // ==================== SEVİYE 2 (13 Soru - Orta Seviye Devam Ediyor!) ====================
-            { c: "Biyoloji & Bilim", l: 2, a: 0, q_tr: "İnsan vücudunda toplam ağırlığın sadece %2'sini oluşturmasına rağmen, solunan oksijenin ve harcanan enerjinin yaklaşık %20'sini tek başına tüketen organ hangisidir?", q_de: "Welches Organ macht nur etwa 2 % des menschlichen Körpergewichts aus, verbraucht aber allein rund 20 % des eingeatmeten Sauerstoffs und der Energie?", o_tr: ["Beyin", "Karaciğer", "Akciğerler", "Böbrekler"], o_de: ["Gehirn", "Leber", "Lunge", "Nieren"] },
-            { c: "Tarih & Medeniyet", l: 2, a: 0, q_tr: "Tarihte 'Güneş Batmayan İmparatorluk' unvanıyla anılan ve en geniş sınırlarına Kraliçe Victoria döneminde ulaşan sömürge imparatorluğu hangisidir?", q_de: "Welches Kolonialreich ging als das 'Reich, in dem die Sonne nie untergeht' in die Geschichte ein und erreichte unter Königin Victoria seine größte Ausdehnung?", o_tr: ["Britanya İmparatorluğu", "İspanyol İmparatorluğu", "Osmanlı İmparatorluğu", "Fransız İmparatorluğu"], o_de: ["Britisches Weltreich", "Spanisches Reich", "Osmanisches Reich", "Französisches Kolonialreich"] },
-            { c: "Sinema & TV", l: 2, a: 1, q_tr: "J.R.R. Tolkien'in fantastik evreninde, Tek Yüzük'ü yok etmek için Hüküm Dağı'na doğru yola çıkan Hobbit kardeşliği üyesi başkarakter kimdir?", q_de: "Wie heißt der Hobbit-Hauptcharakter in J.R.R. Tolkiens Universum, der sich auf den Weg zum Schicksalsberg macht, um den Einen Ring zu zerstören?", o_tr: ["Samwise Gamgee", "Frodo Baggins", "Bilbo Baggins", "Peregrin Took"], o_de: ["Samwise Gamgee", "Frodo Beutlin", "Bilbo Beutlin", "Peregrin Tuk"] },
-            { c: "Spor & Oyun", l: 2, a: 0, q_tr: "Tenis maçlarında 0 puanını ifade etmek için uluslararası olarak hangi kelime kullanılır?", q_de: "Mit welchem englischen Wort wird beim Tennis der Punktestand von 0 international bezeichnet?", o_tr: ["Love", "Zero", "Null", "Nothing"], o_de: ["Love", "Zero", "Null", "Nothing"] },
-            { c: "Tarih & Medeniyet", l: 2, a: 0, q_tr: "Yunan mitolojisinde denizlerin ve depremlerin tanrısı olarak bilinen, elinde üç dişli yaba taşıyan tanrı kimdir?", q_de: "Wie heißt in der griechischen Mythologie der Gott des Meeres und der Erdbeben, der einen Dreizack trägt?", o_tr: ["Poseidon", "Zeus", "Hades", "Apollon"], o_de: ["Poseidon", "Zeus", "Hades", "Apollon"] },
-            { c: "Coğrafya", l: 2, a: 0, q_tr: "İtalya'nın başkenti olan ve içinde bağımsız bir devlet olan Vatikan'ı barındıran tarihi şehir hangisidir?", q_de: "In welcher italienischen Hauptstadt befindet sich mit dem Vatikanstaat der kleinste unabhängige Staat der Welt?", o_tr: ["Roma", "Milano", "Floransa", "Venedik"], o_de: ["Rom", "Mailand", "Florenz", "Venedig"] },
-            { c: "Tarih & Medeniyet", l: 2, a: 2, q_tr: "Mısır piramitlerinin en büyüğü olan Keops Piramidi nerededir?", q_de: "Wo befindet sich die Cheops-Pyramide, die größte der ägyptischen Pyramiden?", o_tr: ["İskenderiye", "Luksor", "Giza", "Kahire"], o_de: ["Alexandria", "Luxor", "Gizeh", "Kairo"] },
-            { c: "Sinema & TV", l: 2, a: 0, q_tr: "'Harry Potter' serisinde büyücülük okulunun adı nedir?", q_de: "Wie heißt die Zauberschule in der Harry-Potter-Reihe?", o_tr: ["Hogwarts", "Durmstrang", "Beauxbatons", "Ilvermorny"], o_de: ["Hogwarts", "Durmstrang", "Beauxbatons", "Ilvermorny"] },
-            { c: "Spor & Oyun", l: 2, a: 3, q_tr: "Basketbolda her iki pota altındaki çemberin yerden yüksekliği kaç metredir?", q_de: "Wie hoch hängen die Körbe beim Basketball über dem Boden?", o_tr: ["2.80 m", "2.95 m", "3.00 m", "3.05 m"], o_de: ["2,80 m", "2,95 m", "3,00 m", "3,05 m"] },
-            { c: "Coğrafya", l: 2, a: 1, q_tr: "Avrupa ve Asya kıtalarını birbirine bağlayan, İstanbul'da bulunan su geçidinin adı nedir?", q_de: "Wie heißt die Meerenge in Istanbul, die Europa und Asien verbindet?", o_tr: ["Çanakkale Boğazı", "İstanbul Boğazı", "Cebelitarık Boğazı", "Süveyş Kanalı"], o_de: ["Dardanellen", "Bosporus", "Straße von Gibraltar", "Suezkanal"] },
-            { c: "Edebiyat & Yazarlar", l: 2, a: 0, q_tr: "'Dünyanın Merkezine Yolculuk' ve 'Denizler Altında Yirmi Bin Fersah' romanlarının ünlü yazarının adı nedir?", q_de: "Wer ist der Autor von 'Die Reise zum Mittelpunkt der Erde' und '20.000 Meilen unter dem Meer'?", o_tr: ["Jules Verne", "H.G. Wells", "Isaac Asimov", "Victor Hugo"], o_de: ["Jules Verne", "H.G. Wells", "Isaac Asimov", "Victor Hugo"] },
-            { c: "Sinema & TV", l: 2, a: 3, q_tr: "'Titanic' filminde geminin battığı okyanus hangisidir?", q_de: "In welchem Ozean versank die Titanic 1912 auf ihrer Jungfernfahrt?", o_tr: ["Hint Okyanusu", "Pasifik Okyanusu", "Arktik Okyanusu", "Kuzey Atlantik Okyanusu"], o_de: ["Indischer Ozean", "Pazifischer Ozean", "Arktischer Ozean", "Nordatlantischer Ozean"] },
-            { c: "Matematik & Mantık", l: 2, a: 1, q_tr: "Roma rakamları ile XL kaçtır?", q_de: "Welche Zahl entspricht der römischen Ziffer XL?", o_tr: ["30", "40", "45", "60"], o_de: ["30", "40", "45", "60"] },
+            // === SEVİYE 3-5 (Orta Alan - Düşündürücü ve Merak Uyandırıcı) ===
+            { c: "Mitoloji Efsaneleri", l: 3, a: 0, q_tr: "Yunan mitolojisinde Olympos tanrılarının kralı olan ve gök gürültüsü ile şimşeği yöneten baş tanrı kimdir?", q_de: "Wie heißt in der griechischen Mythologie der Göttervater, der über den Olymp und den Blitz herrscht?", o_tr: ["Zeus", "Poseidon", "Hades", "Apollon"], o_de: ["Zeus", "Poseidon", "Hades", "Apollon"] },
+            { c: "Yabancı Sitcom", l: 3, a: 0, q_tr: "How I Met Your Mother dizisinde Barney Stinson karakterinin diline pelesenk olan ve genellikle heceleyerek söylediği o meşhur kelime hangisidir?", q_de: "Welches berühmte Schlagwort benutzt Barney Stinson in How I Met Your Mother ständig?", o_tr: ["Legendary", "Bazinga", "Pivot", "Giggity"], o_de: ["Legendary", "Bazinga", "Pivot", "Giggity"] },
+            { c: "Müzik & Sanat", l: 4, a: 1, q_tr: "Tarkan tarafından 1998 yılında yayımlanan, İkimizin yerine sözleriyle başlayan ve dünyada Şıkıdım adıyla da bilinen hit parçanın adı nedir?", q_de: "Wie heißt dieser weltberühmte Mega-Hit von Tarkan aus dem Jahr 1998?", o_tr: ["Kuzu Kuzu", "Şımarık", "Dudu", "Öp"], o_de: ["Kuzu Kuzu", "Şımarık", "Dudu", "Öp"] },
+            { c: "Yabancı Sitcom", l: 4, a: 0, q_tr: "The Big Bang Theory dizisinde teorik fizikçi Sheldon Cooper karakterinin bir şaka yaptığında ya da karşısındakini kandırdığında kullandığı o meşhur zafer nidası nedir?", q_de: "Welches berühmte Triumphwort ruft Sheldon Cooper in The Big Bang Theory, wenn er jemanden reinlegt?", o_tr: ["Bazinga", "Wubba Lubba Dub Dub", "Cowabunga", "Giggity"], o_de: ["Bazinga", "Wubba Lubba Dub Dub", "Cowabunga", "Giggity"] },
+            { c: "Türk Sineması", l: 4, a: 1, q_tr: "Yavuz Turgul tarafından yönetilen, Şener Şen ve Uğur Yücel ikilisinin başrollerini paylaştığı 1996 yapımı sinema başyapıtımız hangisidir?", q_de: "Wie heißt der türkische Filmklassiker von 1996 mit Şener Şen und Uğur Yücel?", o_tr: ["Muhsin Bey", "Eşkıya", "Gönül Yarası", "Av Mevsimi"], o_de: ["Muhsin Bey", "Eşkıya", "Gönül Yarası", "Av Mevsimi"] },
+            { c: "Yabancı Sitcom", l: 5, a: 0, q_tr: "Brooklyn Nine Nine dizisinde Dedektif Jake Peralta karakterinin, ortağı Charles Boyle ile birlikte hayranı olduğu ve serinin tüm repliklerini ezbere bildiği efsanevi aksiyon filmi hangisidir?", q_de: "Welchen Actionfilm vergöttert Detective Jake Peralta in der Sitcom Brooklyn Nine Nine über alles?", o_tr: ["Die Hard", "Lethal Weapon", "Speed", "Terminator"], o_de: ["Die Hard", "Lethal Weapon", "Speed", "Terminator"] },
+            { c: "Biyoloji & Bilim", l: 5, a: 2, q_tr: "2021 yılında uzaya fırlatılan ve evrenin en derin, en eski galaksilerini kızılötesi ışınlarla görüntüleyerek astronomide devrim yaratan uzay teleskobu hangisidir?", q_de: "Welches 2021 ins All gestartete Weltraumteleskop revolutionierte die Astronomie durch Infrarotaufnahmen der ältesten Galaxien?", o_tr: ["Hubble Uzay Teleskobu", "Kepler Uzay Teleskobu", "James Webb Uzay Teleskobu", "Spitzer Uzay Teleskobu"], o_de: ["Hubble Weltraumteleskop", "Kepler Weltraumteleskop", "James Webb Weltraumteleskop", "Spitzer Weltraumteleskop"] },
+            { c: "Edebiyat & Yazarlar", l: 5, a: 1, q_tr: "Sabahattin Ali tarafından yazılan, Maria Puder ve Raif Efendi arasındaki unutulmaz aşkı anlatan başyapıt romanın adı nedir?", q_de: "Wie heißt der berühmte Roman von Sabahattin Ali über die Liebe zwischen Raif Efendi und Maria Puder?", o_tr: ["Kuyucaklı Yusuf", "Kürk Mantolu Madonna", "İçimizdeki Şeytan", "Yaban"], o_de: ["Kuyucaklı Yusuf", "Die Madonna im Pelzmantel", "İçimizdeki Şeytan", "Yaban"] },
 
-            // ==================== SEVİYE 3 (13 Soru - Talep Edilenler ve Müzikler) ====================
-            { c: "Genel Kültür", l: 3, a: 0, q_tr: "'Damlaya damlaya göl olur.' atasözünün vermek istediği mesaj hangisidir?", q_de: "Welche Botschaft vermittelt das Sprichwort 'Steter Tropfen höhlt den Stein'?", o_tr: ["Küçük birikimler zamanla büyür", "Göller yağmurla oluşur", "Sabır gereksizdir", "Su her zaman değerlidir"], o_de: ["Kleine Ersparnisse wachsen mit der Zeit", "Seen entstehen durch Regen", "Geduld ist unnötig", "Wasser ist immer wertvoll"] },
-            { c: "Genel Kültür", l: 3, a: 1, q_tr: "'Empati' kelimesi en doğru hangi anlama gelir?", q_de: "Was bedeutet das Wort 'Empathie' am treffendsten?", o_tr: ["Kendini övmek", "Başkasının yerine kendini koyabilmek", "Karşı çıkmak", "İkna etmek"], o_de: ["Sich selbst loben", "Sich in jemanden hineinversetzen können", "Widersprechen", "Jemanden überzeugen"] },
-            { c: "Matematik & Mantık", l: 3, a: 3, q_tr: "Bir kürenin kaç köşesi vardır?", q_de: "Wie viele Ecken hat eine Kugel?", o_tr: ["1", "2", "4", "Hiçbiri"], o_de: ["1", "2", "4", "Keine"] },
-            { c: "Müzik & Sanat", l: 3, audioUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e5/Mozart_-_Piano_Sonata_No._11_-_III._Alla_Turca.ogg", a: 0, q_tr: "Dinlediğiniz, Wolfgang Amadeus Mozart'ın Türk yeniçeri bandolarından esinlenerek bestelediği 11 numaralı piyano sonatının rondo bölümü ne adla anılır?", q_de: "Wie heißt der berühmte dritte Satz aus Mozarts Klaviersonate Nr. 11, den Sie hören und der von den türkischen Janitscharenkapellen inspiriert wurde?", o_tr: ["Türk Marşı", "Osmanlı Rapsodisi", "İstanbul Valsi", "Yeniçeri Senfonisi"], o_de: ["Türkischer Marsch", "Osmanische Rhapsodie", "Istanbuler Walzer", "Janitscharen-Sinfonie"] },
-            { c: "Müzik & Sanat", l: 3, audioUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Beethoven_Symphony_No_5_-_1._Allegro_con_brio.ogg", a: 0, q_tr: "Dinlediğiniz, sinema ve popüler kültürde 'kaderin kapıyı çalışı' olarak bilinen meşhur 'Ta-da-da-damm!' girişli 5. Senfoni kime aittir?", q_de: "Von wem stammt die 5. Sinfonie mit dem berühmten 'Ta-da-da-damm!'-Motiv, das oft als 'Das Schicksal klopft an die Pforte' bezeichnet wird?", o_tr: ["Ludwig van Beethoven", "Wolfgang Amadeus Mozart", "Johann Sebastian Bach", "Antonio Vivaldi"], o_de: ["Ludwig van Beethoven", "Wolfgang Amadeus Mozart", "Johann Sebastian Bach", "Antonio Vivaldi"] },
-            { c: "Biyoloji & Bilim", l: 3, a: 0, q_tr: "Oda sıcaklığında (yaklaşık 20°C) ve normal atmosfer basıncında SIVI halde bulunan TEK metal element hangisidir?", q_de: "Welches ist das EINZIGE metallische Element, das bei Raumtemperatur und normalem Atmosphärendruck im flüssigen Zustand vorliegt?", o_tr: ["Cıva", "Brom", "Galyum", "Sezyum"], o_de: ["Quecksilber", "Brom", "Gallium", "Cäsium"] },
-            { c: "Edebiyat & Yazarlar", l: 3, a: 0, q_tr: "George Orwell'ın siyasi bir hiciv olarak kaleme aldığı 'Hayvan Çiftliği' romanında, isyanı yöneterek çiftliğin iktidarını ele geçiren ve 'Bütün hayvanlar eşittir ama bazıları daha eşittir' kuralını koyan hayvan türü hangisidir?", q_de: "Welche Tierart übernimmt in George Orwells politischer Satire 'Farm der Tiere' die Macht und stellt die Regel auf: 'Alle Tiere sind gleich, aber manche sind gleicher'?", o_tr: ["Domuzlar", "Atlar", "Köpekler", "Koyunlar"], o_de: ["Schweine", "Pferde", "Hunde", "Schafe"] },
-            { c: "Spor & Oyun", l: 3, a: 0, q_tr: "Futbolda tartışmalı pozisyonları incelemek için kullanılan 'VAR' sisteminin açılımı nedir?", q_de: "Wofür steht im modernen Fußball die Abkürzung 'VAR', die bei strittigen Szenen zum Einsatz kommt?", o_tr: ["Video Yardımcı Hakem", "Sanal Analiz Sistemi", "Video Aktif Raporlama", "Vurgulu Anlık Replay"], o_de: ["Video Assistant Referee", "Virtual Analysis Rule", "Video Action Replay", "Verified Arbitration Report"] },
-            { c: "Sinema & TV", l: 3, a: 0, q_tr: "'Ben senin babanım' efsanevi repliği Star Wars evreninde hangi karaktere aittir?", q_de: "Welchem Charakter aus dem Star-Wars-Universum gehört das legendäre Zitat: 'Ich bin dein Vater'?", o_tr: ["Darth Vader", "Luke Skywalker", "Yoda", "Obi-Wan Kenobi"], o_de: ["Darth Vader", "Luke Skywalker", "Yoda", "Obi-Wan Kenobi"] },
-            { c: "Biyoloji & Bilim", l: 3, a: 0, q_tr: "Güneş sistemindeki en büyük gezegen olan ve üzerinde 'Büyük Kırmızı Leke' adında dev bir fırtına barındıran gezegen hangisidir?", q_de: "Welcher ist der größte Planet unseres Sonnensystems, der für seinen 'Großen Roten Fleck' bekannt ist?", o_tr: ["Jüpiter", "Satürn", "Neptün", "Uranüs"], o_de: ["Jupiter", "Saturn", "Neptun", "Uranus"] },
-            { c: "Tarih & Medeniyet", l: 3, a: 2, q_tr: "Amerika Kıtası'nı 1492 yılında keşfeden ünlü İtalyan kâşif kimdir?", q_de: "Welcher berühmte Entdecker landete 1492 in Amerika?", o_tr: ["Vasco da Gama", "Macellan", "Kristof Kolomb", "Amerigo Vespucci"], o_de: ["Vasco da Gama", "Ferdinand Magellan", "Christoph Kolumbus", "Amerigo Vespucci"] },
-            { c: "Coğrafya", l: 3, a: 1, q_tr: "Dünyanın en büyük çölü olan Sahra Çölü hangi kıtadadır?", q_de: "Auf welchem Kontinent liegt die Sahara, die größte Trockenwüste der Erde?", o_tr: ["Asya", "Afrika", "Avustralya", "Güney Amerika"], o_de: ["Asien", "Afrika", "Australien", "Südamerika"] },
-            { c: "Edebiyat & Yazarlar", l: 3, a: 0, q_tr: "Victor Hugo'nun Paris'teki Notre Dame Katedrali'ni kurtarmak için yazdığı eserin kambur zangoç kahramanı kimdir?", q_de: "Wie heißt der bucklige Glöckner in Victor Hugos 'Der Glöckner von Notre-Dame'?", o_tr: ["Quasimodo", "Esmeralda", "Claude Frollo", "Jean Valjean"], o_de: ["Quasimodo", "Esmeralda", "Claude Frollo", "Jean Valjean"] },
+            // === SEVİYE 6-9 (Zor Tur - TV Barajı Öncesi Eleyici Sorular) ===
+            { c: "Yabancı Sitcom", l: 6, a: 0, q_tr: "Modern Family dizisinde Phil Dunphy karakterinin evinde gizlice tamir etmeye çalıştığı ancak her seferinde başarısız olup düştüğü nesne nedir?", q_de: "Welches Hausteil versucht Phil Dunphy in Modern Family ständig zu reparieren und stolpert jedes Mal darüber?", o_tr: ["Merdiven basamağı", "Garaj kapısı", "Çatı oluğu", "Mutfak avizesi"], o_de: ["Treppenstufe", "Garagentor", "Dachrinne", "Küchenkronleuchter"] },
+            { c: "Genel Kültür", l: 6, a: 3, q_tr: "Yapay zeka modellerinin eğitildiği derin öğrenme mimarisi ve nöral ağ algoritmaları, insan vücudundaki hangi biyolojik sistemin çalışma mantığından doğrudan ilham almıştır?", q_de: "Vom Funktionsprinzip welches biologischen Systems im menschlichen Körper sind neuronale Netze und Deep Learning Algorithmen der KI inspiriert?", o_tr: ["Sindirim Sistemi", "Dolaşım Sistemi", "İskelet Sistemi", "Sinir Sistemi"], o_de: ["Verdauungssystem", "Kreislaufsystem", "Skelettsystem", "Nervensystem"] },
+            { c: "Mitoloji Efsaneleri", l: 7, a: 3, q_tr: "Yunan mitolojisinde saçları yılanlardan oluşan, gözlerine bakanı taşa çeviren ve kahraman Perseus tarafından başı kesilerek yenilen canavar kimdir?", q_de: "Wie heißt die Sagengestalt mit Schlangenhaaren, die jeden zu Stein erstarren lässt, der sie ansieht?", o_tr: ["Chimera", "Hydra", "Siren", "Medusa"], o_de: ["Chimäre", "Hydra", "Sirene", "Medusa"] },
+            { c: "Yabancı Sitcom", l: 7, a: 0, q_tr: "The Office ABD dizisinde Jim Halpert karakterinin, çalışma arkadaşı Dwight Schrute un ofis malzemelerini ve zımbasını içine koyarak ona şaka yaptığı yiyecek nedir?", q_de: "In welches Lebensmittel gießt Jim Halpert in The Office den Tacker und die Büromaterialien seines Kollegen Dwight Schrute ein?", o_tr: ["Meyveli jöle", "Patates püresi", "Çikolatalı puding", "Elmalı tart"], o_de: ["Götterspeise Wackelpudding", "Kartoffelpüree", "Schokopudding", "Apfeltorte"] },
+            { c: "Biyoloji & Bilim", l: 7, a: 1, q_tr: "Mikroskop altında ancak görülebilen, uzay boşluğunda, aşırı radyasyonda ve eksi 272 derece soğukta bile hayatta kalabilmesiyle bilinen su ayısı lakaplı canlı hangisidir?", q_de: "Wie heißt das mikroskopisch kleine, auch als Bärtierchen bekannte Lebewesen, das selbst im Vakuum des Weltalls und bei extremster Strahlung überleben kann?", o_tr: ["Amip", "Tardigrad", "Paramesyum", "Öglena"], o_de: ["Amöbe", "Bärtierchen Tardigrada", "Pantoffeltierchen", "Augentierchen"] },
+            { c: "Yabancı Sitcom", l: 8, a: 0, q_tr: "Seinfeld dizisinde George Costanza karakterinin babası Frank tarafından Noel ile Hanuka bayramlarına alternatif olarak icat edilen ve direk etrafında kutlanan uydurma bayramın adı nedir?", q_de: "Wie heißt der von Frank Costanza in Seinfeld erfundene alternative Feiertag zu Weihnachten, der um eine Aluminiumstange gefeiert wird?", o_tr: ["Festivus", "Chrismukkah", "Robukah", "Spooktacular"], o_de: ["Festivus", "Chrismukkah", "Robukah", "Spooktacular"] },
+            { c: "Coğrafya", l: 8, a: 0, q_tr: "Küresel iklim değişikliği veya nükleer bir felaket sonrası insanlığın tarım çeşitliliğini korumak amacıyla Kuzey Kutbu yakınlarındaki bir buzul dağın içine inşa edilen Kıyamet Tohum Deposu hangi adadadır?", q_de: "Auf welcher arktischen Insel befindet sich der weltweite Saatgut Tresor im Permafrostboden, der die Artenvielfalt der Menschheit nach Katastrophen sichern soll?", o_tr: ["Svalbard Adası", "Grönland", "Madagaskar", "İzlanda"], o_de: ["Spitzbergen Svalbard", "Grönland", "Madagaskar", "Island"] },
+            { c: "Sinema & TV", l: 8, a: 3, q_tr: "Stanley Kubrick tarafından yönetilen 1968 yapımı bilimkurgu başyapıtı 2001 Uzay Yolu Macerası filmindeki yapay zeka bilgisayarı HAL 9000 ismi nereden türetilmiştir?", q_de: "Woher leitet sich der Name des berühmten Supercomputers HAL 9000 aus Stanley Kubricks 2001 Odyssee im Weltraum ab?", o_tr: ["IBM harflerinin alfabede birer harf geriye kaydırılmasından", "Heuristic ALgorithmic kelimelerinin baş harflerinden", "Kubrick in çocukluk köpeği Hal isminden", "Heuristic ALgorithmic kelimelerinin baş harflerinden"], o_de: ["Von den um einen Buchstaben verschobenen Buchstaben IBM", "Von den Anfangsbuchstaben für Heuristisch und Algorithmisch", "Von Kubricks Kindheitshund Hal", "Von Heuristic Algorithmic"] },
+            { c: "Yabancı Sitcom", l: 9, a: 0, q_tr: "Parks and Recreation dizisinde Ron Swanson karakterinin asla taviz vermediği hayat felsefesinde, insan hayatındaki en gereksiz ve zararlı yiyecek olarak gördüğü grup hangisidir?", q_de: "Welche Nahrungsmittelgruppe verabscheut der Fleischliebhaber Ron Swanson in Parks and Recreation als absolut unnötig?", o_tr: ["Sebzeler ve salatalar", "Az pişmiş biftekler", "Tuzlu pastırmalar", "Filtre kahveler"], o_de: ["Gemüse und Salate", "Halbgares Steak", "Salziger Speck", "Filterkaffee"] },
+            { c: "Mitoloji Efsaneleri", l: 9, a: 0, q_tr: "Efsaneye göre, bebekken annesi su perisi Thetis tarafından ölümsüzlük nehri Styks sularına daldırılan ancak topuğundan tutulduğu için sadece oradan vurulursa ölebilecek olan antik kahraman kimdir?", q_de: "Welcher Held der griechischen Sage war unverwundbar, außer an der Ferse, an der seine Mutter ihn hielt, als sie ihn in den Styx tauchte?", o_tr: ["Aşil", "Hektor", "Odysseus", "Herkül"], o_de: ["Achilles", "Hektor", "Odysseus", "Herkules"] },
+            { c: "Müzik & Sanat", l: 9, a: 1, q_tr: "Sertab Erener tarafından seslendirilen ve 2003 Eurovision Şarkı Yarışmasında Türkiye'ye tarihindeki ilk birinciliği getiren o efsanevi İngilizce parçasının adı nedir?", q_de: "Mit welchem Song gewann Sertab Erener 2003 den Eurovision Song Contest für die Türkei?", o_tr: ["For Real", "Everyway That I Can", "Rimi Rimi Ley", "Superstar"], o_de: ["For Real", "Everyway That I Can", "Rimi Rimi Ley", "Superstar"] },
 
-            // ==================== SEVİYE 4 (13 Soru - Bildiğin ZOR SEVİYE Başlıyor & Müzikler) ====================
-            { c: "Müzik & Sanat", l: 4, audioUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e5/Vivaldi_-_Spring_-_mvt_1_Allegro_-_John_Harrison_violin.ogg", a: 0, q_tr: "Dinlediğiniz, keman sesleriyle baharın gelişini müjdeleyen 'Dört Mevsim' konçertolarının en ünlüsü kime aittir?", q_de: "Von welchem italienischen Komponisten stammt dieses weltberühmte Violinkonzert 'Der Frühling' aus dem Zyklus 'Die vier Jahreszeiten'?", o_tr: ["Antonio Vivaldi", "Giuseppe Verdi", "Giacomo Puccini", "Gioachino Rossini"], o_de: ["Antonio Vivaldi", "Giuseppe Verdi", "Giacomo Puccini", "Gioachino Rossini"] },
-            { c: "Müzik & Sanat", l: 4, audioUrl: "https://upload.wikimedia.org/wikipedia/commons/2/24/Mozart_-_Eine_kleine_Nachtmusik_-_1._Allegro.ogg", a: 0, q_tr: "Dinlediğiniz, klasik müziğin en tanınan ve en neşeli melodilerinden biri olan 'Eine kleine Nachtmusik' (Küçük Bir Gece Müziği) kime aittir?", q_de: "Wer komponierte diese weltbekannte Serenade 'Eine kleine Nachtmusik', die zu den populärsten Werken der Klassik gehört?", o_tr: ["Wolfgang Amadeus Mozart", "Joseph Haydn", "Franz Schubert", "Johannes Brahms"], o_de: ["Wolfgang Amadeus Mozart", "Joseph Haydn", "Franz Schubert", "Johannes Brahms"] },
-            { c: "Biyoloji & Bilim", l: 4, a: 1, q_tr: "Dünyada memeli hayvanlar arasında uçabilen TEK hayvan türü hangisidir?", q_de: "Welches ist das EINZIGE Säugetier der Welt, das zum aktiven Flug fähig ist?", o_tr: ["Uçan Sincap", "Yarasa", "Penguen", "Şahin"], o_de: ["Flughörnchen", "Fledermaus", "Pinguin", "Falke"] },
-            { c: "Coğrafya", l: 4, a: 2, q_tr: "Güney Amerika kıtasında yer alan ve dünyanın en yüksek şelalesi olan 'Angel Şelalesi' hangi ülkededir?", q_de: "In welchem südamerikanischen Land befindet sich der 'Salto Ángel', der höchste freifallende Wasserfall der Erde?", o_tr: ["Brezilya", "Şili", "Venezuela", "Arjantin"], o_de: ["Brasilien", "Chile", "Venezuela", "Argentinien"] },
-            { c: "Edebiyat & Yazarlar", l: 4, a: 0, q_tr: "Fransız yazar Antoine de Saint-Exupéry'nin yazdığı; B-612 asteroidinden gelen ve bir gül ile bir tilkiyle dost olan kahramanın anlatıldığı kült eser hangisidir?", q_de: "Wie heißt das Kultwerk von Antoine de Saint-Exupéry über einen kleinen Jungen vom Asteroiden B-612, der sich mit einer Rose und einem Fuchs anfreundet?", o_tr: ["Küçük Prens", "Şeker Portakalı", "Alice Harikalar Diyarında", "Martı Jonathan Livingston"], o_de: ["Der kleine Prinz", "Mein kleiner Orangenbaum", "Alice im Wunderland", "Die Möwe Jonathan"] },
-            { c: "Tarih & Medeniyet", l: 4, a: 0, q_tr: "1969 yılında Apollo 11 görevinde Ay'a ayak basan astronotlar Neil Armstrong ve Buzz Aldrin'in Ay yüzeyinde yedikleri ilk besin hangisidir?", q_de: "Was war die erste Nahrung, die die Astronauten Neil Armstrong und Buzz Aldrin 1969 auf der Mondoberfläche verzehrten?", o_tr: ["Şeftali ve Bacon", "Elma Püresi ve Kurutulmuş Dana Eti", "Çikolata ve Biskuvi", "Kurutulmuş Tavuk ve Bezelye"], o_de: ["Pfirsiche und Speck", "Apfelmus und Dörrfleisch", "Schokolade und Kekse", "Getrocknetes Hühnchen und Erbsen"] },
-            { c: "Sinema & TV", l: 4, a: 0, q_tr: "Sinema tarihindeki ilk animasyon uzun metrajlı film olarak bilinen 1937 yapımı Disney şaheseri hangisidir?", q_de: "Welcher Disney-Meisterwerk aus dem Jahr 1937 gilt als der weltweit erste abendfüllende Zeichentrickfilm der Kinogeschichte?", o_tr: ["Pamuk Prenses ve Yedi Cüceler", "Pinokyo", "Fantasia", "Bambi"], o_de: ["Schneewittchen und die sieben Zwerge", "Pinocchio", "Fantasia", "Bambi"] },
-            { c: "Coğrafya", l: 4, a: 0, q_tr: "Dünyanın en yüksek zirvesi olan Everest Dağı hangi sıradağların üzerinde yer alır?", q_de: "In welchem Gebirge befindet sich der Mount Everest, der höchste Berg der Erde?", o_tr: ["Himalayalar", "Alpler", "And Dağları", "Kayalık Dağları"], o_de: ["Himalaya", "Alpen", "Anden", "Rocky Mountains"] },
-            { c: "Sinema & TV", l: 4, a: 0, q_tr: "Efsanevi casusluk serisinde '007' kod adıyla tanınan İngiliz gizli servisi ajanı James Bond karakterinin yaratıcısı olan yazar kimdir?", q_de: "Welcher britische Autor ist der Schöpfer der legendären Geheimagentenfigur James Bond mit der Codenummer 007?", o_tr: ["Ian Fleming", "Arthur Conan Doyle", "Agatha Christie", "John le Carré"], o_de: ["Ian Fleming", "Arthur Conan Doyle", "Agatha Christie", "John le Carré"] },
-            { c: "Tarih & Medeniyet", l: 4, a: 0, q_tr: "1789 yılında mutlak monarşinin yıkılmasıyla sonuçlanan ve tüm dünyada milliyetçilik akımını başlatan büyük devrim hangisidir?", q_de: "Welche große Revolution begann im Jahr 1789 und veränderte Europas politische Landschaft radikal?", o_tr: ["Fransız İhtilali", "Bolşevik Devrimi", "Sanayi Devrimi", "Amerikan Bağımsızlık Savaşı"], o_de: ["Französische Revolution", "Russische Revolution", "Industrielle Revolution", "Amerikanischer Unabhängigkeitskrieg"] },
-            { c: "Coğrafya", l: 4, a: 3, q_tr: "Avustralya kıtasının ve ülkesinin resmi başkenti hangi şehirdir?", q_de: "Wie heißt die offizielle Hauptstadt von Australien?", o_tr: ["Sydney", "Melbourne", "Brisbane", "Canberra"], o_de: ["Sydney", "Melbourne", "Brisbane", "Canberra"] },
-            { c: "Spor & Oyun", l: 4, a: 1, q_tr: "Boks maçlarının yapıldığı etrafı iplerle çevrili kare biçimindeki alana ne ad verilir?", q_de: "Wie nennt man die quadratische, von Seilen umgebene Kampffläche beim Boxen?", o_tr: ["Kort", "Ring", "Pist", "Tatami"], o_de: ["Court", "Ring", "Piste", "Tatami"] },
-            { c: "Genel Kültür", l: 4, a: 2, q_tr: "Kahvenin uyarıcı etkisini ilk keşfedenlerin Etiyopya'da hangi hayvanı otlatan çobanlar olduğu efsanesi anlatılır?", q_de: "Welche Weidetiere sollen laut der Legende in Äthiopien die belebende Wirkung von Kaffeebohnen zuerst entdeckt haben?", o_tr: ["Koyunlar", "İnekler", "Keçiler", "Develer"], o_de: ["Schafe", "Kühe", "Ziegen", "Kamele"] },
-
-            // ==================== SEVİYE 5 (13 Soru - Talep edilenler ve zorlaşan orta tur) ====================
-            { c: "Genel Kültür", l: 5, a: 1, q_tr: "'Dost acı söyler.' atasözünde anlatılmak istenen nedir?", q_de: "Was bedeutet das Sprichwort 'Wahre Freunde sagen auch unangenehme Wahrheiten'?", o_tr: ["Dostlar kırıcı olur", "Gerçek dost, hoş olmasa da doğruyu söyler", "Dostlarla tartışmamak gerekir", "Acı sözler unutulmaz"], o_de: ["Freunde sind verletzend", "Ein wahrer Freund sagt die Wahrheit, auch wenn sie wehtut", "Man sollte mit Freunden nicht streiten", "Harte Worte bleiben unvergessen"] },
-            { c: "Genel Kültür", l: 5, a: 1, q_tr: "'İpe un sermek' deyimi ne anlama gelir?", q_de: "Was bedeutet die türkische Redewendung 'Mehl auf die Leine streuen' am ehesten?", o_tr: ["Çalışkan olmak", "Bahane üretmek", "Çok yorulmak", "Plan yapmak"], o_de: ["Fleißig sein", "Ausreden erfinden / sich drücken", "Sehr erschöpft sein", "Einen Plan machen"] },
-            { c: "Matematik & Mantık", l: 5, a: 1, q_tr: "Bir üçgenin iç açılarının toplamı kaç derecedir?", q_de: "Wie viel Grad beträgt die Winkelsumme in einem ebenen Dreieck?", o_tr: ["90", "180", "270", "360"], o_de: ["90", "180", "270", "360"] },
-            { c: "Tarih & Medeniyet", l: 5, a: 1, q_tr: "Hangisi Türkiye Cumhuriyeti'nin kurucusudur?", q_de: "Wer ist der Gründer der Republik Türkei?", o_tr: ["İsmet İnönü", "Mustafa Kemal Atatürk", "Kazım Karabekir", "Fevzi Çakmak"], o_de: ["İsmet İnönü", "Mustafa Kemal Atatürk", "Kazım Karabekir", "Fevzi Çakmak"] },
-            { c: "Coğrafya", l: 5, a: 2, q_tr: "Hangisi dünyanın en büyük okyanusudur?", q_de: "Welcher ist der größte Ozean der Erde?", o_tr: ["Atlas Okyanusu", "Hint Okyanusu", "Büyük Okyanus", "Kuzey Buz Denizi"], o_de: ["Atlantischer Ozean", "Indischer Ozean", "Pazifischer Ozean", "Arktischer Ozean"] },
-            { c: "Biyoloji & Bilim", l: 5, a: 0, q_tr: "Aşağıdakilerden hangisi hem gezegen hem de bir Roma tanrısının adını taşır?", q_de: "Welcher Himmelskörper trägt den Namen eines römischen Gottes?", o_tr: ["Mars", "Ay", "Dünya", "Güneş"], o_de: ["Mars", "Mond", "Erde", "Sonne"] },
-            { c: "Biyoloji & Bilim", l: 5, a: 1, q_tr: "Arkeolojik ve genetik bulgulara göre, insanlık tarihinde evcilleştirilen İLK kuş türü hangisidir?", q_de: "Welche Vogelart war laut archäologischen und genetischen Funden die erste, die in der Menschheitsgeschichte domestiziert wurde?", o_tr: ["Kaz / Ördek giller", "Tavuk", "Güvercin", "Doğan / Şahin"], o_de: ["Gänse- und Entenvögel", "Huhn", "Taube", "Falke / Habicht"] },
-            { c: "Tarih & Medeniyet", l: 5, a: 3, q_tr: "10. yüzyılda İran'da topuklu ayakkabılar ilk kez kimler ve hangi amaçla icat edilerek kullanılmıştır?", q_de: "Für wen und zu welchem Zweck wurden hochhackige Schuhe im 10. Jahrhundert in Persien ursprünglich erfunden?", o_tr: ["Saray kadınlarının boyunu uzun göstermek için", "Çamurlu sokaklarda yürüyen tüccarlar için", "Kraliyet dansçılarının sahnede dönmesi için", "At üzerindeki okçu askerlerin ayaklarını üzengiye sabitlemek için"], o_de: ["Um Hofdamen größer wirken zu lassen", "Für Händler auf schlammigen Straßen", "Für königliche Tänzer", "Für berittene Bogenschützen zur Fixierung im Steigbügel"] },
-            { c: "Tarih & Medeniyet", l: 5, a: 1, q_tr: "Napolyon Bonapart'ın 1815 yılında kesin olarak yenilip sürgüne gönderildiği, Avrupa tarihini değiştiren meşhur savaş hangisidir?", q_de: "In welcher berühmten Schlacht von 1815 erlitt Napoleon Bonaparte seine endgültige Niederlage, was Europas Geschichte nachhaltig veränderte?", o_tr: ["Austerlitz Savaşı", "Waterloo Savaşı", "Trafalgar Savaşı", "Leipzig Savaşı"], o_de: ["Schlacht von Austerlitz", "Schlacht bei Waterloo", "Schlacht von Trafalgar", "Völkerschlacht bei Leipzig"] },
-            { c: "Sinema & TV", l: 5, a: 2, q_tr: "Alfred Hitchcock'un sinema tarihinde devrim yaratan 1960 yapımı 'Psycho' filmindeki efsanevi duş cinayeti sahnesinde kan efekti vermek için ne kullanılmıştır?", q_de: "Was wurde in Alfred Hitchcocks Klassiker 'Psycho' (1960) in der berühmten Duschszene verwendet, um im Schwarz-Weiß-Film realistisches Blut darzustellen?", o_tr: ["Kırmızı gıda boyası", "Çilek şurubu", "Çikolata şurubu", "Domates salçası"], o_de: ["Rote Lebensmittelfarbe", "Erdbeersirup", "Schokosirup", "Tomatenmark"] },
-            { c: "Tarih & Medeniyet", l: 5, a: 0, q_tr: "Antik Mısır'da firavunların mezarlarına eşyalarıyla gömülmesi ve 1922'de krallardan hangisinin mezarının hiç soyulmamış, tamamen dokunulmamış halde Howard Carter tarafından bulunması dünyada büyük yankı uyandırmıştır?", q_de: "Wessen altägyptisches Königsgrab wurde 1922 von Howard Carter im Tal der Könige als einziges völlig ungeplündert und fast unversehrt entdeckt?", o_tr: ["Tutankhamun", "II. Ramses", "III. Thutmose", "Akhenaton"], o_de: ["Tutanchamun", "Ramses II.", "Thutmosis III.", "Echnaton"] },
-            { c: "Tarih & Medeniyet", l: 5, a: 0, q_tr: "Antik Dünyanın Yedi Harikası'ndan günümüze kadar büyük ölçüde sağlam kalarak ulaşmayı başaran tek eser hangisidir?", q_de: "Welches der Sieben Weltwunder der Antike ist als einziges bis heute weitgehend erhalten geblieben?", o_tr: ["Keops Piramidi", "Babil'in Asma Bahçeleri", "Rodos Heykeli", "İskenderiye Feneri"], o_de: ["Cheops-Pyramide", "Hängende Gärten der Semiramis", "Koloss von Rhodos", "Leuchtturm von Alexandria"] },
-            { c: "Biyoloji & Bilim", l: 5, a: 0, q_tr: "Periyodik tablodaki kimyasal sembolü 'Au' olan ve tarih boyunca zenginliğin en büyük sembolü sayılan değerli element hangisidir?", q_de: "Welches wertvolle Edelmetall hat im Periodensystem der Elemente das chemische Symbol 'Au'?", o_tr: ["Altın", "Gümüş", "Bakır", "Platin"], o_de: ["Gold", "Silber", "Kupfer", "Platin"] },
-
-            // ==================== SEVİYE 6 (13 Soru - HAVALI ORTA ALAN: Şaşırtıcı Bilgiler) ====================
-            { c: "Tarih & Medeniyet", l: 6, a: 0, q_tr: "Tarihte korsanların genellikle tek gözlerine siyah göz bandı takmalarının asıl ve en yaygın teknik sebebi neydi?", q_de: "Was war historisch gesehen der häufigste technische Grund, warum Piraten eine Augenklappe trugen?", o_tr: ["Bir gözlerini karanlığa alışık tutarak güverteden alt kata indiklerinde anında net görebilmek için", "Savaşlarda gözlerini çok sık kaybettikleri için", "Düşman gemilerini korkutup psikolojik üstünlük kurmak için", "Güneşin denizden yansıyan parlamasından korunmak için"], o_de: ["Um ein Auge an die Dunkelheit zu gewöhnen, um unter Deck sofort scharf zu sehen", "Weil sie im Kampf häufig ein Auge verloren", "Um feindliche Schiffe einzuschüchtern", "Um sich vor der Sonnenreflexion zu schützen"] },
-            { c: "Biyoloji & Bilim", l: 6, a: 1, q_tr: "Aşağıdaki hayvanlardan hangisinin parmak izleri insan parmak izine o kadar kusursuz benzer ki, suç mahallinde polisleri ve mikroskopları yanıltabilir?", q_de: "Welches Tier hat Fingerabdrücke, die denen des Menschen so extrem ähnlich sind, dass sie an Tatorten Kriminaltechniker verwirren können?", o_tr: ["Şempanze", "Koala", "Rakun", "Tembel Hayvan"], o_de: ["Schimpanse", "Koala", "Waschbär", "Faultier"] },
-            { c: "Edebiyat & Yazarlar", l: 6, a: 0, q_tr: "George Orwell'ın distopik şaheseri '1984' romanında her şeyi izleyen ve denetleyen otoriter figürün adı nedir?", q_de: "Wie heißt die allgegenwärtige Kontrollfigur in George Orwells dystopischem Roman '1984'?", o_tr: ["Büyük Birader", "Okyanusya Lideri", "Komutan Emmanuel", "Düşünce Polisi Şefi"], o_de: ["Großer Bruder", "Führer Ozeaniens", "Kommandant Emmanuel", "Chef der Gedankenpolizei"] },
-            { c: "Spor & Oyun", l: 6, a: 0, q_tr: "Olimpiyat bayrağı üzerinde birbirine geçmiş halde bulunan 5 renkli halkanın temel anlamı nedir?", q_de: "Was symbolisieren die fünf ineinander verschlungenen Ringe auf der Olympischen Flagge?", o_tr: ["Beş kıtanın kardeşliği ve birliği", "En popüler beş spor dalı", "Olimpiyatları başlatan beş ülke", "İnsanlığın beş temel erdemi"], o_de: ["Die Einheit der fünf Kontinente", "Die fünf beliebtesten Sportarten", "Die fünf Gründerländer", "Die fünf Tugenden der Menschheit"] },
-            { c: "Coğrafya", l: 6, a: 2, q_tr: "Dünyanın en derin gölü olarak bilinen Baykal Gölü hangi ülkededir?", q_de: "In welchem Land befindet sich der Baikalsee, der tiefste und älteste Süßwassersee der Erde?", o_tr: ["Kanada", "ABD", "Rusya", "Çin"], o_de: ["Kanada", "USA", "Russland", "China"] },
-            { c: "Biyoloji & Bilim", l: 6, a: 3, q_tr: "İnsan vücudunda insülin hormonunu salgılayarak kan şekerini düzenleyen organ hangisidir?", q_de: "Welches Organ im menschlichen Körper produziert Insulin zur Regulierung des Blutzuckerspiegels?", o_tr: ["Karaciğer", "Böbrekler", "Dalak", "Pankreas"], o_de: ["Leber", "Nieren", "Milz", "Bauchspeicheldrüse"] },
-            { c: "Sinema & TV", l: 6, a: 1, q_tr: "1994 yapımı 'Esaretin Bedeli' filminde Andy Dufresne karakterini kim canlandırmıştır?", q_de: "Welcher Schauspieler spielte die Hauptrolle des Andy Dufresne im Film 'Die Verurteilten' (1994)?", o_tr: ["Morgan Freeman", "Tim Robbins", "Tom Hanks", "Brad Pitt"], o_de: ["Morgan Freeman", "Tim Robbins", "Tom Hanks", "Brad Pitt"] },
-            { c: "Matematik & Mantık", l: 6, a: 0, q_tr: "1'den başlayıp kendisinden önceki iki sayının toplamı şeklinde devam eden (0, 1, 1, 2, 3, 5, 8...) ünlü sayı dizisi kime aittir?", q_de: "Wie heißt die berühmte Zahlenfolge (0, 1, 1, 2, 3, 5, 8...), bei der jede Zahl die Summe der beiden vorherigen ist?", o_tr: ["Fibonacci Dizisi", "Euler Dizisi", "Gauss Dizisi", "Pascal Dizisi"], o_de: ["Fibonacci-Folge", "Euler-Folge", "Gauß-Folge", "Pascal-Folge"] },
-            { c: "Genel Kültür", l: 6, a: 2, q_tr: "İçinde yaşadığımız dijital çağda kullandığımız standart 'QWERTY' klavye dizilimi 1870'lerde ilk kez ne için ve neden bu tuhaf sırayla tasarlanmıştır?", q_de: "Warum wurde das QWERTY-Tastaturlayout in den 1870er Jahren in dieser scheinbar unlogischen Anordnung erfunden?", o_tr: ["On parmakla en hızlı yazımı sağlamak için", "Askeri şifreli mesajları gizlemek için", "Mekanik daktilo kolları çok hızlı yazıldığında birbirine takılıp sıkışmasın diye harfleri uzaklaştırıp yavaşlatmak için", "Telgraf telindeki mors sinyallerine uyması için"], o_de: ["Um das schnellstmögliche Zehn-Finger-Schreiben zu ermöglichen", "Um militärische Codes zu verschleiern", "Um häufige Buchstaben zu trennen und das Verklemmen mechanischer Schreibmaschinenhebel zu verhindern", "Um sich an Telegrafen-Morsecodes anzupassen"] },
-            { c: "Tarih & Medeniyet", l: 6, a: 0, q_tr: "Roma İmparatoru Caligula'nın ordusuna deniz tanrısı Neptün'e savaş açtığını ilan ettikten sonra askerlerine ganimet olarak ne toplamalarını emrettiği anlatılır?", q_de: "Was befehligte der römische Kaiser Caligula seinen Soldaten als 'Kriegsbeute' zu sammeln, nachdem er dem Meeresgott Neptun den Krieg erklärt hatte?", o_tr: ["Plajdaki deniz kabuklarını ve midyeleri", "Denizdeki tüm balık ağlarını", "Kıyıdaki kum tanelerini", "Düşman gemilerinin yelkenlerini"], o_de: ["Muscheln am Strand", "Alle Fischnetze im Meer", "Sandkörner am Ufer", "Die Segel feindlicher Schiffe"] },
-            { c: "Genel Kültür", l: 6, a: 1, q_tr: "İngilizcede 'Grip' anlamına gelen 'Influenza' kelimesinin kökeni olan İtalyanca 'influenza' ne anlama gelmektedir?", q_de: "Was bedeutet das italienische Wort 'influenza', von dem sich der medizinische Begriff für die Grippe ableitet, ursprünglich?", o_tr: ["Soğuk hava dalgası", "Yıldızların ve gök cisimlerinin insan üzerindeki gizemli 'etkisi'", "Kötü ruhların dokunuşu", "Akciğer iltihabı"], o_de: ["Kältewelle", "Der geheimnisvolle 'Einfluss' von Sternen und Himmelskörpern", "Die Berührung böser Geister", "Lungenentzündung"] },
-            { c: "Coğrafya", l: 6, a: 3, q_tr: "Dünyada aynı anda hem Güney, hem Kuzey, hem Doğu, hem de Batı yarımkürede toprakları olan TEK kıta hangisidir?", q_de: "Welcher ist der EINZIGE Kontinent der Erde, der Gebiete in allen vier Hemisphären (Nord, Süd, Ost und West) besitzt?", o_tr: ["Asya", "Avrupa", "Okyanusya Adaları", "Afrika Kıtası"], o_de: ["Asien", "Europa", "Ozeanien", "Afrika"] },
-            { c: "Matematik & Mantık", l: 6, a: 0, q_tr: "Roma rakamlarında 'M', 'D', 'C' ve 'L' harfleri sırasıyla hangi sayısal değerleri temsil eder?", q_de: "Welche Zahlenwerte repräsentieren die römischen Ziffern 'M', 'D', 'C' und 'L' der Reihe nach?", o_tr: ["1000, 500, 100, 50", "500, 100, 50, 10", "1000, 100, 50, 5", "5000, 1000, 500, 100"], o_de: ["1000, 500, 100, 50", "500, 100, 50, 10", "1000, 100, 50, 5", "5000, 1000, 500, 100"] },
-
-            // ==================== SEVİYE 7 (13 Soru - Talep edilen zor ve havalı sorular) ====================
-            { c: "Matematik & Mantık", l: 7, a: 2, q_tr: "Hangisi asal sayı değildir?", q_de: "Welche der folgenden Zahlen ist KEINE Primzahl?", o_tr: ["31", "41", "51", "61"], o_de: ["31", "41", "51", "61"] },
-            { c: "Biyoloji & Bilim", l: 7, a: 2, q_tr: "Hangisi periyodik tabloda bir soy gazdır?", q_de: "Welches Element ist ein Edelgas im Periodensystem?", o_tr: ["Azot", "Oksijen", "Helyum", "Klor"], o_de: ["Stickstoff", "Sauerstoff", "Helium", "Chlor"] },
-            { c: "Tarih & Medeniyet", l: 7, a: 1, q_tr: "Osmanlı Devleti'nin ilk başkenti hangisidir?", q_de: "Welche Stadt war die erste Hauptstadt des Osmanischen Reiches?", o_tr: ["Bursa", "Söğüt", "Edirne", "İstanbul"], o_de: ["Bursa", "Söğüt", "Edirne", "Istanbul"] },
-            { c: "Coğrafya", l: 7, a: 0, q_tr: "1869 yılında açılarak Akdeniz ile Kızıldeniz'i birbirine bağlayan ve dünya deniz ticaretini kökünden değiştiren yapay kanal hangisidir?", q_de: "Welcher 1869 eröffnete künstliche Wasserweg verbindet das Mittelmeer mit dem Roten Meer und veränderte den Welthandel radikal?", o_tr: ["Süveyş Kanalı", "Panama Kanalı", "Kiel Kanalı", "Korint Kanalı"], o_de: ["Suezkanal", "Panamakanal", "Nord-Ostsee-Kanal", "Kanal von Korinth"] },
-            { c: "Biyoloji & Bilim", l: 7, a: 0, q_tr: "1928 yılında küf mantarından tesadüfen 'Penisilin'i keşfederek antibiyotik çağını başlatan İskoç bilim insanı kimdir?", q_de: "Welcher schottische Wissenschaftler entdeckte 1928 zufällig das Penicillin aus Schimmelpilzen und läutete damit das Zeitalter der Antibiotika ein?", o_tr: ["Alexander Fleming", "Louis Pasteur", "Robert Koch", "Marie Curie"], o_de: ["Alexander Fleming", "Louis Pasteur", "Robert Koch", "Marie Curie"] },
-            { c: "Edebiyat & Yazarlar", l: 7, a: 0, q_tr: "İspanyol yazar Cervantes'in kaleme aldığı, yel değirmenlerine karşı savaşan kahramanıyla tanınan modern edebiyatın ilk romanı sayılan eser hangisidir?", q_de: "Wie heißt der weltberühmte Roman von Cervantes über einen Ritter, der gegen Windmühlen kämpft, und der als erster moderner Roman der Weltliteratur gilt?", o_tr: ["Don Kişot", "Sefiller", "Monte Kristo Kontu", "Gulliver'in Gezileri"], o_de: ["Don Quijote", "Die Elenden", "Der Graf von Monte Christo", "Gullivers Reisen"] },
-            { c: "Müzik & Sanat", l: 7, a: 0, q_tr: "1911 yılında Louvre Müzesi'nden çalınan ve bu hırsızlık olayı sayesinde dünya çapında bir fenomene dönüşen ünlü tablo hangisidir?", q_de: "Welches berühmte Gemälde wurde 1911 aus dem Louvre gestohlen und erst durch diesen spektakulären Diebstahl zu einem weltweiten Mythos?", o_tr: ["Mona Lisa", "İnci Küpeli Kız", "Venüs'ün Doğuşu", "Son Akşam Yemeği"], o_de: ["Mona Lisa", "Das Mädchen mit dem Perlengehänge", "Die Geburt der Venus", "Das Abendmahl"] },
-            { c: "Genel Kültür", l: 7, a: 0, q_tr: "Koltuk, kanepe veya sandalye gibi mobilyaların döşemesinde sıkça kullanılan 'Chesterfield' aslında ilk kez neyi tanımlamak için türetilmiş bir kelimedir?", q_de: "Wofür wurde das Wort 'Chesterfield', das wir heute vor allem von Ledersofas kennen, ursprünglich verwendet?", o_tr: ["Düğmeli ve derin kapitone bir deri palto", "İngiliz Kraliyet At Arabası", "Bir tür tütün ve pipo çeşidi", "Erkek kol saati kordonu"], o_de: ["Ein geknöpfter und tief gesteppter Ledermantel", "Eine britische königliche Kutsche", "Eine Tabak- und Pfeifenart", "Ein Herren-Armbanduhrarmband"] },
-            { c: "Tarih & Medeniyet", l: 7, a: 1, q_tr: "Tarihte bilinen ilk yazılı antlaşma olan 'Kadeş Antlaşması' hangi iki büyük antik imparatorluk arasında imzalanmıştır?", q_de: "Zwischen welchen zwei Großmächten der Antike wurde der Vertrag von Kadesch, der älteste erhaltene Friedensvertrag der Welt, geschlossen?", o_tr: ["Asurlar ve Babiller", "Hititler ve Mısırlılar", "Sümerler ve Akadlar", "Romalılar ve Kartacalılar"], o_de: ["Assyrer und Babylonier", "Hethiter und Ägypter", "Sumerer und Akkader", "Römer und Karthager"] },
-            { c: "Biyoloji & Bilim", l: 7, a: 2, q_tr: "Kuduz aşısını bularak milyonlarca insanın hayatını kurtaran Fransız kimyager ve mikrobiyolog kimdir?", q_de: "Welcher französische Chemiker und Mikrobiologe entwickelte den ersten Impfstoff gegen die Tollwut?", o_tr: ["Edward Jenner", "Robert Koch", "Louis Pasteur", "Alexander Fleming"], o_de: ["Edward Jenner", "Robert Koch", "Louis Pasteur", "Alexander Fleming"] },
-            { c: "Sinema & TV", l: 7, a: 0, q_tr: "'Matrix' filminde Morpheus, Neo'ya hangi renkte iki hap sunarak ona gerçeği görme şansı vermiştir?", q_de: "Welche zwei Pillenfarben bietet Morpheus im Film 'Matrix' Neo an, um ihm die Wahl zwischen Wahrheit und Illusion zu lassen?", o_tr: ["Kırmızı ve Mavi", "Sarı ve Yeşil", "Siyah ve Beyaz", "Turuncu ve Mor"], o_de: ["Rot und Blau", "Gelb und Grün", "Schwarz und Weiß", "Orange und Violett"] },
-            { c: "Spor & Oyun", l: 7, a: 3, q_tr: "Olimpiyat Oyunları tarihinde üst üste 4 farklı olimpiyatta aynı bireysel dalda altın madalya kazanan efsanevi Amerikalı atlet kimdir?", q_de: "Welchem US-amerikanischen Leichtathleten gelang es als erstem, bei vier Olympischen Spielen in Folge dieselbe Disziplin zu gewinnen?", o_tr: ["Usain Bolt", "Jesse Owens", "Michael Johnson", "Carl Lewis"], o_de: ["Usain Bolt", "Jesse Owens", "Michael Johnson", "Carl Lewis"] },
-            { c: "Biyoloji & Bilim", l: 7, a: 1, q_tr: "17. yüzyıldan önce Avrupa'da yetiştirilen havuçlar bugün bildiğimiz turuncu renkte değildi; peki orijinal havuçlar çoğunlukla hangi renkti?", q_de: "Welche Farbe hatten Karotten in Europa vor dem 17. Jahrhundert, bevor niederländische Züchter die heute übliche orange Sorte populär machten?", o_tr: ["Kırmızı ve Mavi", "Mor ve Sarı", "Siyah ve Beyaz", "Parlak Yeşil"], o_de: ["Rot und Blau", "Lila und Gelb", "Schwarz und Weiß", "Hellgrün"] },
-
-            // ==================== SEVİYE 8 (13 Soru - Talep edilenler ve zor tur) ====================
-            { c: "Edebiyat & Yazarlar", l: 8, a: 1, q_tr: "Hangisi Nobel Edebiyat Ödülü kazanmış bir Türk yazardır?", q_de: "Welcher türkische Schriftsteller hat den Nobelpreis für Literatur gewonnen?", o_tr: ["Yaşar Kemal", "Orhan Pamuk", "Sabahattin Ali", "Aziz Nesin"], o_de: ["Yaşar Kemal", "Orhan Pamuk", "Sabahattin Ali", "Aziz Nesin"] },
-            { c: "Coğrafya", l: 8, a: 3, q_tr: "Aşağıdaki şehirlerden hangisi Ege Denizi'ne kıyısı olmayan bir ildir?", q_de: "Welche der folgenden türkischen Provinzen hat KEINE Küste am Ägäischen Meer?", o_tr: ["İzmir", "Aydın", "Muğla", "Denizli"], o_de: ["İzmir", "Aydın", "Muğla", "Denizli"] },
-            { c: "Tarih & Medeniyet", l: 8, a: 2, q_tr: "Dünyanın en uzun süren savaşı olarak bilinen ve 1651 ile 1986 yılları arasında tam 335 yıl süren 'Hollanda - Scilly Adaları Savaşı'nın en şaşırtıcı özelliği neydi?", q_de: "Was war das Bemerkenswerteste am Dreihundertfünfunddreißigjährigen Krieg (1651–1986) zwischen den Niederlanden und den Scilly-Inseln?", o_tr: ["Sadece kadınların savaşmış olması", "Askerlerin sadece tahta kılıç kullanması", "335 yıl boyunca tek bir kurşun bile atılmadan ve tek bir insan bile ölmeden barışla bitmesi", "Barış antlaşmasının su altında imzalanması"], o_de: ["Dass nur Frauen kämpften", "Dass nur Holzschwerter benutzt wurden", "Dass in 335 Jahren kein einziger Schuss fiel und kein einziger Mensch starb", "Dass der Frieden unter Wasser unterzeichnet wurde"] },
-            { c: "Biyoloji & Bilim", l: 8, a: 2, q_tr: "Ahtapotların vücudunda kaç tane kalp ve kaç tane beyin bulunur?", q_de: "Wie viele Herzen und wie viele Gehirne besitzt ein Oktopus?", o_tr: ["1 kalp, 1 beyin", "2 kalp, 3 beyin", "3 kalp, 9 beyin", "4 kalp, 2 beyin"], o_de: ["1 Herz, 1 Gehirn", "2 Herzen, 3 Gehirne", "3 Herzen, 9 Gehirne", "4 Herzen, 2 Gehirne"] },
-            { c: "Tarih & Medeniyet", l: 8, a: 1, q_tr: "Osmanlı İmparatorluğu'nda 18. yüzyılda 'Lale Devri' olarak anılan barış ve sefa dönemini sona erdiren ayaklanma hangisidir?", q_de: "Welcher Aufstand beendete im 18. Jahrhundert im Osmanischen Reich die friedliche und prunkvolle 'Tulpenära'?", o_tr: ["Kabakçı Mustafa İsyanı", "Patrona Halil İsyanı", "Şeyh Bedreddin İsyanı", "Babazai İsyanı"], o_de: ["Kabakçı-Mustafa-Aufstand", "Patrona-Halil-Aufstand", "Scheich-Bedreddin-Aufstand", "Babazai-Aufstand"] },
-            { c: "Edebiyat & Yazarlar", l: 8, a: 0, q_tr: "Mary Shelley'nin 1818 yılında yazdığı 'Frankenstein' romanının aslında tam ve resmi adı nedir?", q_de: "Wie lautet der vollständige und offizielle Originaltitel von Mary Shelleys Roman 'Frankenstein' aus dem Jahr 1818?", o_tr: ["Frankenstein: Ya da Modern Prometheus", "Frankenstein: Cenevreli Canavar", "Frankenstein ve Ölümsüzlük İksiri", "Frankenstein: Bir Bilim İnsanı Kurgusu"], o_de: ["Frankenstein oder Der moderne Prometheus", "Frankenstein: Das Ungeheuer von Genf", "Frankenstein und das Elixier der Unsterblichkeit", "Frankenstein: Die Fiktion eines Wissenschaftlers"] },
-            { c: "Biyoloji & Bilim", l: 8, a: 0, q_tr: "1912 yılında batan efsanevi Titanik gemisinin enkazını 1985 yılında Atlantik Okyanusu'nun tabanında keşfeden ünlü deniz bilimci ve okyanus bilgin kimdir?", q_de: "Welcher berühmte Ozeanograph und Unterwasserarchäologe entdeckte 1985 das Wrack der Titanic auf dem Grund des Atlantischen Ozeans?", o_tr: ["Robert Ballard", "Jacques Cousteau", "James Cameron", "Sylvia Earle"], o_de: ["Robert Ballard", "Jacques Cousteau", "James Cameron", "Sylvia Earle"] },
-            { c: "Edebiyat & Yazarlar", l: 8, a: 0, q_tr: "Albert Camus'nün 'Yabancı' romanında, annesinin cenazesinde bile ağlamayan ve işlediği cinayet sonrası toplumsal ahlaka kayıtsızlığıyla yargılanan başkarakter kimdir?", q_de: "Wie heißt der gleichgültige Protagonist in Albert Camus' Roman 'Der Fremde', der bei der Beerdigung seiner Mutter keine Träne weint?", o_tr: ["Meursault", "Raskolnikov", "Josef K.", "Jean Valjean"], o_de: ["Meursault", "Raskolnikow", "Josef K.", "Jean Valjean"] },
-            { c: "Tarih & Medeniyet", l: 8, a: 0, q_tr: "18. yüzyılda İngiltere'de çıkarılan 'Pencere Vergisi' nedeniyle insanlar vergi ödememek için evlerinde nasıl bir tuhaf yönteme başvurdu?", q_de: "Zu welcher skurrilen Methode griffen die Menschen im England des 18. Jahrhunderts, um der damaligen 'Fenstersteuer' zu entgehen?", o_tr: ["Pencerelerini tuğla ve harçla örerek kapattılar", "Pencerelere cam yerine kağıt gerildiler", "Tüm evleri yer altına inşa etmeye başladılar", "Pencereleri sadece geceleri açtılar"], o_de: ["Sie mauerten ihre Fenster mit Ziegeln und Mörtel zu", "Sie spülten Papier statt Glas in die Fenster", "Sie bauten Häuser nur noch unterirdisch", "Sie öffneten Fenster nur nachts"] },
-            { c: "Biyoloji & Bilim", l: 8, a: 0, q_tr: "Günümüzdeki modern muzların çekirdeksiz ve kolay yenilebilir olmasını sağlayan, neredeyse dünyadaki tüm ticari muzların türetildiği ana muz çeşidi hangisidir?", q_de: "Wie heißt die dominierende Bananensorte, von der heute fast alle kommerziellen, kernlosen und leicht verzehrbaren Bananen weltweit abstammen?", o_tr: ["Cavendish", "Gros Michel", "Lady Finger", "Plantain"], o_de: ["Cavendish", "Gros Michel", "Lady Finger", "Kochbanane (Plantain)"] },
-            { c: "Coğrafya", l: 8, a: 1, q_tr: "Afrika kıtasının en yüksek noktası olan Klimanjaro Dağı hangi ülkenin sınırları içerisinde yer alır?", q_de: "In welchem afrikanischen Staat befindet sich der Kilimandscharo, das höchste Bergmassiv Afrikas?", o_tr: ["Kenya", "Tanzanya", "Etiyopya", "Uganda"], o_de: ["Kenia", "Tansania", "Äthiopien", "Uganda"] },
-            { c: "Sinema & TV", l: 8, a: 2, q_tr: "Sinema tarihinde En İyi Film, En İyi Yönetmen, En İyi Erkek Oyuncu, En İyi Kadın Oyuncu ve En İyi Senaryo olmak üzere 'Beş Büyük' Oscar ödülünün hepsini birden kazanan İLK film hangisidir?", q_de: "Welcher Film gewann 1934 als allererster die 'Big Five' bei den Oscars?", o_tr: ["Rüzgar Gibi Geçti", "Guguk Kuşu", "Bir Gecede Oldu", "Kuzuların Sessizliği"], o_de: ["Vom Winde verweht", "Einer flog über das Kuckucksnest", "Es geschah in einer Nacht", "Das Schweigen der Lämmer"] },
-            { c: "Genel Kültür", l: 8, a: 3, q_tr: "1930'larda icat edilen ve bugün tüm dünyada standart haline gelen 'Monopoly' kutu oyununun orijinalinde, en pahalı mülk olan mavi renkli hane hangisidir?", q_de: "Wie heißt im US-Original des Brettspiels Monopoly das teuerste Grundstück auf dem Spielbrett?", o_tr: ["Park Place", "Fifth Avenue", "Broadway", "Boardwalk"], o_de: ["Park Place", "Fifth Avenue", "Broadway", "Boardwalk (Schlossallee)"] },
-
-            // ==================== SEVİYE 9 (13 Soru - Talep edilenler ve zor tur) ====================
-            { c: "Biyoloji & Bilim", l: 9, a: 1, q_tr: "Hangisi SI birim sisteminde kuvvet birimidir?", q_de: "Welche ist die SI-Einheit für Kraft?", o_tr: ["Joule", "Newton", "Watt", "Pascal"], o_de: ["Joule", "Newton", "Watt", "Pascal"] },
-            { c: "Müzik & Sanat", l: 9, a: 0, q_tr: "Hangisi bir Rönesans sanatçısıdır?", q_de: "Wer der Folgenden ist ein Künstler der Renaissance?", o_tr: ["Leonardo da Vinci", "Isaac Newton", "Albert Einstein", "Nikola Tesla"], o_de: ["Leonardo da Vinci", "Isaac Newton", "Albert Einstein", "Nikola Tesla"] },
-            { c: "Biyoloji & Bilim", l: 9, a: 2, q_tr: "Hangisi bir programlama dili değildir?", q_de: "Welches der folgenden ist KEINE Programmiersprache?", o_tr: ["Python", "Java", "Linux", "C++"], o_de: ["Python", "Java", "Linux", "C++"] },
-            { c: "Matematik & Mantık", l: 9, a: 1, q_tr: "Bir dikdörtgenin köşegenleri birbirini nasıl keser?", q_de: "Wie schneiden sich die Diagonalen eines Rechtecks?", o_tr: ["Dik açıyla", "Ortalarına bölerek", "Paralel olarak", "Hiç kesişmez"], o_de: ["Im rechten Winkel", "Halbieren sich gegenseitig", "Parallel", "Schneiden sich nie"] },
-            { c: "Matematik & Mantık", l: 9, a: 0, q_tr: "Sıfır rakamını modern matematik dünyasına kazandıran ve bugünkü onluk sayma sisteminin Avrupa'ya yayılmasını sağlayan 9. yüzyıl İslam alimi kimdir?", q_de: "Welcher bedeutende Gelehrte des 9. Jahrhunderts führte die Zahl Null in die Mathematik ein und gilt als Vater der Algebra?", o_tr: ["Harezmi", "İbn-i Sina", "Farabi", "Biruni"], o_de: ["Al-Chwarismi", "Ibn Sina", "Al-Farabi", "Al-Biruni"] },
-            { c: "Spor & Oyun", l: 9, a: 1, q_tr: "Wimbledon Tenis Turnuvası'nın en belirgin ve değişmez kuralı gereği sporcular kordda mutlaka hangi renkte kıyafet giymek zorundadır?", q_de: "Welche traditionelle Kleidungsfarbe ist beim berühmten Wimbledon-Tennisturnier für alle Spieler strikt vorgeschrieben?", o_tr: ["Yeşil", "Beyaz", "Lacivert", "Sarı"], o_de: ["Grün", "Weiß", "Dunkelblau", "Gelb"] },
-            { c: "Genel Kültür", l: 9, a: 1, q_tr: "Bugün lüks otomobil markası olarak bildiğimiz 'Mercedes-Benz' markasındaki 'Mercedes' ismi aslında nereden gelmektedir?", q_de: "Woher stammt ursprünglich der Name 'Mercedes' in der weltberühmten Automarke Mercedes-Benz?", o_tr: ["Karl Benz'in annesinin adından", "Avusturyalı tüccar ve yarışçı Emil Jellinek'in kızının adından", "İspanyolcada 'Hız ve Zarafet' anlamına gelen bir terimden", "Stuttgart'taki bir motor fabrikasının sokağından"], o_de: ["Von der Mutter des Gründers Karl Benz", "Vom Vornamen der Tochter des österreichischen Kaufmanns Emil Jellinek", "Von einem spanischen Ausdruck für 'Schnelligkeit und Anmut'", "Von der Straße einer Motorenfabrik in Stuttgart"] },
-            { c: "Coğrafya", l: 9, a: 1, q_tr: "Aşağıdaki ülkelerden hangisinin resmi olarak belirlenmiş, anayasasında yazılı bir 'Başkenti' HİÇ YOKTUR?", q_de: "Welches der folgenden Länder hat offiziell und verfassungsrechtlich betrachtet ÜBERHAUPT KEINE Hauptstadt?", o_tr: ["İsviçre", "Nauru", "Monako", "Vatikan"], o_de: ["Schweiz", "Nauru", "Monaco", "Vatikanstadt"] },
-            { c: "Tarih & Medeniyet", l: 9, a: 1, q_tr: "1911 yılında Güney Kutbu'na ulaşmak için yarışan İngiliz kâşif Robert Falcon Scott ile Norveçli kâşif Roald Amundsen arasındaki tarihi yarışta, Güney Kutbu'na İLK ayak basmayı başaran kim olmuştur?", q_de: "Wer erreichte 1911 im historischen Wettlauf zum Südpol zwischen Robert Falcon Scott und Roald Amundsen als ERSTER den geografischen Südpol?", o_tr: ["Robert Falcon Scott", "Roald Amundsen", "Ernest Shackleton", "Richard Byrd"], o_de: ["Robert Falcon Scott", "Roald Amundsen", "Ernest Shackleton", "Richard Byrd"] },
-            { c: "Tarih & Medeniyet", l: 9, a: 0, q_tr: "Avrupa'nın Coğrafi Keşifler sonrasında Yeni Dünya'dan (Amerika kıtası) tanıştığı aşağıdaki ürünlerden hangisi Avrupa topraklarına EN SON getirilmiştir?", q_de: "Welches der folgenden Produkte aus der Neuen Welt (Amerika) fand nach den Entdeckungsreisen als LETZTES seinen Weg nach Europa?", o_tr: ["Çilek", "Kakao", "Patates", "Domates"], o_de: ["Erdbeere", "Kakao", "Kartoffel", "Tomate"] },
-            { c: "Matematik & Mantık", l: 9, a: 0, q_tr: "Klasik bir satranç tahtasının ilk karesine 1, ikinci karesine 2, üçüncüye 4 buğday tanesi koyarak her kalede iki katına çıkaran ünlü efsanede 64. kalede toplam buğday miktarı yaklaşık ne kadardır?", q_de: "Wie viel Weizen kommt laut der berühmten Legende zusammen, wenn man auf dem 1. Feld eines Schachbretts 1 Korn, auf dem 2. Feld 2, auf dem 3. Feld 4 usw. bis zum 64. Feld legt?", o_tr: ["Dünyanın günümüzdeki bin yıllık toplam buğday üretiminden fazla", "Bir olimpiyat havuzunu tam olarak dolduracak kadar", "Sadece küçük bir tahıl ambarını dolduracak kadar", "Yaklaşık bir ton buğday ağırlığında"], o_de: ["Mehr als die weltweite Weizenproduktion von tausend Jahren heute", "Genug, um ein olympisches Schwimmbecken genau zu füllen", "Genug, um nur einen kleinen Getreidespeicher zu füllen", "Etwa eine Tonne Weizengewicht"] },
-            { c: "Genel Kültür", l: 9, a: 0, q_tr: "İnsan zihnini İd, Ego ve Süperego olarak üç temel yapıya ayıran psikanalitik kuramın kurucusu kimdir?", q_de: "Wer gründete die Psychoanalyse und teilte die menschliche Psyche in die drei Instanzen Es, Ich und Über-Ich ein?", o_tr: ["Sigmund Freud", "Carl Gustav Jung", "Alfred Adler", "Jacques Lacan"], o_de: ["Sigmund Freud", "Carl Gustav Jung", "Alfred Adler", "Jacques Lacan"] },
-            { c: "Coğrafya", l: 9, a: 0, q_tr: "Pasifik Okyanusu'nda yer alan ve yaklaşık 11.000 metrelik derinliğiyle Dünya kabuğunun bilinen en derin noktası olan çukur hangisidir?", q_de: "Wie heißt der tiefste bekannte Punkt der Erdkruste im Pazifischen Ozean mit einer Tiefe von etwa 11.000 Metern?", o_tr: ["Mariana Çukuru", "Tonga Çukuru", "Porto Riko Çukuru", "Java Çukuru"], o_de: ["Marianengraben", "Tongagraben", "Puerto-Rico-Graben", "Sundagraben"] },
-
-            // ==================== SEVİYE 10 (13 Soru - BEYİN YAKAN ÇOK ZOR ZİRVE ALANI) ====================
-            { c: "Biyoloji & Bilim", l: 10, a: 2, q_tr: "İnsan DNA'sının ne kadarlık bir kısmı anatomik olarak bir muzun DNA'sı ile tamamen aynıdır?", q_de: "Wie viel Prozent der menschlichen DNA stimmen mit der DNA einer Banane überein?", o_tr: ["%5 civarı", "%15 civarı", "%50 civarı", "%85 civarı"], o_de: ["Etwa 5 %", "Etwa 15 %", "Etwa 50 %", "Etwa 85 %"] },
-            { c: "Edebiyat & Yazarlar", l: 10, a: 1, q_tr: "Dünyada 'Bilinçakışı' tekniğini edebiyatta en başarılı şekilde kullanan ve bir gün içerisinde geçen 'Ulysses' romanını yazan İrlandalı yazar kimdir?", q_de: "Welcher irische Autor perfektionierte den 'Bewusstseinsstrom' in der Literatur und schrieb den an einem einzigen Tag spielenden Roman 'Ulysses'?", o_tr: ["Samuel Beckett", "James Joyce", "Oscar Wilde", "W.B. Yeats"], o_de: ["Samuel Beckett", "James Joyce", "Oscar Wilde", "W.B. Yeats"] },
-            { c: "Sinema & TV", l: 10, a: 3, q_tr: "Stanley Kubrick'in 1968 yapımı bilimkurgu başyapıtı '2001: A Space Odyssey' filmindeki yapay zeka bilgisayarı HAL 9000'in ismi nereden türetilmiştir?", q_de: "Woher leitet sich der Name des berühmten Supercomputers HAL 9000 aus Stanley Kubricks '2001: Odyssee im Weltraum' ab?", o_tr: ["IBM harflerinin alfabede birer harf geriye kaydırılmasından", "Heuristic ALgorithmic kelimelerinin baş harflerinden", "Kubrick'in çocukluk köpeği Hal'den", "Heuristic ALgorithmic kelimelerinin baş harflerinden"], o_de: ["Von den um einen Buchstaben verschobenen Buchstaben IBM", "Von den Anfangsbuchstaben für Heuristisch und Algorithmisch", "Von Kubricks Kindheitshund Hal", "Von Heuristic Algorithmic"] },
-            { c: "Tarih & Medeniyet", l: 10, a: 0, q_tr: "Orta Çağ Avrupa'sında ve Osmanlı'da gemilerin limana girmeden önce bulaşıcı hastalık taşımadıklarından emin olmak için bekletildiği sürenin adı olan 'Karantina' kelimesi İtalyancada hangi sayıdan gelir?", q_de: "Von welcher Zahl leitet sich das Wort 'Quarantäne' ab, die im Mittelalter die Wartezeit für Schiffe zum Schutz vor der Pest bezeichnete?", o_tr: ["40", "30", "14", "50"], o_de: ["40", "30", "14", "50"] },
-            { c: "Spor & Oyun", l: 10, a: 2, q_tr: "Geleneksel Japon güreşi 'Sumo'da müsabakaların yapıldığı killi topraktan hazırlanan daire biçimindeki yükseltilmiş platforma ne ad verilir?", q_de: "Wie heißt der erhöhte, aus Lehm gebaute Kampfring im traditionellen japanischen Sumō-Ringen?", o_tr: ["Tatami", "Dojo", "Dohyo", "Basho"], o_de: ["Tatami", "Dōjō", "Dohyō", "Basho"] },
-            { c: "Genel Kültür", l: 10, a: 1, q_tr: "Eski Yunancada 'Gören yer / Seyretme yeri' anlamına gelen ve bugün hem sinema hem de sahne sanatları yapıları için kullandığımız kelime hangisidir?", q_de: "Welches Wort leitet sich vom altgriechischen Begriff für 'Schauplatz / Ort des Sehens' ab?", o_tr: ["Stadyum", "Tiyatro", "Odeon", "Amfi"], o_de: ["Stadion", "Theater", "Odeon", "Amphitheater"] },
-            { c: "Biyoloji & Bilim", l: 10, a: 0, q_tr: "Sıcak suyun, belirli koşullar altında soğuk sudan DAHA HIZLI donması şeklindeki fiziksel ve termodinamik paradoks ne adla anılır?", q_de: "Wie heißt das physikalische Phänomen, bei dem heißes Wasser unter bestimmten Bedingungen SCHNELLER gefriert als kaltes Wasser?", o_tr: ["Mpemba Etkisi", "Coriolis Etkisi", "Venturi Paradoksu", "Joule-Thomson Olayı"], o_de: ["Mpemba-Effekt", "Coriolis-Effekt", "Venturi-Paradoxon", "Joule-Thomson-Effekt"] },
-            { c: "Müzik & Sanat", l: 10, a: 0, q_tr: "İtalyan Rönesans ressamı Sandro Botticelli'nin 'Venüs'ün Doğuşu' adlı şaheserinde, tanrıça Venüs sudan neyin üzerinde durarak doğar?", q_de: "Worauf steht die Göttin Venus im Meisterwerk 'Die Geburt der Venus' von Sandro Botticelli, während sie aus dem Meer emporsteigt?", o_tr: ["Dev bir istiridye kabuğunun", "İki beyaz kuğunun çektiği bir arabanın", "Altın rengi bir nilüfer çiçeğinin", "Bir yunus kuşunun sırtında"], o_de: ["Auf einer riesigen Jakobsmuschel", "In einem von zwei weißen Schwänen gezogenen Wagen", "Auf einer goldfarbenen Seerose", "Auf dem Rücken eines Delfins"] },
-            { c: "Edebiyat & Yazarlar", l: 10, a: 0, q_tr: "Victor Hugo'nun 'Sefiller' romanında, bir somun ekmek çaldığı için kürek mahkumiyetine çarptırılan başkarakter Jean Valjean'ın hapishanedeki mahkum numarası kaçtır?", q_de: "Welche Häftlingsnummer trägt der Protagonist Jean Valjean in Victor Hugos Roman 'Die Elenden' auf der Galeere, nachdem er ein Brot gestohlen hatte?", o_tr: ["24601", "11425", "90210", "33149"], o_de: ["24601", "11425", "90210", "33149"] },
-            { c: "Spor & Oyun", l: 10, a: 0, q_tr: "1900 yılında Paris'te düzenlenen Olimpiyat Oyunları'nda resmi bir spor dalı olarak madalya dağıtılan en tuhaf ve tek seferlik yarışma hangisidir?", q_de: "Welcher skurrile Wettbewerb war bei den Olympischen Spielen 1900 in Paris tatsächlich eine offizielle Sportart, in der Medaillen vergeben wurden?", o_tr: ["Canlı güvercin vurma yarışması", "Halat çekme ve çuval yarışı", "Sıcak hava balonuyla uzun mesafe yarışı", "İtfaiyecilik ve merdiven tırmanma yarışı"], o_de: ["Taubenschießen auf lebende Tauben", "Tauziehen und Sackhüpfen", "Langstreckenrennen mit dem Heißluftballon", "Feuerwehr- und Treppensteigwettbewerb"] },
-            { c: "Genel Kültür", l: 10, a: 0, q_tr: "Günlük hayatta sıkça kullandığımız 'Boykot' kelimesi aslında nereden gelmektedir?", q_de: "Woher stammt das Wort 'Boykott', das wir heute im Alltag für Protestverweigerung nutzen?", o_tr: ["İrlandalı acımasız bir toprak yöneticisi olan Yüzbaşı Charles Boycott'un soyadından", "18. yüzyılda Fransa'daki bir ekmek fırını isyanının liderinden", "Almanca 'bükülmez' anlamına gelen eski bir gümrük teriminden", "Amerikan iç savaşındaki bir liman ablukası taktiğinden"], o_de: ["Von Captain Charles Boycott", "Von einem Anführer eines französischen Bäckereiaufstands", "Von einem alten deutschen Zollbegriff", "Von einer Hafenblockade-Taktik"] },
-            { c: "Edebiyat & Yazarlar", l: 10, a: 0, q_tr: "Alman filozof Friedrich Nietzsche'nin 'Tanrı öldü' sözünü ilk kez ortaya attığı ve üstinsan kavramını felsefe dünyasına tanıttığı kült eseri hangisidir?", q_de: "In welchem Werk verkündete Friedrich Nietzsche zum ersten Mal 'Gott ist tot' und führte das philosophische Konzept des 'Übermenschen' ein?", o_tr: ["Böyle Buyurdu Zerdüşt", "İyinin ve Kötünün Ötesinde", "Putların Alacakaranlığı", "Ecce Homo"], o_de: ["Also sprach Zarathustra", "Jenseits von Gut und Böse", "Götzen-Dämmerung", "Ecce homo"] },
-            { c: "Sinema & TV", l: 10, a: 0, q_tr: "Sinema tarihinde hiç kesme yapılmadan tek bir çekim gibi görünmesi için ustalıkla kurgulanan, Alfred Hitchcock'un 1948 yapımı psikolojik gerilim filmi hangisidir?", q_de: "Wie heißt der Psychothriller von Alfred Hitchcock aus dem Jahr 1948, der durch geschickte Schnitte so wirkt, als sei er in einer einzigen ununterbrochenen Einstellung gedreht worden?", o_tr: ["Ölüm Kararı (Rope)", "Arka Pencere", "Gizli Teşkilat", "Ölüm Korkusu"], o_de: ["Cocktail für eine Leiche (Rope)", "Das Fenster zum Hof", "Der unsichtbare Dritte", "Vertigo"] },
-
-            // ==================== SEVİYE 11 (14 Soru - Çok Zor / Bilimsel & Sanatsal Paradokslar) ====================
-            { c: "Matematik & Mantık", l: 11, a: 1, q_tr: "Matematikte bir tam sayının kendisi ile çarpımının (karesinin) negatif bir sonuç vermesini sağlayan sanal/karmaşık sayı birimi ($i$) neye eşittir?", q_de: "Was ist in der Mathematik die imaginäre Einheit ($i$), deren Quadrat eine negative Zahl ergibt?", o_tr: ["$\sqrt{1}$", "$\sqrt{-1}$", "$-\sqrt{1}$", "$0$"], o_de: ["$\sqrt{1}$", "$\sqrt{-1}$", "$-\sqrt{1}$", "$0$"] },
-            { c: "Tarih & Medeniyet", l: 11, a: 2, q_tr: "Orta Çağ'da Veba salgınında hastaları tedavi etmeye çalışan doktorların taktığı, gaga biçimli o meşhur ürkütücü maskelerin ucuna neden güzel kokulu bitkiler doldurulurdu?", q_de: "Warum füllten Pestärzte im Mittelalter wohlriechende Kräuter in die Schnäbel ihrer unheimlichen Masken?", o_tr: ["Hastaların kötü kokusunu duymamak için", "Kuşlara benzeyip veba şeytanını korkutmak için", "Hastalığın o dönem havadaki kötü kokularla yayıldığına inandıkları için", "Dini bir ritüel gereği tanrıya dua etmek için"], o_de: ["Um den Geruch der Kranken nicht zu riechen", "Um wie Vögel auszusehen und den Dämon zu erschrecken", "Weil man glaubte, die Pest überrage sich durch schlechte Gerüche", "Aus religiösen Gründen für ein Gebet"] },
-            { c: "Coğrafya", l: 11, a: 3, q_tr: "İzlanda'nın başkenti olan ve kelime anlamı İslancada 'Dumanlı Körfez' anlamına gelen kuzey başkenti hangisidir?", q_de: "Wie heißt die Hauptstadt Islands, deren Name auf Isländisch 'Rauchbucht' bedeutet?", o_tr: ["Oslo", "Helsinki", "Nuuk", "Reykjavik"], o_de: ["Oslo", "Helsinki", "Nuuk", "Reykjavík"] },
-            { c: "Biyoloji & Bilim", l: 11, a: 0, q_tr: "Fizikte mutlak sıfır noktası olarak kabul edilen ve teorik olarak moleküler hareketin tamamen durduğu sıcaklık santigrat cinsinden tam olarak kaçtır?", q_de: "Wie viel Grad Celsius entspricht der absolute Nullpunkt, an dem die Molekularbewegung theoretisch völlig zum Stillstand kommt?", o_tr: ["-273.15 °C", "-100 °C", "-500.25 °C", "-180 °C"], o_de: ["-273,15 °C", "-100 °C", "-500,25 °C", "-180 °C"] },
-            { c: "Sinema & TV", l: 11, a: 1, q_tr: "'Baba' filminde Don Vito Corleone'nin o efsanevi konuşmasını yaparken kucağında tuttuğu ve okşadığı hayvan hangisidir?", q_de: "Welches Tier hält und streichelt Don Vito Corleone im Film 'Der Pate' während seines berühmten Eröffnungsmonologs?", o_tr: ["Siyah bir köpek", "Gri-beyaz bir kedi", "Bir beyaz güvercin", "Bir papağan"], o_de: ["Einen schwarzen Hund", "Eine grau-weiße Katze", "Eine weiße Taube", "Einen Papagei"] },
-            { c: "Tarih & Medeniyet", l: 11, a: 0, q_tr: "Eski Roma'da gladyatörlerin dövüştüğü arenaya neden Latince 'kum' anlamına gelen 'Harena / Arena' adı verilmiştir?", q_de: "Warum wurde die römische Kampffläche nach dem lateinischen Wort für 'Sand' benannt?", o_tr: ["Dökülen yoğun kanı emmesi ve kaymayı önlemesi için zemine kalın kum serildiği için", "Roma'nın çöl kumlarıyla ünlü olmasından dolayı", "Gladyatörlerin çıplak ayakla daha rahat koşması için", "Kralın şerefine altın sarısı kumlar döküldüğü için"], o_de: ["Weil dicker Sand auf den Boden gestreut wurde, um Blut aufzusaugen", "Weil Rom für seinen Wüstensand bekannt war", "Damit Gladiatoren barfuß besser rennen konnten", "Weil goldener Sand zu Ehren des Kaisers gestreut wurde"] },
-            { c: "Matematik & Mantık", l: 11, a: 2, q_tr: "Bir çemberin alanını hesaplamakta kullandığımız $\pi \cdot r^2$ formülünde bulunan '$r$' harfi matematikte neyi ifade eder?", q_de: "Wofür steht das '$r$' in der Kreisflächenformel $\pi \cdot r^2$?", o_tr: ["Çapı", "Çevre Uzunluğunu", "Yarıçapı", "Radyan açısını"], o_de: ["Durchmesser", "Umfang", "Radius", "Radiant"] },
-            { c: "Coğrafya", l: 11, a: 1, q_tr: "Dünya haritasına bakıldığında, ABD'nin en batı, en doğu ve en kuzey noktalarının hepsini birden barındıran tuhaf coğrafi eyaleti hangisidir?", q_de: "Welcher US-Bundesstaat beherbergt geografisch betrachtet gleichzeitig den westlichsten, den östlichsten und den nördlichsten Punkt der USA?", o_tr: ["Hawaii", "Alaska", "Kaliforniya", "Maine"], o_de: ["Hawaii", "Alaska", "Kalifornien", "Maine"] },
-            { c: "Tarih & Medeniyet", l: 11, a: 0, q_tr: "Antik Mısır hiyerogliflerinin 1799 yılında şifresinin çözülmesini sağlayan, üzerinde 3 farklı dilde aynı metnin yazılı olduğu efsanevi taşın adı nedir?", q_de: "Wie heißt der berühmte Stein mit einer dreisprachigen Inschrift, der ab 1799 die Entzifferung der altägyptischen Hieroglyphen ermöglichte?", o_tr: ["Rosetta Taşı", "Hammurabi Dikilitası", "Palermo Taşı", "Behistun Yazıtı"], o_de: ["Stein von Rosetta", "Codex-Hammurabi-Stele", "Palermo-Stein", "Behistun-Inschrift"] },
-            { c: "Matematik & Mantık", l: 11, a: 0, q_tr: "Sonsuz sayıda maymunun, sonsuz bir süre boyunca rastgele daktilo tuşlarına basarak Shakespeare'in tüm eserlerini eksiksiz şekilde yazabileceğini öngören matematiksel teorem ne adla anılır?", q_de: "Wie heißt das mathematische Theorem, das besagt, dass eine unendliche Anzahl von Affen, die unendlich lange zufällig auf Schreibmaschinen tippen, irgendwann Shakespeares Gesamtwerk schreiben würden?", o_tr: ["Sonsuz Maymun Teoremi", "Borel paradoksu", "Büyük Sayılar Yasası", "Markov Zenciri Hipotezi"], o_de: ["Infinite-Affen-Theorem", "Borelsches Paradoxon", "Gesetz der großen Zahlen", "Markov-Ketten-Hypothese"] },
-            { c: "Coğrafya", l: 11, a: 1, q_tr: "Yüzölçümü bakımından incelendiğinde, dünyanın en büyük ÇÖLÜ hangisidir?", q_de: "Welche ist flächenmäßig betrachtet die größte WÜSTE der Erde?", o_tr: ["Sahra Çölü", "Antarktika Çölü", "Gobi Çölü", "Kalahari Çölü"], o_de: ["Sahara", "Antarktische Wüste", "Gobi", "Kalahari"] },
-            { c: "Edebiyat & Yazarlar", l: 11, a: 0, q_tr: "Sherlock Holmes'un yazar Sir Arthur Conan Doyle tarafından kaleme alınan orijinal hikayelerinin HİÇBİRİNDE geçmeyen ama sinema ve popüler kültürle karaktere yapışan ünlü replik hangisidir?", q_de: "Welches berühmte Zitat taucht in KEINER einzigen Originalgeschichte von Sherlock Holmes auf, wurde aber durch Film und Popkultur unsterblich mit ihm verbunden?", o_tr: ["Basit, sevgili Watson!", "Oyun başladı!", "İmkânsızı elediğinizde geriye kalan gerçektir.", "Bir ipucu, kanıttan daha değerlidir."], o_de: ["Elementar, mein lieber Watson!", "Das Spiel beginnt!", "Wenn man das Unmögliche ausschließt, ist das, was übrig bleibt, die Wahrheit.", "Ein Hinweis ist wertvoller als ein Beweis."] },
-            { c: "Biyoloji & Bilim", l: 11, a: 0, q_tr: "Kuantum mekaniğinde, kapalı bir kutudaki kedinin hem canlı hem de ölü olduğu düşünce deneyini ortaya atarak Kopenhag yorumunun paradoksunu eleştiren fizikçi kimdir?", q_de: "Welcher österreichische Physiker formulierte das berühmte Gedankenexperiment von der Katze in der Kiste, die gleichzeitig lebendig und tot ist?", o_tr: ["Erwin Schrödinger", "Niels Bohr", "Max Born", "Richard Feynman"], o_de: ["Erwin Schrödinger", "Niels Bohr", "Max Born", "Richard Feynman"] },
-            { c: "Edebiyat & Yazarlar", l: 11, a: 0, q_tr: "Gabriel García Márquez'in 'Büyülü Gerçekçilik' akımının zirvesi sayılan 'Yüzyıllık Yalnızlık' romanında olayların geçtiği kurgusal köyün adı nedir?", q_de: "Wie heißt das fiktive Dorf, in dem die Handlung von Gabriel García Márquez' Meisterwerk des magischen Realismus 'Hundert Jahre Einsamkeit' spielt?", o_tr: ["Macondo", "Comala", "Yoknapatawpha", "Santa María"], o_de: ["Macondo", "Comala", "Yoknapatawpha", "Santa María"] },
-
-            // ==================== SEVİYE 12 (14 Soru - Çok Zor / Mantık & Coğrafi Tuzaklar) ====================
-            { c: "Tarih & Medeniyet", l: 12, a: 0, q_tr: "Osmanlı İmparatorluğu'nda 1699 yılında imzalanan ve devletin Batı'da ilk kez geniş çaplı toprak kaybettiği, gerileme döneminin başlangıcı sayılan antlaşma hangisidir?", q_de: "Welcher Friedensvertrag von 1699 markierte den ersten großen Gebietsverlust des Osmanischen Reiches in Europa und den Beginn des Niedergangs?", o_tr: ["Karlofça Antlaşması", "Pasarofça Antlaşması", "Küçük Kaynarca Antlaşması", "Zitvatorok Antlaşması"], o_de: ["Friede von Karlowitz", "Friede von Passarowitz", "Friede von Küçük Kaynarca", "Friede von Zsitvatorok"] },
-            { c: "Müzik & Sanat", l: 12, a: 0, q_tr: "Katalan mimar Antoni Gaudí'nin Barcelona'da 1882 yılında inşasına başlanan ve kompleks yapısı nedeniyle hâlâ tamamlanamayan efsanevi bazilikası hangisidir?", q_de: "Wie heißt Antoni Gaudís weltberühmte Basilika in Barcelona, deren Bau 1882 begann und bis heute unvollendet ist?", o_tr: ["La Sagrada Familia", "Casa Batlló", "Park Güell", "Milan Katedrali"], o_de: ["Sagrada Família", "Casa Batlló", "Park Güell", "Mailänder Dom"] },
-            { c: "Spor & Oyun", l: 12, a: 2, q_tr: "Satrançta bir oyuncunun şahını hareket ettiremediği ve tehdit altında olmadığı halde yapacak hiçbir geçerli hamlesinin kalmaması durumunda oyun nasıl sonuçlanır?", q_de: "Wie endet eine Schachpartie, wenn ein Spieler am Zug ist, kein gültiger Zug möglich ist und sein König nicht im Schach steht?", o_tr: ["Hamlesi biten yenilir", "Son hamleyi yapan kazanır", "Oyun beraberlik ile sonuçlanır", "Hamlesi biten bir taşını feda etmek zorundadır"], o_de: ["Der Spieler ohne Zug verliert", "Der letzte ziehende Spieler gewinnt", "Die Partie endet unentschieden", "Ein Stein muss geopfert werden"] },
-            { c: "Coğrafya", l: 12, a: 1, q_tr: "Dünyanın en küçük bağımsız ikinci ülkesi olan ve sadece 2 kilometrekarelik yüzölçümüne sahip Akdeniz kıyısındaki prenslik hangisidir?", q_de: "Welches Fürstentum an der Mittelmeerküste ist mit etwa 2 Quadratkilometern der zweitkleinste unabhängige Staat der Erde?", o_tr: ["Vatikan", "Monako", "San Marino", "Lihtenştayn"], o_de: ["Vatikanstadt", "Monaco", "San Marino", "Liechtenstein"] },
-            { c: "Genel Kültür", l: 12, a: 3, q_tr: "Japon kültüründe samurayların onurlarını korumak için kendilerine uyguladıkları geleneksel ritüel intihar yöntemine ne ad verilir?", q_de: "Wie heißt der rituelle Selbstmord der japanischen Samurai zur Wiederherstellung der Ehre?", o_tr: ["Bushido", "Katana", "Kamikaze", "Seppuku"], o_de: ["Bushidō", "Katana", "Kamikaze", "Seppuku"] },
-            { c: "Biyoloji & Bilim", l: 12, a: 0, q_tr: "Güneş'ten gelen zararlı ultraviyole ışınlarını emerek Dünya'daki yaşamı koruyan atmosfer katmanındaki hayati gaz hangisidir?", q_de: "Welches lebenswichtige Gas in der Stratosphäre absorbiert die schädliche UV-Strahlung der Sonne und schützt das Leben auf der Erde?", o_tr: ["Ozon ($O_3$)", "Metan", "Helium", "Krypton"], o_de: ["Ozon ($O_3$)", "Methan", "Helium", "Krypton"] },
-            { c: "Tarih & Medeniyet", l: 12, a: 1, q_tr: "Orta Çağ'da Avrupalıların Doğu'nun zenginliklerine ulaşmak için kullandıkları ve Çin'den başlayıp Anadolu ve Akdeniz üzerinden Avrupa'ya uzanan tarihi ticaret yolunun adı nedir?", q_de: "Wie heißt die historische Handelsroute, die China über Anatolien und das Mittelmeer mit Europa verband?", o_tr: ["Baharat Yolu", "İpek Yolu", "Kral Yolu", "Kehribar Yolu"], o_de: ["Gewürzroute", "Seidenstraße", "Königsstraße", "Bernsteinstraße"] },
-            { c: "Edebiyat & Yazarlar", l: 12, a: 0, q_tr: "Oğuz Atay'ın 'Tutunamayanlar' romanında, intihar eden arkadaşı Selim Işık'ın geçmişini araştırmaya başlayan ve romanın anlatıcısı konumunda olan başkarakter kimdir?", q_de: "Wie heißt der Protagonist und Erzähler in Oğuz Atays Meisterwerk 'Die Haltlosen' (Tutunamayanlar), der das Leben seines durch Suizid verstorbenen Freundes Selim Işık erforscht?", o_tr: ["Turgut Özben", "Hikmet Benol", "Süleyman Kargı", "Burhat Gürpınar"], o_de: ["Turgut Özben", "Hikmet Benol", "Süleyman Kargı", "Burhat Gürpınar"] },
-            { c: "Genel Kültür", l: 12, a: 0, q_tr: "Fransız filozof René Descartes'ın modern felsefenin temel taşı sayılan 'Düşünüyorum, öyleyse varım' önermesini ilk kez ortaya koyduğu 1637 tarihli eseri hangisidir?", q_de: "In welchem Werk von 1637 formulierte der französische Philosoph René Descartes zum ersten Mal seinen berühmten Grundsatz 'Ich denke, also bin ich'?", o_tr: ["Yöntem Üzerine Konuşma", "İlk Felsefe Üzerine Düşünceler", "Felsefenin İlkeleri", "Ruhun Tutkuları"], o_de: ["Abhandlung über die Methode", "Meditationen über die Erste Philosophie", "Die Prinzipien der Philosophie", "Die Leidenschaften der Seele"] },
-            { c: "Sinema & TV", l: 12, a: 0, q_tr: "1999 yapımı 'The Matrix' filminde, Neo (Keanu Reeves) karakterinin pasaportunda yazılı olan, sistem içindeki gerçek adı ve soyadı nedir?", q_de: "Wie lautet der bürgerliche Name von Neo (Keanu Reeves) innerhalb der Matrix, der auch auf seinem Pass im Film zu sehen ist?", o_tr: ["Thomas A. Anderson", "John R. Smith", "David L. Bowman", "Robert Paulson"], o_de: ["Thomas A. Anderson", "John R. Smith", "David L. Bowman", "Robert Paulson"] },
-            { c: "Biyoloji & Bilim", l: 12, a: 1, q_tr: "Botanikteki bilimsel sınıflandırmaya göre incelendiğinde; aşağıdaki meyve/sebze eşleştirmelerinden hangisi teknik olarak bir 'ÜZÜMSÜ MEYVE' sayılmaz?", q_de: "Welche der folgenden Früchte ist laut botanischer Klassifikation rein technisch gesehen KEINE 'Beere'?", o_tr: ["Muz", "Çilek", "Karpuz", "Domates"], o_de: ["Banane", "Erdbeere", "Wassermelone", "Tomate"] },
-            { c: "Tarih & Medeniyet", l: 12, a: 0, q_tr: "Tarihte bilinen en kısa savaş olan ve 1896 yılında İngiltere ile Zanzibar Sultanlığı arasında gerçekleşen 'İngiliz-Zanzibar Savaşı' toplam ne kadar sürmüştür?", q_de: "Wie lange dauerte der kürzeste Krieg der Weltgeschichte, der 'Britisch-Sansibar-Krieg' zwischen dem Vereinigten Königreich und dem Sultanat Sansibar im Jahr 1896?", o_tr: ["Yaklaşık 38 ila 45 dakika", "Tam olarak 6 saat", "3 gün 3 gece", "Yalnızca 14 saniye"], o_de: ["Etwa 38 bis 45 Minuten", "Genau 6 Stunden", "3 Tage und 3 Nächte", "Nur 14 Sekunden"] },
-            { c: "Spor & Oyun", l: 12, a: 0, q_tr: "Satranç tarihinde 'Ölümsüz Oyun' olarak anılan 1851 tarihli efsanevi karşılaşmada, iki kalesini, filini ve vezirini feda ederek mat yapan usta kimdir?", q_de: "Welcher Schachmeister gewann 1851 die legendäre 'Unsterbliche Partie', indem er beide Türme, einen Läufer und seine Dame opferte, um matt zu setzen?", o_tr: ["Adolf Anderssen", "Paul Morphy", "Wilhelm Steinitz", "Howard Staunton"], o_de: ["Adolf Anderssen", "Paul Morphy", "Wilhelm Steinitz", "Howard Staunton"] },
-            { c: "Tarih & Medeniyet", l: 12, a: 0, q_tr: "Grek mitolojisinde, tanrılardan ateşi çalarak insanlığa armağan ettiği için Kafkas Dağları'nda bir kayaya zincirlenen ve her gün bir kartalın ciğerini yediği titan kimdir?", q_de: "Welcher Titan der griechischen Mythologie stahl den Göttern das Feuer für die Menschen und wurde zur Strafe an einen Felsen im Kaukasus gekettet?", o_tr: ["Prometheus", "Atlas", "Epimetheus", "Hyperion"], o_de: ["Prometheus", "Atlas", "Epimetheus", "Hyperion"] },
-
-            // ==================== SEVİYE 13 (14 Soru - Milyonluk Zirve / Edebiyat & Felsefe) ====================
-            { c: "Genel Kültür", l: 13, a: 0, q_tr: "Heidegger'in 'Varlık ve Zaman' adlı eserinde insanın dünyaya fırlatılmışlığını ve varoluşunu tanımlamak için kullandığı temel terim nedir?", q_de: "Welchen Grundbegriff verwendet Heidegger in 'Sein und Zeit', um die Geworfenheit und das menschliche Dasein in der Welt zu beschreiben?", o_tr: ["Dasein", "Noumenon", "Cogito", "Monad"], o_de: ["Dasein", "Noumenon", "Cogito", "Monade"] },
-            { c: "Biyoloji & Bilim", l: 13, a: 0, q_tr: "Bakterilerin virüslere karşı geliştirdiği savunma mekanizmasından ilham alınarak yaratılan ve canlı DNA'sında hassas kesim yapabilen modern gen düzenleme teknolojisi nedir?", q_de: "Wie heißt die hochpräzise Gen-Schere, die aus dem Immunsystem von Bakterien abgeleitet wurde und die moderne Gentechnik revolutionierte?", o_tr: ["CRISPR-Cas9", "PCR", "ELISA Testi", "Jel Elektroforezi"], o_de: ["CRISPR-Cas9", "PCR", "ELISA", "Gelelektrophorese"] },
-            { c: "Müzik & Sanat", l: 13, a: 0, q_tr: "Alman besteci Richard Wagner'in yaklaşık 15 saat süren ve Cermen mitolojisine dayanan 4 operalık devasa sahne eseri dizisi hangisidir?", q_de: "Wie heißt der aus vier Opern bestehende Bühnenweihfestspiel-Zyklus von Richard Wagner, der auf der germanischen Mythologie basiert?", o_tr: ["Nibelung'un Yüzüğü", "Tristan ve İsolde", "Parsifal", "Lohengrin"], o_de: ["Der Ring des Nibelungen", "Tristan und Isolde", "Parsifal", "Lohengrin"] },
-            { c: "Edebiyat & Yazarlar", l: 13, a: 1, q_tr: "Rus yazar Fyodor Dostoyevski'nin 'Suç ve Ceza' romanında işlediği tefeci kadını öldürme cinayetini haklı çıkarmaya çalışan fakir hukuk öğrencisi kimdir?", q_de: "Wie heißt der verarmte Jurastudent in Dostojewskis 'Schuld und Sühne', der den Mord an einer Pfandleiherin zu rechtfertigen versucht?", o_tr: ["Razumihin", "Raskolnikov", "Svidrigaylov", "Mışkin"], o_de: ["Rasumichin", "Raskolnikow", "Swidrigailow", "Fürst Myschkin"] },
-            { c: "Matematik & Mantık", l: 13, a: 2, q_tr: "Olasılık teorisinde bir olayın gerçekleşmesinin neredeyse imkansız olduğu ama gerçekleştiğinde devasa ve öngörülemez sonuçlar doğurduğu teorik kavram ne adla anılır?", q_de: "Wie nennt man in der Wahrscheinlichkeitstheorie extrem unwahrscheinliche Ereignisse mit massiven, unvorhersehbaren Auswirkungen?", o_tr: ["Kelebek Etkisi", "Schrödinger'in Kedisi", "Siyah Kuğu Teorisi", "Kaos Paradoksu"], o_de: ["Schmetterlingseffekt", "Schrödingers Katze", "Schwarzer-Schwan-Theorie", "Chaos-Paradoxon"] },
-            { c: "Sinema & TV", l: 13, a: 1, q_tr: "Quentin Tarantino'nun sinema tarihine geçen 1994 yapımı 'Pulp Fiction' filminde, kurgusal 'Big Kahuna Burger' restorandan alınan hamburgeri iştahla yiyerek İncil'den ayet okuyan tetikçi kimdir?", q_de: "Welcher Killer isst in Tarantinos 'Pulp Fiction' einen Big Kahuna Burger und zitiert danach Ezekiel 25:17?", o_tr: ["Vincent Vega", "Jules Winnfield", "Mia Wallace", "Marsellus Wallace"], o_de: ["Vincent Vega", "Jules Winnfield", "Mia Wallace", "Marsellus Wallace"] },
-            { c: "Coğrafya", l: 13, a: 0, q_tr: "Dünya üzerinde bir ülkenin toprağı olmayan, tarafsız bölge statüsündeki en büyük coğrafi kıta veya kara parçası hangisidir?", q_de: "Welches ist die größte Landmasse der Erde, die zu keinem souveränen Staat gehört und durch einen internationalen Vertrag neutralisiert ist?", o_tr: ["Antarktika", "Grönland", "Svalbard", "Galapagos Adaları"], o_de: ["Antarktika", "Grönland", "Spitzbergen", "Galapagosinseln"] },
-            { c: "Müzik & Sanat", l: 13, a: 0, q_tr: "İtalyan Rönesans ustası Sandro Botticelli'nin Floransa'daki Uffizi Galerisi'nde sergilenen ve mitolojik figürlerle mevsimlerin döngüsünü resmettiği meşhur 'Primavera' tablosunun Türkçe adı nedir?", q_de: "Wie lautet die deutsche Übersetzung von Sandro Botticellis weltberühmtem Meisterwerk 'Primavera' in den Uffizien in Florenz?", o_tr: ["İlkbahar", "Venüs'ün Zaferi", "Kutsal Alegori", "Cennet Bahçesi"], o_de: ["Der Frühling", "Der Triumph der Venus", "Heilige Allegorie", "Der Garten Eden"] },
-            { c: "Biyoloji & Bilim", l: 13, a: 0, q_tr: "1905 yılında Albert Einstein tarafından kütle ile enerji arasındaki eşdeğerliği ifade etmek için yazılan $E = mc^2$ formülündeki '$c$' harfi neyi temsil eder?", q_de: "Wofür steht das '$c$' in der berühmten Formel $E = mc^2$, die Albert Einstein 1905 zur Äquivalenz von Masse und Energie formulierte?", o_tr: ["Işık Hızını", "Sabit Kütle Katsayısını", "Evrensel Yerçekimi Sabitini", "Kuantum Çekirdek Hızını"], o_de: ["Lichtgeschwindigkeit", "Konstanten Massenkoeffizienten", "Universelle Gravitationskonstante", "Quantenkern-Geschwindigkeit"] },
-            { c: "Tarih & Medeniyet", l: 13, a: 0, q_tr: "II. Dünya Savaşı sırasında müttefik askerlerinin Normandiya Kıyıları'na yaptığı efsanevi çıkartmanın çıkarma günü askeri literatürde hangi kod adıyla anılır?", q_de: "Unter welcher militärischen Bezeichnung ging der Tag der alliierten Landung in der Normandie im Zweiten Weltkrieg in die Geschichte ein?", o_tr: ["D-Day", "V-Day", "X-Day", "Z-Day"], o_de: ["D-Day", "V-Day", "X-Day", "Z-Day"] },
-            { c: "Sinema & TV", l: 13, a: 0, q_tr: "1980 yapımı Stanley Kubrick şaheseri 'The Shining' filminde, Jack Nicholson'ın baltayı kapıya vurarak içeri baktığı o ikonik 'Here's Johnny!' sahnesi kaç kez tekrar çekilerek rekor kırmıştır?", q_de: "Wie oft musste die ikonische Szene in Stanley Kubricks 'Shining' (1980), in der Jack Nicholson die Tür mit einer Axt einschlägt und 'Here's Johnny!' ruft, wiederholt werden?", o_tr: ["127 kez", "15 kez", "62 kez", "3 kez"], o_de: ["127-mal", "15-mal", "62-mal", "3-mal"] },
-            { c: "Genel Kültür", l: 13, a: 0, q_tr: "İtalyan ressam Michelangelo, Roma'daki Sistin Şapeli'nin efsanevi tavan fresklerini yaparken 4 yıl boyunca hangi pozisyonda çalışmıştır?", q_de: "In welcher Körperhaltung arbeitete der italienische Meister Michelangelo 4 Jahre lang, während er die legendären Deckenfresken der Sixtinischen Kapelle malte?", o_tr: ["Ayakta durup başını ve boynunu sürekli geriye bükerek", "Sırtüstü bir iskele üzerinde yatarak", "Özel bir ip sarkaçla tavandan baş aşağı sarkarak", "Dizlerinin üzerinde eğilip aynaya bakarak"], o_de: ["Stehend mit ständig nach hinten gebeugtem Kopf und Nacken", "Liegend auf dem Rücken auf einem Gerüst", "Kopfüber von der Decke hängend an einem Spezialseil", "Auf den Knieend über einen Spiegel blickend"] },
-            { c: "Tarih & Medeniyet", l: 13, a: 0, q_tr: "1648 yılında Otuz Yıl Savaşları'nı sona erdiren ve modern devletler sisteminin ile egemenlik kavramının temelini atan tarihi barış antlaşması hangisidir?", q_de: "Welcher Friedensschluss von 1648 beendete den Dreißigjährigen Krieg und gilt als Geburtsstunde der souveränen Nationalstaaten?", o_tr: ["Vestfilya Barışı", "Utrecht Barışı", "Augsburg Barışı", "Viyana Kongresi"], o_de: ["Westfälischer Friede", "Friede von Utrecht", "Augsburger Religionsfrieden", "Wiener Kongress"] },
-            { c: "Genel Kültür", l: 13, a: 0, q_tr: "Immanuel Kant'ın 'Saf Aklın Eleştirisi' eserinde insan duyularıyla algılanabilen fenomena karşıt olarak tanımladığı, 'kendi başına şey' anlamına gelen terim nedir?", q_de: "Welchen philosophischen Begriff verwendet Immanuel Kant als Gegenstück zur Erscheinung für das 'Ding an sich', das der menschlichen Erfahrung unzugänglich ist?", o_tr: ["Noumenon", "Apeiron", "Tabula Rasa", "Solipsizm"], o_de: ["Noumenon", "Apeiron", "Tabula rasa", "Solipsismus"] },
-
-            // ==================== SEVİYE 14 (14 Soru - Milyonluk Zirve / Sanat Tarihi & Bilimsel Zirve) ====================
-            { c: "Edebiyat & Yazarlar", l: 14, a: 0, q_tr: "Umberto Eco'nun 14. yüzyıldaki bir İtalyan manastırında yaşanan cinayetleri ve Aristo'nun kayıp kitabını konu alan ustalık eseri romanı hangisidir?", q_de: "Wie heißt der Weltbestseller von Umberto Eco über mysteriöse Mönchsmorde in einer mittelalterlichen Abtei und das verlorene Buch von Aristoteles?", o_tr: ["Gülün Adı", "Foucault'nun Sarkacı", "Önceki Günün Adası", "Baudolino"], o_de: ["Der Name der Rose", "Das Foucaultsche Pendel", "Die Insel des vorigen Tages", "Baudolino"] },
-            { c: "Genel Kültür", l: 14, a: 0, q_tr: "Arthur Schopenhauer'ın felsefesinin temel taşı olan ve dünyayı mantıksız, kör ve doymak bilmez bir arzu akışı olarak tanımladığı başyapıtının adı nedir?", q_de: "Wie heißt das Hauptwerk von Arthur Schopenhauer, in dem er die Welt als manifestation eines blinden, vernunftlosen Dranges beschreibt?", o_tr: ["İstem ve Tasarım olarak Dünya", "Ahlakın Temeli Üzerine", "Parerga ve Paralipomena", "Yaşam Bilgeliği Üzerine Aforizmalar"], o_de: ["Die Welt als Wille und Vorstellung", "Über die Grundlage der Moral", "Parerga und Paralipomena", "Aphorismen zur Lebensweisheit"] },
-            { c: "Sinema & TV", l: 14, a: 0, q_tr: "Sinema kuramında Sovyet montaj teorisinin öncüsü sayılan ve 1925 yapımı 'Potemkin Zırhlısı' filmindeki meşhur 'Odessa Merdivenleri' sahnesiyle sinema dilini değiştiren yönetmen kimdir?", q_de: "Welcher sowjetische Regisseur revolutionierte mit der berühmten 'Treppe von Odessa'-Szene in seinem Film 'Panzerkreuzer Potemkin' (1925) die Montagetheorie?", o_tr: ["Sergey Ayzenştayn", "Dziga Vertov", "Andrey Tarkovski", "Vsevolod Pudovkin"], o_de: ["Sergei Eisenstein", "Dsiga Wertow", "Andrei Tarkowski", "Wsewolod Pudowkin"] },
-            { c: "Tarih & Medeniyet", l: 14, a: 2, q_tr: "Kutsal Roma Cermen İmparatorluğu'nda 1356 yılında IV. Karl tarafından çıkarılan ve imparatorun seçimle iş başına gelmesini yedi kurfürstün oyuna bağlayan anayasal ferman nedir?", q_de: "Wie heißt das 1356 von Karl IV. erlassene Verfassungsgesetz des Heiligen Römischen Reiches, das die Wahl des Königs durch sieben Kurfürsten regelte?", o_tr: ["Magna Carta", "Worms Concordatı", "Altın Bül", "Augsburg Barışı"], o_de: ["Magna Carta", "Wormser Konkordat", "Goldene Bulle", "Augsburger Religionsfrieden"] },
-            { c: "Coğrafya", l: 14, a: 1, q_tr: "Dünyanın bilinen en eski kenti sayılan, Ürdün Nehri yakınlarında bulunan ve surlarla çevrili antik Filistin şehri hangisidir?", q_de: "Wie heißt die im Westjordanland gelegene, als älteste bekannte Stadt der Welt geltende historische Oasensiedlung?", o_tr: ["Babil", "Eriha (Jericho)", "Şam", "Halep"], o_de: ["Babylon", "Jericho", "Damaskus", "Aleppo"] },
-            { c: "Matematik & Mantık", l: 14, a: 3, q_tr: "Öklid dışı geometrilerin ilk ve en bilinen örneği olan, hiperbolik geometriyi Öklid'in 5. postülasını reddederek kuran 19. yüzyıl Rus matematikçisi kimdir?", q_de: "Welcher russische Mathematiker begründete im 19. Jahrhundert die erste nicht-euklidische (hyperbolische) Geometrie?", o_tr: ["Leonhard Euler", "Carl Friedrich Gauß", "Georg Cantor", "Nikolay Lobaçevski"], o_de: ["Leonhard Euler", "Carl Friedrich Gauß", "Georg Cantor", "Nikolai Lobatschewski"] },
-            { c: "Edebiyat & Yazarlar", l: 14, a: 0, q_tr: "Alman edebiyatının zirvesi sayılan Johann Wolfgang von Goethe'nin tam 60 yılda tamamladığı, şeytan Mefistofeles ile ruhunu satan bilgini anlattığı manzum trajedi hangisidir?", q_de: "Wie heißt Goethes weltberühmte, in 60 Jahren geschriebene Tragödie über den Gelehrten, der seinen Leibe und Seele an Mephistopheles verschreibt?", o_tr: ["Faust", "Genç Werther'in Acıları", "Wilhelm Meister'in çıraklık yılları", "Egmont"], o_de: ["Faust", "Die Leiden des jungen Werthers", "Wilhelm Meisters Lehrjahre", "Egmont"] },
-            { c: "Genel Kültür", l: 14, a: 0, q_tr: "1983 yılında piyasaya sürülen ve dünyanın ticari olarak satışa sunulan İLK cep telefonu modeli olan, yaklaşık 800 gram ağırlığındaki tuğla büyüklüğündeki efsanevi cihazın marka ve modeli nedir?", q_de: "Wie heißt das allererste kommerziell erhältliche Mobiltelefon der Welt, ein fast 800 Gramm schwerer 'Knochen', der 1983 auf den Markt kam?", o_tr: ["Motorola DynaTAC 8000X", "Nokia Cityman 450", "Ericsson Mobira Senator", "Siemens Pocketphone 100"], o_de: ["Motorola DynaTAC 8000X", "Nokia Cityman 450", "Ericsson Mobira Senator", "Siemens Pocketphone 100"] },
-            { c: "Edebiyat & Yazarlar", l: 14, a: 0, q_tr: "Rus yazar Lev Tolstoy'un 'Savaş ve Barış' romanı ilk kez kitap olarak basılmadan önce hangi Rus edebi dergisinde '1805 Yılı' adıyla tefrika edilmeye başlanmıştır?", q_de: "In welcher russischen Literaturzeitschrift wurde Lew Tolstois Meisterwerk 'Krieg und Frieden' zunächst unter dem Titel 'Das Jahr 1805' als Fortsetzungsroman veröffentlicht?", o_tr: ["Russkiy Vestnik", "Sovremennik", "Otechestvennye Zapiski", "Mir Iskusstva"], o_de: ["Russki Westnik", "Sowremennik", "Otetschestwennye Sapiski", "Mir Iskusstwa"] },
-            { c: "Matematik & Mantık", l: 14, a: 0, q_tr: "1977 yılında Ronald Rivest, Adi Shamir ve Leonard Adleman tarafından geliştirilen ve bugün internetteki bankacılık işlemlerinden şifreli mesajlaşmaya kadar tüm dijital güvenliğin temelini oluşturan asimetrik kriptografi algoritması hangisidir?", q_de: "Wie heißt der 1977 von Rivest, Shamir und Adleman entwickelte asymmetrische kryptografische Algorithmus, der heute das Fundament der weltweiten digitalen Sicherheit und des Online-Bankings bildet?", o_tr: ["RSA Algoritması", "AES", "SHA-256", "Blowfish Kriptosu"], o_de: ["RSA-Kryptosystem", "AES", "SHA-256", "Blowfish-Chiffre"] },
-            { c: "Matematik & Mantık", l: 14, a: 0, q_tr: "Monty Hall problemi olarak bilinen ünlü olasılık paradoksunda; yarışmacı 3 kapıdan birini seçer, sunucu arkası boş olan bir kapıyı açar ve yarışmacıya fikrini değiştirme hakkı sunar. Matematiksel olarak kazanma şansını en yüksek yapmak için doğru strateji nedir?", q_de: "Beim berühmten Ziegenproblem wählt der Kandidat eine von 3 Türen, der Moderator öffnet eine leere Tür und bietet den Wechsel an. Was ist mathematisch die beste Strategie?", o_tr: ["Kararı KESİNLİKLE değiştirmek", "İlk seçilen kapıda KALMAK", "Fark etmez, şans her iki kapı için de aynıdır", "Rastgele yazı tura atmak"], o_de: ["Die Tür UNBEDINGT wechseln", "Bei der ersten Wahl BLEIBEN", "Es macht keinen Unterschied", "Münzwurf machen"] },
-            { c: "Genel Kültür", l: 14, a: 0, q_tr: "Dünyanın en uzun süreli ve kesintisiz yanan yapay ateşi olan, ABD'nin Kaliforniya eyaletindeki bir itfaiye istasyonunda bulunan 'Centennial Light' adlı ampul ilk kez hangi yılda yakılmıştır?", q_de: "In welchem Jahr wurde die 'Centennial Light', eine Glühbirne in einer Feuerwache in Kalifornien, die als die am längsten ununterbrochen brennende Lichtquelle der Welt gilt, erstmals eingeschaltet?", o_tr: ["1901 yılında", "1889 yılında", "1923 yılında", "1945 yılında"], o_de: ["Im Jahr 1901", "Im Jahr 1889", "Im Jahr 1923", "Im Jahr 1945"] },
-            { c: "Edebiyat & Yazarlar", l: 14, a: 0, q_tr: "James Joyce'un kelime oyunları, çoklu diller ve mitolojik göndermelerle örülü, 'riverrun, past Eve and Adam's...' cümlesiyle başlayıp yarım kalan dairesel romanı hangisidir?", q_de: "Wie heißt James Joyces zirkulärer Roman voller Wortspiele und Mythologie, der mit dem Satz 'riverrun, past Eve and Adam's...' beginnt und endet?", o_tr: ["Finnegans Wake", "Ulysses", "Sanatçının Gençlik Portresi", "Dublinliler"], o_de: ["Finnegans Wake", "Ulysses", "Ein Porträt des Künstlers als junger Mann", "Dubliner"] },
-            { c: "Matematik & Mantık", l: 14, a: 0, q_tr: "Asal sayıların dağılımını açıklamak için ortaya atılan, Zeta fonksiyonunun sıfırlarıyla ilgili olan ve günümüzün en büyük çözülememiş matematik problemi sayılan hipotez hangisidir?", q_de: "Wie heißt die unbewiesene Vermutung über die Nullstellen der Zeta-Funktion, die die Verteilung der Primzahlen beschreibt und als eines der Millennium-Probleme gilt?", o_tr: ["Riemann Hipotezi", "Goldbach Kestirimi", "Collatz Sanısı", "Poincaré Sanısı"], o_de: ["Riemannsche Vermutung", "Goldbachsche Vermutung", "Collatz-Problem", "Poincaré-Vermutung"] },
-
-            // ==================== SEVİYE 15 (14 Soru - 5 MİLYONLUK BÜYÜK FİNAL / Efsanevi Detaylar!) ====================
-            { c: "Biyoloji & Bilim", l: 15, a: 0, q_tr: "Kapalı bir sistemdeki düzensizlik ölçüsü olan entropinin zamanla sürekli artacağını belirterek evrenin nihai 'Isı Ölümü'ne gideceğini öngören fizik yasası hangisidir?", q_de: "Welches physikalische Gesetz besagt, dass die Entropie in einem geschlossenen System niemals abnimmt, und prognostiziert den 'Wärmetod' des Universums?", o_tr: ["Termodinamiğin 2. Yasası", "Termodinamiğin 3. Yasası", "Hubble Yasası", "Boyle-Mariotte Yasası"], o_de: ["Zweiter Hauptsatz der Thermodynamik", "Dritter Hauptsatz der Thermodynamik", "Hubble-Gesetz", "Boyle-Mariotte-Gesetz"] },
-            { c: "Edebiyat & Yazarlar", l: 15, a: 0, q_tr: "Dante Alighieri'nin 'İlahi Komedya' adlı eserinde, Cehennem'in dokuzuncu ve en alt katı olan, ihanet edenlerin buzlar içine hapsolduğu donmuş gölün adı nedir?", q_de: "Wie heißt im 'Inferno' von Dantes Göttlicher Komödie der gefrorene See im neunten und tiefsten Kreis der Hölle, in dem die Verräter im Eis stecken?", o_tr: ["Cocytus", "Styx", "Acheron", "Phlegethon"], o_de: ["Cocytus", "Styx", "Acheron", "Phlegethon"] },
-            { c: "Genel Kültür", l: 15, a: 0, q_tr: "Ludwig Wittgenstein'ın 'Dilimin sınırları, dünyamın sınırlarıdır' sözünü içeren ve 'Üzerine konuşulamayan konusunda susmalı' cümlesiyle biten yedi temel önermelik efsanevi eseri hangisidir?", q_de: "Wie heißt das aus sieben Hauptsätzen bestehende Werk von Ludwig Wittgenstein, das mit dem Satz endet: 'Wovon man nicht sprechen kann, darüber muss man schweigen'?", o_tr: ["Tractatus Logico-Philosophicus", "Felsefi Soruşturmalar", "Kesinlik Üzerine", "Mavi ve Kahverengi Kitaplar"], o_de: ["Tractatus logico-philosophicus", "Philosophische Untersuchungen", "Über Gewissheit", "Das Blaue und das Braune Buch"] },
-            { c: "Tarih & Medeniyet", l: 15, a: 1, q_tr: "1920 yılında Paris'te imzalanan ancak Kurtuluş Savaşı ve TBMM'nin askeri başarısı sayesinde asla yürürlüğe girmeyen ve tarihin çöplüğüne atılan antlaşma hangisidir?", q_de: "Welcher Friedensvertrag von 1920 zur Aufteilung des Osmanischen Reiches trat dank des türkischen Befreiungskrieges unter Atatürk niemals in Kraft?", o_tr: ["Mondros Mütarekesi", "Sevr Antlaşması", "Lozan Antlaşması", "Paris Barış Konferansı"], o_de: ["Waffenstillstand von Mudros", "Vertrag von Sèvres", "Vertrag von Lausanne", "Pariser Friedenskonferenz"] },
-            { c: "Biyoloji & Bilim", l: 15, a: 3, q_tr: "Uzayda bir kara deliğin etrafında, yerçekimi gücünün o kadar muazzam olduğu ve ışık dahil hiçbir maddenin kaçamadığı o teorik sınıra ne ad verilir?", q_de: "Wie nennt man die Grenzfläche um ein Schwarzes Loch, ab der die Gravitation so extrem ist, dass nichts, nicht einmal Licht, mehr entkommen kann?", o_tr: ["Singülarite", "Accretion Diski", "Ergosphere", "Olay Ufku"], o_de: ["Singularität", "Akkretionsscheibe", "Ergosphäre", "Ereignishorizont"] },
-            { c: "Tarih & Medeniyet", l: 15, a: 2, q_tr: "Antik Yunan'da filozof Platon'un MÖ 387 yılında Atina'da kurduğu ve Batı dünyasının ilk yükseköğrenim kurumu sayılan efsanevi okulun adı neydi?", q_de: "Wie hieß die berühmte, von Platon um 387 v. Chr. in Athen gegründete Schule, die als erste Universität der westlichen Welt gilt?", o_tr: ["Lise", "Stoa", "Akademi", "Cynic Okulu"], o_de: ["Lykeion", "Stoa", "Akademie", "Kynikerschule"] },
-            { c: "Genel Kültür", l: 15, a: 1, q_tr: "1945 yılında New Mexico çölünde 'Trinity' kod adıyla patlatılan ve insanlık tarihinin İLK atom bombası testinin yöneticiliğini yapan ünlü teorik fizikçi kimdir?", q_de: "Welcher theoretische Physiker leitete das Manhattan-Projekt und den 'Trinity'-Test 1945, bei dem die erste Atombombe der Welt gezündet wurde?", o_tr: ["Enrico Fermi", "J. Robert Oppenheimer", "Richard Feynman", "Niels Bohr"], o_de: ["Enrico Fermi", "J. Robert Oppenheimer", "Richard Feynman", "Niels Bohr"] },
-            { c: "Edebiyat & Yazarlar", l: 15, a: 3, q_tr: "Arjantinli yazar Jorge Luis Borges'in sonsuz sayıda altıgen galeriden oluşan, dünyanın tüm kitaplarını barındırdığını düşlediği meşhur öyküsündeki kütüphanenin adı nedir?", q_de: "Wie heißt in Jorge Luis Borges' berühmter Erzählung die aus unendlichen sechseckigen Galerien bestehende Bibliothek, die alle möglichen Bücher des Universums enthält?", o_tr: ["İskenderiye Kütüphanesi", "Pergamon Kütüphanesi", "Sonsuzluk Kütüphanesi", "Babil Kütüphanesi"], o_de: ["Bibliothek von Alexandria", "Bibliothek von Pergamon", "Bibliothek der Unendlichkeit", "Die Bibliothek von Babel"] },
-            { c: "Matematik & Mantık", l: 15, a: 1, q_tr: "1931 yılında Kurt Gödel tarafından kanıtlanan ve 'tutarlı hiçbir biçimsel aritmetik sistemin kendi içinde hem tutarlı hem de eksiksiz olamayacağını' belirten ünlü matematik teoremi hangisidir?", q_de: "Welches von Kurt Gödel 1931 bewiesene Theorem besagt, dass kein konsistentes formales System der Arithmetik gleichzeitig konsistent und vollständig sein kann?", o_tr: ["Fermat'nın Son Teoremi", "Eksiklik Teoremi", "Belirsizlik Teoremi", "Brouwer Sabit Nokta Teoremi"], o_de: ["Fermats Letzter Satz", "Gödelscher Unvollständigkeitssatz", "Unschärferelation", "Brouwerscher Fixpunktsatz"] },
-            { c: "Genel Kültür", l: 15, a: 2, q_tr: "Barok dönemin dahi ressamı Caravaggio'nun değil, İtalyan sanatçı Gian Lorenzo Bernini'nin Roma'daki Santa Maria della Vittoria Kilisesi'nde bulunan efsanevi beyaz mermer heykelinin adı nedir?", q_de: "Wie heißt Gian Lorenzo Berninis weltberühmte weiße Marmorskulptur in der Kirche Santa Maria della Vittoria in Rom?", o_tr: ["Musa'nın Hükmü", "Davut'un Öfkesi", "Azize Teresa'nın Vecdi", "Apollo ve Daphne"], o_de: ["Das Urteil des Mose", "Davids Zorn", "Die Verzückung der Heiligen Teresa", "Apollo und Daphne"] },
-            { c: "Tarih & Medeniyet", l: 15, a: 0, q_tr: "MÖ 331 yılında Büyük İskender'in Pers İmparatoru III. Darius'u sayıca çok üstün olmasına rağmen dahice bir taktikle kesin yenilgiye uğrattığı ve Pers İmparatorluğu'nu yıktığı meşhur savaş hangisidir?", q_de: "In welcher Schlacht besiegte Alexander der Große 331 v. Chr. den persischen König Dareios III. trotz enormer Unterzahl endgültig und zerschlug das Perserreich?", o_tr: ["Gaugamela Savaşı", "İssos Savaşı", "Granikos Savaşı", "Termopylae Savaşı"], o_de: ["Schlacht von Gaugamela", "Schlacht bei Issos", "Schlacht am Granikos", "Schlacht bei den Thermopylen"] },
-            { c: "Biyoloji & Bilim", l: 15, a: 1, q_tr: "İnsan beyninde hafızanın oluşumunda, özellikle kısa süreli hafızanın uzun süreli hafızaya dönüştürülmesinde (konsolidasyon) en kritik rolü oynayan ve şekli nedeniyle deniz atına benzetilen beyin bölgesi hangisidir?", q_de: "Welche Struktur im limbischen System des Gehirns, die wegen ihrer Form dem Seepferdchen ähnelt, ist entscheidend für die Überführung von Kurz- in Langzeitgedächtnis?", o_tr: ["Amigdala", "Hipokampus", "Hipotalamus", "Serebellum"], o_de: ["Amygdala", "Hippocampus", "Hypothalamus", "Cerebellum"] },
-            { c: "Sinema & TV", l: 15, a: 3, q_tr: "Andrey Tarkovski'nin 1979 yapımı bilimkurgu başyapıtı 'Stalker' (İzsürücü) filminde, kahramanların ulaştıklarında insanın en derin ve gizli arzularını gerçeğe dönüştürdüğüne inanılan gizemli yerin adı nedir?", q_de: "Wie heißt der mysteriöse Ort in Andrei Tarkowskis Meisterwerk 'Stalker' (1979), von dem geglaubt wird, dass er die geheimsten Wünsche der Menschen erfüllt?", o_tr: ["Bölge (Zone)", "Sığınak (Bunker)", "Tapınak (Shrine)", "Oda (The Room)"], o_de: ["Die Zone", "Der Bunker", "Der Schrein", "Das Zimmer (The Room)"] },
-            { c: "Edebiyat & Yazarlar", l: 15, a: 0, q_tr: "Herman Melville'in 1851 yılında yazdığı 'Moby Dick' romanının ilk cümlesi olan ve dünya edebiyat tarihinin en ünlü açılış cümleleri arasında sayılan ifade hangisidir?", q_de: "Wie lautet der berühmte erste Satz von Herman Melvilles Roman 'Moby-Dick' aus dem Jahr 1851, der zu den bekanntesten Eröffnungssätzen der Weltliteratur gehört?", o_tr: ["Bana İsmail deyin", "Yıllar önce denizlere açıldım", "Kaptan Ahab kötü bir adamdı", "Beyaz balina her şeyin başlangıcıydı"], o_de: ["Nennt mich Ishmael", "Vor vielen Jahren fuhr ich zur See", "Kapitän Ahab war ein böser Mann", "Der weiße Wal war der Anfang von allem"] }
+            // ==================== SEVİYE 10-15 (Ardıç Jokeri Sahnede / ÇOK ZOR ŞAMPİYONLUK TURU!) ====================
+            { c: "Yabancı Sitcom", l: 10, a: 0, q_tr: "Arrested Development dizisinde Bluth ailesinin zenginliklerini kaybettikten sonra gizlice para sakladığı ve George Bluth karakterinin Her zaman para vardır dediği yer neresidir?", q_de: "Wo versteckt die Familie Bluth in Arrested Development heimlich ihr Geld, worauf der Satz Es ist immer Geld im... anspielt?", o_tr: ["Muz standı", "Gemi iskelesi", "Model ev duvarı", "Tavan arası"], o_de: ["Bananenstand", "Bootssteg", "Musterhauswand", "Dachboden"] },
+            { c: "Türk Sineması", l: 10, a: 0, q_tr: "Metin Erksan tarafından yönetilen ve 1964 Berlin Film Festivalinde Altın Ayı kazanarak Türk sinemasının uluslararası ilk büyük ödülünü getiren film hangisidir?", q_de: "Welcher Film von Metin Erksan gewann 1964 den Goldenen Bären auf der Berlinale und holte den ersten internationalen Auszeichnung für das türkische Kino?", o_tr: ["Susuz Yaz", "Sevmek Zamanı", "Yılanların Öcü", "Vesikalı Yarim"], o_de: ["Susuz Yaz", "Sevmek Zamanı", "Yılanların Öcü", "Vesikalı Yarim"] },
+            { c: "Biyoloji & Bilim", l: 10, a: 2, q_tr: "Bakterilerin virüslere karşı geliştirdiği bağışıklık sisteminden ilham alınarak keşfedilen ve canlıların DNA zincirinde istendiği gibi kesim ve düzenleme yapabilen gen teknolojisi nedir?", q_de: "Wie heißt die aus dem Immunsystem von Bakterien abgeleitete hochpräzise Gen Schere, mit der DNA Stränge gezielt geschnitten und verändert werden können?", o_tr: ["Klonlama", "Polimeraz Zincir Reaksiyonu", "CRISPR Cas9", "Jel Elektroforezi"], o_de: ["Klonen", "Polymerase Kettenreaktion", "CRISPR Cas9", "Gelelektrophorese"] },
+            { c: "Mitoloji Efsaneleri", l: 11, a: 2, q_tr: "Mısır mitolojisinde, yeraltı dünyasında ölülerin kalbini doğruluk tanrıçası Maat tüyüyle tartarak yargılayan çakal başlı ölüler tanrısı kimdir?", q_de: "Wie heißt der schakalköpfige Gott der ägyptischen Mythologie, der das Herz der Toten beim Totengericht gegen die Feder der Wahrheit abwiegt?", o_tr: ["Osiris", "Horus", "Anubis", "Seth"], o_de: ["Osiris", "Horus", "Anubis", "Seth"] },
+            { c: "Tarih & Medeniyet", l: 11, a: 1, q_tr: "İkinci Dünya Savaşı sırasında Alman ordusunun kullandığı kırılması imkansız sanılan şifreli haberleşme makinesi Enigma sistemini çözen İngiliz dahi matematiçi kimdir?", q_de: "Welcher brillante britische Mathematiker entschlüsselte im Zweiten Weltkrieg den Enigma Code der deutschen Wehrmacht und gilt als Vater der Informatik?", o_tr: ["John von Neumann", "Alan Turing", "Charles Babbage", "Kurt Gödel"], o_de: ["John von Neumann", "Alan Turing", "Charles Babbage", "Kurt Gödel"] },
+            { c: "Yabancı Sitcom", l: 12, a: 0, q_tr: "Community dizisinde Abed Nadir karakterinin en yakın arkadaşı Troy Barnes ile birlikte sunduğu ve asla gerçek bir kamerayla kaydedilmeyen o kurgusal sabah programının adı nedir?", q_de: "Wie heißt die fiktive Morgenshow ohne Kameras, die Troy und Abed in der Sitcom Community jeden Morgen veranstalten?", o_tr: ["Troy and Abed in the Morning", "Greendale Morning Live", "Study Room Breakfast", "Winger and Barnes Show"], o_de: ["Troy and Abed in the Morning", "Greendale Morning Live", "Study Room Breakfast", "Winger and Barnes Show"] },
+            { c: "Coğrafya", l: 12, a: 3, q_tr: "Dünya üzerinde herhangi bir kara parçasına en uzak olan coğrafi nokta kabul edilen ve Büyük Okyanus ortasında yer alan okyanus erişilmezlik noktasına ne ad verilir?", q_de: "Wie nennt man den Punkt im Pazifischen Ozean, der von jedem Festland und jeder Insel der Erde am weitesten entfernt ist?", o_tr: ["Sıfır Noktası", "Atlantis Çukuru", "Bermuda Şeytan Üçgeni", "Nemo Noktası"], o_de: ["Nullpunkt", "Atlantis Graben", "Bermuda Dreieck", "Point Nemo"] },
+            { c: "Biyoloji & Bilim", l: 12, a: 0, q_tr: "Kapalı bir sistemdeki düzensizlik ölçüsü olan entropinin zamanla sürekli artacağını belirterek evrenin nihai Isı Ölümüne gideceğini öngören fizik yasası hangisidir?", q_de: "Welches physikalische Gesetz besagt, dass die Entropie in einem geschlossenen System niemals abnimmt, und prognostiziert den Wärmetod des Universums?", o_tr: ["Termodinamiğin İkinci Yasası", "Termodinamiğin Üçüncü Yasası", "Hubble Yasası", "Boyle Mariotte Yasası"], o_de: ["Zweiter Hauptsatz der Thermodynamik", "Dritter Hauptsatz der Thermodynamik", "Hubble Gesetz", "Boyle Mariotte Gesetz"] },
+            { c: "Edebiyat & Yazarlar", l: 13, a: 1, q_tr: "Amerikalı bilimkurgu yazarı Ursula K Le Guin tarafından yazılan, Anarres ile Urras adlı iki farklı gezegen üzerinden anarşizm ve kapitalizmi kıyasladığı felsefi başyapıt hangisidir?", q_de: "Wie heißt der philosophische Science Fiction Weltroman von Ursula K Le Guin, der die Gesellschaften der Planeten Anarres und Urras vergleicht?", o_tr: ["Karanlığın Sol Eli", "Mülksüzler", "Yerdeniz Büyücüsü", "Dünyaya Orman Denir"], o_de: ["Die linke Hand der Dunkelheit", "Die Enteigneten", "Der Magier von Erdsee", "Das Wort für Welt ist Wald"] },
+            { c: "Matematik & Mantık", l: 13, a: 0, q_tr: "Oyun teorisinde, bir oyuncunun diğer oyuncuların stratejilerini bildiği varsayımı altında, stratejisini tek taraflı değiştirerek durumunu iyileştiremediği denge durumuna hangi Nobel ödüllü matematiçinin adı verilmiştir?", q_de: "Nach welchem Nobelpreisträger ist im Bereich der Spieltheorie ein Gleichgewichtszustand benannt, bei dem kein Spieler durch einseitiges Abweichen gewinnen kann?", o_tr: ["John Nash", "John von Neumann", "Albert Einstein", "Richard Feynman"], o_de: ["John Nash", "John von Neumann", "Albert Einstein", "Richard Feynman"] },
+            { c: "Genel Kültür", l: 14, a: 0, q_tr: "Ludwig Wittgenstein tarafından kaleme alınan, Dilimin sınırları dünyamın sınırlarıdır sözünü içeren ve Üzerine konuşulamayan konusunda susmalı cümlesiyle biten yedi temel önermelik eser hangisidir?", q_de: "Wie heißt das aus sieben Hauptsätzen bestehende Werk von Ludwig Wittgenstein, das mit dem Satz endet Wovon man nicht sprechen kann, darüber muss man schweigen?", o_tr: ["Tractatus Logico Philosophicus", "Felsefi Soruşturmalar", "Kesinlik Üzerine", "Mavi ve Kahverengi Kitaplar"], o_de: ["Tractatus logico philosophicus", "Philosophische Untersuchungen", "Über Gewissheit", "Das Blaue und das Braune Buch"] },
+            { c: "Biyoloji & Bilim", l: 14, a: 3, q_tr: "Uzayda bir kara deliğin etrafında, yerçekimi gücünün o kadar muazzam olduğu ve ışık dahil hiçbir maddenin kaçamadığı o teorik sınıra ne ad verilir?", q_de: "Wie nennt man die Grenzfläche um ein Schwarzes Loch, ab der die Gravitation so extrem ist, dass nichts, nicht einmal Licht, mehr entkommen kann?", o_tr: ["Tekillik", "Yığılma Diski", "Ergosfer", "Olay Ufku"], o_de: ["Singularität", "Akkretionsscheibe", "Ergosphäre", "Ereignishorizont"] },
+            { c: "Matematik & Mantık", l: 15, a: 0, q_tr: "Asal sayıların dağılımını açıklamak için ortaya atılan, Zeta fonksiyonunun sıfırlarıyla ilgili olan ve günümüzün en büyük çözülememiş matematik problemi sayılan hipotez hangisidir?", q_de: "Wie heißt die unbewiesene Vermutung über die Nullstellen der Zeta Funktion, die die Verteilung der Primzahlen beschreibt und als eines der Millennium Probleme gilt?", o_tr: ["Riemann Hipotezi", "Goldbach Kestirimi", "Collatz Sanısı", "Poincare Sanısı"], o_de: ["Riemannsche Vermutung", "Goldbachsche Vermutung", "Collatz Problem", "Poincare Vermutung"] },
+            { c: "Mitoloji Efsaneleri", l: 15, a: 2, q_tr: "İskandinav mitolojisinde dokuz diyarın tamamını dalları ve kökleri arasında birbirine bağlayan efsanevi evrensel dev hayat ağacının adı nedir?", q_de: "Wie heißt in der nordischen Mythologie die riesige Weltenesche, die als Weltenbaum den Kosmos verkörpert und alle neun Welten verbindet?", o_tr: ["Valhalla", "Asgard", "Yggdrasil", "Bifrost"], o_de: ["Walhall", "Asgard", "Yggdrasil", "Bifrost"] }
         ];
 
         let currentLevel = 1;
@@ -869,41 +626,9 @@
         let timer = null;
         let timeLeft = 30;
         let isLocked = false;
-        let musicQuestionCount = 0;
         let isJoker2XActive = false;
         let joker2XChances = 2;
-
-        // ARKA PLANDA ÖN YÜKLEME VE STÜDYO BGM YÖNETİMİ
-        const PRELOADED_AUDIOS = {};
-        function preloadAudioFiles() {
-            RAW_QUESTIONS.forEach(q => {
-                if (q.audioUrl && !PRELOADED_AUDIOS[q.audioUrl]) {
-                    const bgAudio = new Audio();
-                    bgAudio.src = q.audioUrl;
-                    bgAudio.preload = "auto";
-                    PRELOADED_AUDIOS[q.audioUrl] = bgAudio;
-                }
-            });
-        }
-
-        function handleBGM(action) {
-            const bgm = document.getElementById('bgm-player');
-            if (!bgm || isRadioPlaying) return; 
-            
-            if (!bgm.src) {
-                bgm.src = "https://upload.wikimedia.org/wikipedia/commons/e/e3/Suspense_01.ogg";
-                bgm.volume = 0.2; 
-            }
-
-            if (action === 'play') {
-                bgm.play().catch(() => {});
-            } else if (action === 'pause') {
-                bgm.pause();
-            } else if (action === 'stop') {
-                bgm.pause();
-                bgm.currentTime = 0;
-            }
-        }
+        let categoryCounts = {};
 
         function renderMoneyTree() {
             const list = document.getElementById('money-list');
@@ -921,7 +646,7 @@
             playSound('select');
             selectedCategory = document.getElementById('category-select').value;
             currentLevel = 1;
-            musicQuestionCount = 0;
+            categoryCounts = {};
 
             document.getElementById('screen-lobby').classList.add('hidden');
             document.getElementById('screen-game').classList.remove('hidden');
@@ -946,6 +671,13 @@
                 j2x.classList.add('bg-gray-800', 'hover:bg-gray-700', 'border-yellow-500/40', 'text-yellow-400', 'cursor-pointer', 'shadow-md');
             }
 
+            if (currentLevel >= 11) {
+                const jArdic = document.getElementById('joker-ardic');
+                jArdic.disabled = false;
+                jArdic.classList.remove('bg-gray-900', 'border-gray-700', 'text-gray-600', 'cursor-not-allowed');
+                jArdic.classList.add('bg-gray-800', 'hover:bg-gray-700', 'border-yellow-500/40', 'text-yellow-400', 'cursor-pointer', 'shadow-md');
+            }
+
             const d = DICTIONARY[currentLang];
             for(let i=0; i<4; i++) {
                 const btn = document.getElementById(`btn-${i}`);
@@ -955,42 +687,35 @@
             }
 
             let pool = RAW_QUESTIONS.filter(q => q.l === currentLevel);
-            if (selectedCategory !== "Karışık") pool = pool.filter(q => q.c === selectedCategory);
             
-            if (currentLevel < 3 || currentLevel > 5 || musicQuestionCount >= 2) {
-                pool = pool.filter(q => !q.audioUrl);
+            if (selectedCategory !== "Karışık") {
+                pool = pool.filter(q => q.c === selectedCategory);
+            } else {
+                pool = pool.filter(q => {
+                    let limit = 3;
+                    if (q.c === "Müzik & Sanat" || q.c === "Yabancı Sitcom") limit = 2;
+                    if (q.c === "Türk Sineması") limit = 1;
+                    return (categoryCounts[q.c] || 0) < limit;
+                });
             }
 
-            if (pool.length === 0) pool = RAW_QUESTIONS.filter(q => q.l === currentLevel && !q.audioUrl);
+            if (pool.length === 0) pool = RAW_QUESTIONS.filter(q => q.l === currentLevel);
+            if (pool.length === 0) pool = RAW_QUESTIONS;
 
             const randomIndex = Math.floor(Math.random() * pool.length);
             currentQuestion = pool[randomIndex];
+            
+            categoryCounts[currentQuestion.c] = (categoryCounts[currentQuestion.c] || 0) + 1;
 
             document.getElementById('game-category-badge').innerText = d.cats[currentQuestion.c] || currentQuestion.c;
             document.getElementById('question-number-badge').innerText = `${d.questionPrefix} ${currentLevel}/15`;
             document.getElementById('question-text').innerText = currentLang === 'TR' ? currentQuestion.q_tr : currentQuestion.q_de;
-            
-            const musicBox = document.getElementById('music-player-container');
-            const introPlayer = document.getElementById('intro-player');
-            
-            if (currentQuestion.audioUrl) {
-                musicQuestionCount++;
-                handleBGM('pause');
-                introPlayer.src = currentQuestion.audioUrl;
-                musicBox.classList.remove('hidden');
-                introPlayer.play().catch(() => {});
-            } else {
-                introPlayer.pause();
-                introPlayer.src = "";
-                musicBox.classList.add('hidden');
-                handleBGM('play');
-            }
 
             for(let i=0; i<4; i++) {
                 document.getElementById(`text-${i}`).innerText = currentLang === 'TR' ? currentQuestion.o_tr[i] : currentQuestion.o_de[i];
             }
 
-            if (currentLevel <= 7 && !currentQuestion.audioUrl) {
+            if (currentLevel <= 7) {
                 document.getElementById('timer-box').classList.remove('hidden');
                 startTimer(30);
             } else {
@@ -1134,6 +859,17 @@
             btn.classList.remove('border-yellow-500/40', 'text-yellow-400');
         }
 
+        function useJokerArdic() {
+            if (isLocked || currentLevel < 11) return;
+            playSound('select');
+            const btn = document.getElementById('joker-ardic');
+            btn.disabled = true;
+            btn.classList.add('opacity-30', 'cursor-not-allowed');
+            btn.classList.remove('border-yellow-500/40', 'text-yellow-400');
+
+            alert(DICTIONARY[currentLang].ardicText);
+        }
+
         function withdrawMoney() {
             if (isLocked || currentLevel === 1) return;
             playSound('select');
@@ -1156,14 +892,6 @@
         }
 
         function showResult(prize, isWinner) {
-            handleBGM('stop');
-            const introPlayer = document.getElementById('intro-player');
-            if (introPlayer) {
-                introPlayer.pause();
-                introPlayer.src = "";
-            }
-            document.getElementById('music-player-container').classList.add('hidden');
-
             document.getElementById('screen-game').classList.add('hidden');
             document.getElementById('screen-game').classList.remove('grid');
             const resScreen = document.getElementById('screen-result');
@@ -1183,7 +911,6 @@
 
         window.onload = () => {
             updateUI();
-            preloadAudioFiles();
         };
     </script>
 </body>
