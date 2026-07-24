@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kim Milyoner Olmak İster? - Hardcore Müzik Sınırlandırmalı Sürüm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        studio: '#030b1e',
+                        gold: '#d4af37',
+                        goldHover: '#f3e5ab'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: radial-gradient(circle, #0a1b3a 0%, #020611 100%); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; min-height: 100vh; }
+        .btn-option { background: linear-gradient(180deg, #0f2b5c 0%, #071630 100%); border: 2px solid #5a83c5; transition: all 0.2s; }
+        .btn-option:hover { border-color: #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+        .btn-selected { background: linear-gradient(180deg, #c58300 0%, #7a5000 100%); border-color: #ffc107; }
+        .btn-correct { background: linear-gradient(180deg, #1b7a00 0%, #0d3d00 100%); border-color: #4caf50; animation: pulse 1s infinite; }
+        .btn-wrong { background: linear-gradient(180deg, #7a0000 0%, #3d0000 100%); border-color: #f44336; }
+        .ladder-item { transition: all 0.3s; }
+        .ladder-active { background-color: #d4af37; color: #000; font-weight: bold; border-radius: 4px; padding: 2px 8px; transform: scale(1.05); }
+        .category-card { border: 2px solid #3b5998; transition: all 0.3s; cursor: pointer; }
+        .category-card.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.15); box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+    </style>
+</head>
+<body class="p-4 md:p-8 max-w-7xl mx-auto flex flex-col justify-center min-h-screen">
+
+    <!-- 1. EKRAN: KATEGORİ SEÇİM LOBİSİ -->
+    <div id="lobby-screen" class="w-full max-w-5xl mx-auto bg-black/60 border-2 border-gold rounded-3xl p-6 md:p-10 text-center shadow-2xl">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-gold tracking-wider mb-2">STÜDYOYA HOŞ GELDİNİZ</h1>
+        <p class="text-gray-300 text-base mb-6">Yarışmada karşınıza çıkmasını istediğiniz temaları seçin. (Müzik soruları oyun boyunca en fazla 2 adet ve hardcore seviyede çıkacaktır!)</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8 text-left text-sm">
+            <div onclick="toggleCategory('muzik')" id="cat-muzik" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
+                <div><h3 class="font-bold text-white">🎵 Müzik & Rock/Pop</h3><p class="text-xs text-gray-400">Max 2 adet zorlu dinlemeli/sözlü şarkı sorusu</p></div>
+                <div class="text-gold font-bold text-lg check-icon">✓</div>
+            </div>
+            <div onclick="toggleCategory('cografya')" id="cat-cografya" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
+                <div><h3 class="font-bold text-white">🌍 Coğrafya & Keşifler</h3><p class="text-xs text-gray-400">Başkentler, dağlar, derin çukurlar</p></div>
+                <div class="text-gold font-bold text-lg check-icon">✓</div>
+            </div>
+            <div onclick="toggleCategory('bilim')" id="cat-bilim" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
+                <div><h3 class="font-bold text-white">🔬 Biyoloji & Bilim</h3><p class="text-xs text-gray-400">Anatomi, hücre, fizik ve elementler</p></div>
+                <div class="text-gold font-bold text-lg check-icon">✓</div>
+            </div>
+            <div onclick="toggleCategory('edebiyat')" id="cat-edebiyat" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
+                <div><h3 class="font-bold text-white">📚 Edebiyat & Yazarlar</h3><p class="text-xs text-gray-400">Klasikler, şiirler, yazar-eser</p></div>
+                <div class="text-gold font-bold text-lg check-icon">✓</div>
+            </div>
+            <div onclick="toggleCategory('matematik')" id="cat-matematik" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
+                <div><h3 class="font-bold text-white">📐 Matematik & Mantık</h3><p class="text-xs text-gray-400">Sayiler, geometri, teoremler</p></div>
+                <div class="text-gold font-bold text-lg check-icon">✓</div>
+            </div>
+            <div onclick="toggleCategory('tarih')" id="cat-tarih" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
+                <div><h3 class="font-bold text-white">📜 Tarih & Medeniyet</h3><p class="text-xs text-gray-400">İmparatorluklar, savaşlar ve antlaşmalar</p></div>
+                <div class="text-gold font-bold text-lg check-icon">✓</div>
+            </div>
+            <div onclick="toggleCategory('sinema')" id="cat-sinema" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
+                <div><h3 class="font-bold text-white">🎬 Sinema & TV</h3><p class="text-xs text-gray-400">Yeşilçam, Hollywood ve efsane replikler</p></div>
+                <div class="text-gold font-bold text-lg check-icon">✓</div>
+            </div>
+            <div onclick="toggleCategory('genel')" id="cat-genel" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
+                <div><h3 class="font-bold text-white">💡 Genel Kültür</h3><p class="text-xs text-gray-400">Deyimler, kelime oyunları, gelenekler</p></div>
+                <div class="text-gold font-bold text-lg check-icon">✓</div>
+            </div>
+            <div onclick="toggleCategory('spor')" id="cat-spor" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
+                <div><h3 class="font-bold text-white">⚽ Spor & Oyun</h3><p class="text-xs text-gray-400">Futbol kuralları, olimpiyatlar ve rekorlar</p></div>
+                <div class="text-gold font-bold text-lg check-icon">✓</div>
+            </div>
+        </div>
+
+        <button onclick="startGame()" class="bg-gold hover:bg-goldHover text-black font-extrabold text-xl px-12 py-4 rounded-full shadow-lg transform hover:scale-105 transition-all">
+            YARIŞMAYI BAŞLAT 🚀
+        </button>
+    </div>
+
+    <!-- 2. EKRAN: OYUN SAHNESİ -->
+    <div id="game-screen" class="hidden flex-col md:flex-row items-center justify-between w-full">
+        
+        <!-- SOL ALAN: Soru ve Butonlar -->
+        <div class="flex-1 w-full md:mr-8 flex flex-col justify-between min-h-[80vh]">
+            
+            <!-- Üst Bar -->
+            <div class="flex justify-between items-center bg-black/40 p-3 md:p-4 rounded-xl border border-blue-900/50 mb-4">
+                <div class="flex gap-2 flex-wrap">
+                    <button id="joker-50" onclick="use5050()" class="bg-blue-900/80 hover:bg-blue-800 border border-gold px-3 py-1.5 rounded-full font-bold text-xs shadow-lg">50:50</button>
+                    <button id="joker-aud" onclick="useAudience()" class="bg-blue-900/80 hover:bg-blue-800 border border-gold px-3 py-1.5 rounded-full font-bold text-xs shadow-lg">👥 Seyirci</button>
+                    <button id="joker-phone" onclick="usePhone()" class="bg-blue-900/80 hover:bg-blue-800 border border-gold px-3 py-1.5 rounded-full font-bold text-xs shadow-lg">📞 Telefon</button>
+                    <button id="joker-2x" onclick="use2x()" class="bg-blue-900/80 hover:bg-blue-800 border border-gold px-3 py-1.5 rounded-full font-bold text-xs shadow-lg hidden animate-bounce">✨ 2x Cevap</button>
+                </div>
+                <div class="text-xs text-blue-300 ml-2 flex items-center gap-3">
+                    <span id="active-category-tag" class="bg-blue-900 px-3 py-1 rounded-full border border-blue-500 text-gold font-semibold uppercase">Genel</span>
+                    <div><span>Zorluk: </span><span id="difficulty-display" class="text-gold font-bold">Seviye 1</span></div>
+                </div>
+            </div>
+
+            <!-- 30 SANİYE SÜRE SAYACI (1-7. Sorular İçin) -->
+            <div id="timer-box" class="hidden mb-4 bg-gradient-to-r from-red-950/80 via-red-900/50 to-red-950/80 border-2 border-red-500/80 p-2.5 rounded-xl text-center shadow-lg animate-pulse">
+                <span class="text-red-300 font-bold text-sm uppercase tracking-widest mr-2">⏱️ Kalan Süre:</span>
+                <span id="timer-seconds" class="text-white font-black text-2xl font-mono">30</span>
+                <span class="text-red-300 font-bold text-sm ml-1">Saniye</span>
+            </div>
+
+            <!-- Soru Kutusu -->
+            <div class="my-auto">
+                <div class="bg-gradient-to-b from-blue-950 to-black border-2 border-gold rounded-2xl p-6 md:p-8 text-center shadow-2xl relative mb-6">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-black font-extrabold px-6 py-0.5 rounded-full text-sm uppercase tracking-widest">
+                        Soru <span id="question-number">1</span>
+                    </div>
+                    <h2 id="question-text" class="text-lg md:text-2xl font-semibold leading-relaxed mt-4">Soru yükleniyor...</h2>
+                </div>
+
+                <!-- Cevap Şıkları -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button onclick="selectAnswer('A')" id="btn-A" class="btn-option p-4 rounded-xl text-left font-medium flex items-center text-lg">
+                        <span class="text-gold font-bold mr-3 text-xl">A:</span> <span id="text-A">...</span>
+                    </button>
+                    <button onclick="selectAnswer('B')" id="btn-B" class="btn-option p-4 rounded-xl text-left font-medium flex items-center text-lg">
+                        <span class="text-gold font-bold mr-3 text-xl">B:</span> <span id="text-B">...</span>
+                    </button>
+                    <button onclick="selectAnswer('C')" id="btn-C" class="btn-option p-4 rounded-xl text-left font-medium flex items-center text-lg">
+                        <span class="text-gold font-bold mr-3 text-xl">C:</span> <span id="text-C">...</span>
+                    </button>
+                    <button onclick="selectAnswer('D')" id="btn-D" class="btn-option p-4 rounded-xl text-left font-medium flex items-center text-lg">
+                        <span class="text-gold font-bold mr-3 text-xl">D:</span> <span id="text-D">...</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Alt Bilgi / Durum -->
+            <div id="status-message" class="h-10 text-center font-bold text-lg text-gold tracking-wide mt-4 flex items-center justify-center"></div>
+        </div>
+
+        <!-- SAĞ ALAN: Para Ağacı -->
+        <div class="w-full md:w-72 bg-black/60 border border-blue-900/50 rounded-2xl p-4 flex flex-col justify-between mt-6 md:mt-0 shadow-2xl">
+            <h3 class="text-center font-extrabold text-gold tracking-wider border-b border-blue-900/50 pb-2 mb-2 uppercase text-sm">Ödül Merdiveni</h3>
+            <ul id="prize-ladder" class="flex flex-col-reverse gap-1 text-sm font-medium"></ul>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4 z-50">
+        <div class="bg-gradient-to-b from-blue-950 to-studio border-2 border-gold rounded-2xl max-w-md w-full p-6 text-center shadow-2xl">
+            <h3 id="modal-title" class="text-2xl font-bold text-gold mb-4">Joker</h3>
+            <div id="modal-content" class="text-lg mb-6 text-gray-200 leading-relaxed"></div>
+            <button onclick="closeModal()" class="bg-gold hover:bg-goldHover text-black font-extrabold px-8 py-2 rounded-full shadow-lg">Anladım</button>
+        </div>
+    </div>
+
+    <script>
+        const prizes = [
+            { step: 1, amount: "1.000 TL", safe: false },
+            { step: 2, amount: "2.000 TL", safe: false },
+            { step: 3, amount: "3.000 TL", safe: true },
+            { step: 4, amount: "5.000 TL", safe: false },
+            { step: 5, amount: "7.500 TL", safe: false },
+            { step: 6, amount: "10.000 TL", safe: false },
+            { step: 7, amount: "30.000 TL", safe: true },
+            { step: 8, amount: "50.000 TL", safe: false },
+            { step: 9, amount: "100.000 TL", safe: false },
+            { step: 10, amount: "200.000 TL", safe: false },
+            { step: 11, amount: "300.000 TL", safe: false },
+            { step: 12, amount: "500.000 TL", safe: false },
+            { step: 13, amount: "1.000.000 TL", safe: false },
+            { step: 14, amount: "2.000.000 TL", safe: false },
+            { step: 15, amount: "5.000.000 TL", safe: true }
+        ];
+
+        let selectedCategories = ['muzik', 'cografya', 'bilim', 'edebiyat', 'matematik', 'tarih', 'sinema', 'genel', 'spor'];
+        let categoryUsageCounts = {};
+        let musicQuestionCount = 0; // Müzik sorularını max 2 ile sınırlamak için sayaç!
+
+        function toggleCategory(cat) {
+            const el = document.getElementById(`cat-${cat}`);
+            if (selectedCategories.includes(cat)) {
+                if (selectedCategories.length === 1) {
+                    alert("En az bir kategori seçili kalmalıdır digga!");
+                    return;
+                }
+                selectedCategories = selectedCategories.filter(c => c !== cat);
+                el.classList.remove('selected');
+                el.querySelector('.check-icon').innerText = "";
+            } else {
+                selectedCategories.push(cat);
+                el.classList.add('selected');
+                el.querySelector('.check-icon').innerText = "✓";
+            }
+        }
+
+        function startGame() {
+            categoryUsageCounts = {};
+            musicQuestionCount = 0;
+            selectedCategories.forEach(c => categoryUsageCounts[c] = 0);
+            document.getElementById('lobby-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'flex';
+            initLadder();
+            loadQuestion();
+        }
+
+        // TÜRK POP & ROCK ARŞİVİ (Zorlaştırılmış, Maksimum 2 Müzik Sorusu Sınırı)
+        const allQuestions = [
+            // --- MÜZİK KATEGORİSİ (Zorlu & Dinletmeli Türk Pop/Rock) ---
+            { level: 3, cat: 'muzik', isAudio: true, soru: "[🎵 DİNLEMELİ SORU - ŞARKIYI ÇALIN!] Türk rock müziğinin efsane isimlerinden Yavuz Çetin'in, hüzünlü ve virtüöz gitar sololarıyla hafızalara kazınan ve erken yaşta kaybettiğimiz sanatçının anısına adanan o kült şarkısı hangisidir?", A: "Dünya", B: "Sokak Kedisi", C: "Kimse Bilemez", D: "Bodrum", cevap: "A" },
+            { level: 6, cat: 'muzik', isAudio: true, soru: "[🎵 DİNLEMELİ SORU - ŞARKIYI ÇALIN!] Türkçe alternatif rock sahnesinin öncülerinden Kurban grubunun, 1999 çıkışlı ilk albümünde yer alan ve grubun en sert, en dinamik parçalarından biri olan şarkı hangisidir?", A: "Yalan", B: "Sııra", C: "Tövbeler Olsun", D: "Ağlama", cevap: "A" },
+            { level: 8, cat: 'muzik', isAudio: false, soru: "Türk pop müziğinin devleşmesinde en büyük aranjörlerden biri olan, Sezen Aksu'nun 'Seni Seviyorum' ve 'Gülümse' albümlerinin de müzik direktörlüğünü yapan efsane müzisyen kimdir?", A: "Onno Tunç", B: "Uzay Heparı", C: "Ozan Çolakoğlu", D: "Atilla Özdemiroğlu", cevap: "A" },
+            { level: 11, cat: 'muzik', isAudio: false, soru: "Mor ve Ötesi grubunun 2004 yılında yayımlanan ve grubun politik/protest duruşunu sert bir dille ortaya koyan 'Araf' albümünde yer alan, İsmet Özel'in aynı adlı şiirinden bestelenen şarkı hangisidir?", A: "Cambaz", B: "Açık Adres", C: "Desinler Ki", D: "Rezil", cevap: "C" },
+            { level: 13, cat: 'muzik', isAudio: false, soru: "Teoman'ın 2001 çıkışlı 'Gönülçelen' albümünde yer alan, sözleri Orhan Veli Kanık'ın meşhur şiirinden uyarlanan ve albüme adını veren şarkının adı nedir?", A: "İstanbul'da Sonbahar", B: "Gönülçelen", C: "Paramparça", D: "Uykusuz Her Gece", cevap: "B" },
+
+            // --- DİĞER KATEGORİLER (Akademik & Hardcore Zorluk) ---
+            { level: 1, cat: 'cografya', soru: "Türkiye'nin en fazla yağış alan ve çayıyla meşhur olan Karadeniz ilimiz hangisidir?", A: "Trabzon", B: "Rize", C: "Artvin", D: "Samsun", cevap: "B" },
+            { level: 1, cat: 'matematik', soru: "Bir destede bulunan ürün sayısı ile bir düzinede bulunan ürün sayısının toplamı kaçtır?", A: "20", B: "22", C: "24", D: "25", cevap: "B" },
+            { level: 1, cat: 'bilim', soru: "İnsan vücudunda kanı damarlar aracılığıyla tüm vücuda pompalamakla görevli organ hangisidir?", A: "Akciğer", B: "Karaciğer", C: "Kalp", D: "Böbrek", cevap: "C" },
+            { level: 2, cat: 'cografya', soru: "Dünyanın en küçük yüzölçümüne sahip olan ve İtalya'nın Roma şehri içinde yer alan bağımsız devlet hangisidir?", A: "Monako", B: "San Marino", C: "Vatikan", D: "Andorra", cevap: "C" },
+            { level: 2, cat: 'matematik', soru: "Bir dik üçgenin dik kenarlarının uzunlukları 3 cm ve 4 cm ise, hipotenüsün uzunluğu kaç cm'dir?", A: "5", B: "6", C: "7", D: "8", cevap: "A" },
+            { level: 2, cat: 'bilim', soru: "Yeşil bitkilerin güneş ışığı, su ve karbondioksit kullanarak besin ve oksijen üretmesi olayına ne ad verilir?", A: "Solunum", B: "Fotosentez", C: "Mayalanma", D: "Buharlaşma", cevap: "B" },
+            { level: 3, cat: 'edebiyat', soru: "Edebiyatımızda 'Vatan Şairi' olarak anılan ve 'İntibah' ile 'Vatan Yahut Silistre' eserlerinin sahibi Tanzimat yazarı kimdir?", A: "Namık Kemal", B: "Ziya Paşa", C: "Şinasi", D: "Ahmet Mithat Efendi", cevap: "A" },
+            { level: 3, cat: 'tarih', soru: "Osmanlı Devleti'nde ilk resmi matbaayı kurarak Türk yayıncılık tarihinde çığır açan Macar asıllı Osmanlı müteferrikası kimdir?", A: "İbrahim Müteferrika", B: "Evliya Çelebi", C: "Katip Çelebi", D: "Lagari Hasan Çelebi", cevap: "A" },
+            { level: 4, cat: 'bilim', soru: "Periyodik tablodaki sembolü 'Fe' olan, kanımızdaki hemoglobinin yapısında da bulunan ve endüstride en çok kullanılan metal hangisidir?", A: "Flor", B: "Fosfor", C: "Demir", D: "Çinko", cevap: "C" },
+            { level: 4, cat: 'sinema', soru: "Quentin Tarantino'nun yönettiği 1994 yapımı 'Ucuz Roman' (Pulp Fiction) filminde Vincent Vega karakterini hangi aktör canlandırmıştır?", A: "Bruce Willis", B: "Samuel L. Jackson", C: "John Travolta", D: "Brad Pitt", cevap: "C" },
+            { level: 5, cat: 'matematik', soru: "1'den başlayıp kendisine kadar olan tüm pozitif tam sayıların çarpımını ifade eden ve ünlem (!) işaretiyle gösterilen matematiksel kavram nedir?", A: "Logaritma", B: "Faktöriyel", C: "Türev", D: "İntegral", cevap: "B" },
+            { level: 5, cat: 'cografya', soru: "Akdeniz'i Kızıldeniz'e bağlayan ve Mısır topraklarında yer alan dünyanın en önemli insan yapımı su kanalı hangisidir?", A: "Panama Kanalı", B: "Süveyş Kanalı", C: "Kiel Kanalı", D: "Korint Kanalı", cevap: "B" },
+            { level: 6, cat: 'edebiyat', soru: "Türk edebiyatının ilk yerli romanı olarak kabul edilen 'Taaşşuk-ı Talat ve Fitnat' adlı eserin yazarı kimdir?", A: "Şemseddin Sami", B: "Recaizade Mahmut Ekrem", C: "Samipaşazade Sezai", D: "Halit Ziya Uşaklıgil", cevap: "A" },
+            { level: 6, cat: 'bilim', soru: "İnsan gözünün ağ tabakasında bulunan, renkli görmeyi ve gündüz net görmeyi sağlayan ışığa duyarlı hücrelere ne ad verilir?", A: "Çomak hücreleri", B: "Koni hücreleri", C: "Ganglion hücreleri", D: "Schwann hücreleri", cevap: "B" },
+            { level: 7, cat: 'matematik', soru: "Her terimin kendisinden önceki iki terimin toplamı olduğu meşhur sayı dizisinin (0, 1, 1, 2, 3, 5, 8...) 8. terimi kaçtır?", A: "11", B: "13", C: "15", D: "21", cevap: "B" },
+            { level: 7, cat: 'cografya', soru: "Avrupa ile Asya kıtalarını coğrafi olarak birbirinden ayıran ve Rusya topraklarında kuzey-güney doğrultusunda uzanan dağ silsilesi hangisidir?", A: "Alp Dağları", B: "Ural Dağları", C: "Kafkas Dağları", D: "Karpat Dağları", cevap: "B" },
+            { level: 8, cat: 'bilim', soru: "Hücre içinde hücresel solunum yoluyla enerji (ATP) üretiminden sorumlu olan ve 'hücrenin santrali' olarak bilinen çift zarlı organel hangisidir?", A: "Ribozom", B: "Mitokondri", C: "Golgi Aygıtı", D: "Lizozom", cevap: "B" },
+            { level: 9, cat: 'edebiyat', soru: "Oğuz Atay'ın 1971 yılında yayımlanan, Selim Işık ve Turgut Özben karakterleri üzerinden yabancılaşmayı anlatan ilk postmodern başyapıtı hangisidir?", A: "Anayurt Oteli", B: "Tutunamayanlar", C: "Saatleri Ayarlama Enstitüsü", D: "Aylak Adam", cevap: "B" },
+            { level: 9, cat: 'matematik', soru: "Bir dik üçgende dik kenarların karelerinin toplamının hipotenüsün karesine eşit olduğunu belirten teorem hangi antik Yunan matematikçinin adını taşır?", A: "Thales", B: "Öklid", C: "Pisagor", D: "Arşimet", cevap: "C" },
+            { level: 10, cat: 'cografya', soru: "Büyük Sahra Çölü'nde yer alan ve uzaydan bakıldığında devasa bir gözü anımsatan, 50 km çapındaki dairesel Richat Yapısı hangi ülkededir?", A: "Mısır", B: "Moritanya", C: "Cezayir", D: "Fas", cevap: "B" },
+            { level: 10, cat: 'bilim', soru: "Evrendeki tüm maddelerin kütle kazanmasını sağlayan mekanizmayı açıklayan ve 'Tanrı Parçacığı' olarak bilinen atomaltı parçacık hangisidir?", A: "Higgs Bozonu", B: "Muon", C: "Pozitron", D: "Tau Nötrinosu", cevap: "A" },
+            { level: 11, cat: 'edebiyat', soru: "Divan edebiyatında şairlerin şiirlerinde kullandıkları takma ad veya mahlaslara ne ad verilir?", A: "Nazire", B: "Mahlas / Tapşırma", C: "Tevriye", D: "Mazmun", cevap: "B" },
+            { level: 12, cat: 'bilim', soru: "Sinir hücreleri arasındaki sinaptik boşlukta kimyasal iletişimi sağlayan dopamin, serotonin ve asetilkolin gibi moleküllere ne denir?", A: "Hormon", B: "Nörotransmitter", C: "Enzim", D: "Antikor", cevap: "B" },
+            { level: 12, cat: 'cografya', soru: "Dünyanın en derin ikinci deniz çukuru olan ve Atlantik Okyanusu'nda yer alan, yaklaşık 8.300 metre derinliğindeki çukurun adı nedir?", A: "Mariana Çukuru", B: "Porto Riko Çukuru", C: "Sunda Çukuru", D: "Tonga Çukuru", cevap: "B" },
+            { level: 13, cat: 'edebiyat', soru: "İrlandalı yazar James Joyce'un 'bilinçakışı' tekniğiyle yazdığı, 16 Haziran 1904 gününde Dublin'de geçen dev romanı hangisidir?", A: "Ulysses", B: "Finnegans Wake", C: "Sanatçının Gençlik Portresi", D: "Dublinliler", cevap: "A" },
+            { level: 14, cat: 'matematik', soru: "Asal sayıların dağılımını açıkladığı düşünülen ve Clay Matematik Enstitüsü'nün 1 Milyon Dolar ödüllü Milenyum Problemlerinden biri olan hipotez hangisidir?", A: "Goldbach Sanısı", B: "Riemann Hipotezi", C: "Poincaré Sanısı", D: "P=NP Problemi", cevap: "B" },
+            { level: 14, cat: 'bilim', soru: "1983 yılında Kary Mullis tarafından geliştirilen ve DNA dizilerinin kısa sürede milyonlarca kez kopyalanmasını sağlayan moleküler biyoloji tekniğinin kısaltması nedir?", A: "CRISPR", B: "ELISA", C: "PCR", D: "RNAi", cevap: "C" },
+            { level: 15, cat: 'edebiyat', soru: "Alman yazar Thomas Mann'a 1929 Nobel Edebiyat Ödülü'nü kazandıran, İsviçre Alplerinde bir sanatoryumda geçen dev eseri hangisidir?", A: "Buddenbrooklar", B: "Büyülü Dağ", C: "Venedik'te Ölüm", D: "Dr. Faustus", cevap: "B" },
+            { level: 15, cat: 'cografya', soru: "Dünyanın en yüksek şelalesi olan ve yaklaşık 979 metre yükseklikten dökülen Angel Şelalesi hangi Güney Amerika ülkesindedir?", A: "Brezilya", B: "Arjantin", C: "Kolombiya", D: "Venezuela", cevap: "D" }
+        ];
+
+        let currentStep = 1;
+        let currentQuestion = null;
+        let isAnswered = false;
+        let guaranteedPrize = "0 TL";
+        let is2xActive = false;
+        let secondChance = false;
+        let timerInterval = null;
+        let timeLeft = 30;
+
+        function initLadder() {
+            const ladder = document.getElementById('prize-ladder');
+            ladder.innerHTML = '';
+            prizes.forEach(p => {
+                const li = document.createElement('li');
+                li.id = `step-${p.step}`;
+                li.className = `ladder-item flex justify-between px-3 py-1 text-gray-400 ${p.safe ? 'text-gold font-bold' : ''}`;
+                li.innerHTML = `<span>${p.step}. ${p.safe ? '♦ ' : ''}</span><span>${p.amount}</span>`;
+                ladder.appendChild(li);
+            });
+            updateLadder();
+        }
+
+        function updateLadder() {
+            document.querySelectorAll('.ladder-item').forEach(el => el.classList.remove('ladder-active'));
+            const activeEl = document.getElementById(`step-${currentStep}`);
+            if (activeEl) activeEl.classList.add('ladder-active');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            const timerBox = document.getElementById('timer-box');
+            
+            if (currentStep <= 7 && !currentQuestion.isAudio) {
+                timeLeft = 30;
+                document.getElementById('timer-seconds').innerText = timeLeft;
+                timerBox.classList.remove('hidden');
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById('timer-seconds').innerText = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        timeOutGameOver();
+                    }
+                }, 1000);
+            } else {
+                timerBox.classList.add('hidden');
+            }
+        }
+
+        function timeOutGameOver() {
+            if (isAnswered) return;
+            isAnswered = true;
+            document.getElementById('status-message').innerText = "⏱️ SÜRE BİTTİ! Elendiniz.";
+            
+            setTimeout(() => {
+                showModal("Süre Doldu!", `30 saniyelik süre içinde cevap veremedin dostum! Kazandığın garanti baraj ödülü: ${guaranteedPrize}.\n\nYeniden oynamak için sayfayı yenilemen yeterli!`);
+            }, 1500);
+        }
+
+        function loadQuestion() {
+            isAnswered = false;
+            is2xActive = false;
+            secondChance = false;
+            clearInterval(timerInterval);
+            
+            document.getElementById('status-message').innerText = "";
+            document.getElementById('question-number').innerText = currentStep;
+            document.getElementById('difficulty-display').innerText = `Seviye ${currentStep}`;
+            
+            ['A', 'B', 'C', 'D'].forEach(opt => {
+                const btn = document.getElementById(`btn-${opt}`);
+                btn.className = "btn-option p-4 rounded-xl text-left font-medium flex items-center text-lg";
+                btn.disabled = false;
+                btn.style.visibility = "visible";
+            });
+
+            const btn2x = document.getElementById('joker-2x');
+            if (currentStep >= 8 && !btn2x.dataset.used) {
+                btn2x.classList.remove('hidden');
+            }
+
+            // MÜZİK KONTROLÜ: Eğer bu oyunda 2 müzik sorusu dolduysa, 'muzik' kategorisini havuzdan çıkar!
+            let activeCats = [...selectedCategories];
+            if (musicQuestionCount >= 2) {
+                activeCats = activeCats.filter(c => c !== 'muzik');
+            }
+
+            let pool = allQuestions.filter(q => q.level === currentStep && activeCats.includes(q.cat));
+            if (pool.length === 0) pool = allQuestions.filter(q => q.level === currentStep && q.cat !== 'muzik');
+            if (pool.length === 0) pool = allQuestions.filter(q => q.level === currentStep);
+
+            let availableCats = [...new Set(pool.map(q => q.cat))];
+            let minUsage = Math.min(...availableCats.map(c => categoryUsageCounts[c] || 0));
+            let balancedPool = pool.filter(q => (categoryUsageCounts[q.cat] || 0) === minUsage);
+            if (balancedPool.length === 0) balancedPool = pool;
+
+            const randomIndex = Math.floor(Math.random() * balancedPool.length);
+            currentQuestion = balancedPool[randomIndex];
+
+            // Eğer gelen soru müzikse sayacı 1 artır
+            if (currentQuestion.cat === 'muzik') {
+                musicQuestionCount++;
+            }
+
+            categoryUsageCounts[currentQuestion.cat] = (categoryUsageCounts[currentQuestion.cat] || 0) + 1;
+            
+            const catNames = { muzik: '🎵 Müzik', cografya: '🌍 Coğrafya', bilim: '🔬 Bilim', edebiyat: '📚 Edebiyat', matematik: '📐 Matematik', tarih: '📜 Tarih', sinema: '🎬 Sinema', genel: '💡 Genel Kültür', spor: '⚽ Spor' };
+            document.getElementById('active-category-tag').innerText = catNames[currentQuestion.cat] || 'Genel';
+
+            document.getElementById('question-text').innerText = currentQuestion.soru;
+            document.getElementById('text-A').innerText = currentQuestion.A;
+            document.getElementById('text-B').innerText = currentQuestion.B;
+            document.getElementById('text-C').innerText = currentQuestion.C;
+            document.getElementById('text-D').innerText = currentQuestion.D;
+            
+            updateLadder();
+            startTimer();
+        }
+
+        function selectAnswer(selectedOpt) {
+            if (isAnswered) return;
+            isAnswered = true;
+            clearInterval(timerInterval);
+
+            const btn = document.getElementById(`btn-${selectedOpt}`);
+            btn.classList.add('btn-selected');
+            
+            if (is2xActive && !secondChance) {
+                document.getElementById('status-message').innerText = "2x Joker aktif! İlk tahmin kilitlendi...";
+            } else {
+                document.getElementById('status-message').innerText = "Son kararınız mı? Milyoner motoru kilitlendi...";
+            }
+
+            setTimeout(() => {
+                if (selectedOpt === currentQuestion.cevap) {
+                    btn.classList.remove('btn-selected');
+                    btn.classList.add('btn-correct');
+                    
+                    const currentPrizeObj = prizes.find(p => p.step === currentStep);
+                    if (currentPrizeObj && currentPrizeObj.safe) {
+                        guaranteedPrize = currentPrizeObj.amount;
+                    }
+
+                    document.getElementById('status-message').innerText = "DOĞRU CEVAP! Harikasın dostum!";
+                    
+                    setTimeout(() => {
+                        if (currentStep === 15) {
+                            showModal("Tebrikler Milyoner!", "İnanılmaz bir başarı! 15 soruyu da doğru yanıtlayarak 5.000.000 TL büyük ödülü kazandın digga!");
+                        } else {
+                            currentStep++;
+                            loadQuestion();
+                        }
+                    }, 2000);
+                } else {
+                    btn.classList.remove('btn-selected');
+                    btn.classList.add('btn-wrong');
+
+                    if (is2xActive && !secondChance) {
+                        secondChance = true;
+                        isAnswered = false;
+                        btn.disabled = true;
+                        document.getElementById('status-message').innerText = "İlk cevap yanlış! Ama 2x Jokerin var, hemen yeni bir şık seç digga!";
+                        startTimer();
+                        return;
+                    }
+
+                    document.getElementById(`btn-${currentQuestion.cevap}`).classList.add('btn-correct');
+                    document.getElementById('status-message').innerText = "YANLIŞ CEVAP! Elendiniz.";
+                    
+                    setTimeout(() => {
+                        showModal("Oyun Bitti!", `Maalesef yanlış cevap verdin dostum. Kazandığın garanti baraj ödülü: ${guaranteedPrize}.\n\nYeniden oynamak için lobiden yeni bir oyun başlatabilirsin!`);
+                    }, 1500);
+                }
+            }, 2000);
+        }
+
+        function use5050() {
+            document.getElementById('joker-50').disabled = true;
+            document.getElementById('joker-50').classList.add('opacity-30', 'cursor-not-allowed');
+            
+            const wrongOptions = ['A', 'B', 'C', 'D'].filter(opt => opt !== currentQuestion.cevap);
+            wrongOptions.slice(0, 2).forEach(opt => {
+                document.getElementById(`btn-${opt}`).style.visibility = "hidden";
+            });
+        }
+
+        function useAudience() {
+            document.getElementById('joker-aud').disabled = true;
+            document.getElementById('joker-aud').classList.add('opacity-30', 'cursor-not-allowed');
+            
+            const correct = currentQuestion.cevap;
+            let percentCorrect = Math.max(20, 90 - (currentStep * 5));
+            let remaining = 100 - Math.floor(percentCorrect);
+            
+            let stats = { A: 0, B: 0, C: 0, D: 0 };
+            stats[correct] = Math.floor(percentCorrect);
+            
+            ['A', 'B', 'C', 'D'].filter(o => o !== correct).forEach((o, idx, arr) => {
+                if (idx === arr.length - 1) stats[o] = remaining;
+                else {
+                    let share = Math.floor(Math.random() * remaining);
+                    stats[o] = share;
+                    remaining -= share;
+                }
+            });
+
+            const chartHtml = `
+                <div class="space-y-3 text-left font-bold font-mono">
+                    <div>A: %${stats.A} <div class="bg-gold h-3 rounded" style="width: ${stats.A}%"></div></div>
+                    <div>B: %${stats.B} <div class="bg-gold h-3 rounded" style="width: ${stats.B}%"></div></div>
+                    <div>C: %${stats.C} <div class="bg-gold h-3 rounded" style="width: ${stats.C}%"></div></div>
+                    <div>D: %${stats.D} <div class="bg-gold h-3 rounded" style="width: ${stats.D}%"></div></div>
+                </div>
+                <p class="mt-4 text-sm text-gray-400">Seyircilerin oylama sonuçları yukarıdaki gibidir.</p>
+            `;
+            showModal("👥 Seyirci Oylaması", chartHtml);
+        }
+
+        function usePhone() {
+            document.getElementById('joker-phone').disabled = true;
+            document.getElementById('joker-phone').classList.add('opacity-30', 'cursor-not-allowed');
+            
+            const correct = currentQuestion.cevap;
+            let advice = "";
+            
+            if (currentStep <= 4) {
+                advice = `“Selam dostum! Ooo bu soru çok rahatmış ya, hiç canını sıkma. Adım gibi eminim cevap kesinlikle ${correct} şıkkı. Yapıştır geç!”`;
+            } else if (currentStep <= 9) {
+                advice = `“Selam digga! Hmm, soru biraz düşündürücü... İki şık arasında çok gittim geldim ama üniversitede okuduğum bir makaleden hatırladığım kadarıyla cevap büyük ihtimalle ${correct} gibi duruyor. Yine de son karar senin!”`;
+            } else {
+                advice = `“Dostum bu nasıl soru, profesör sorsan eler! Çok fazla risk almak istemem ama mantığımı yürüttüğümde ${correct} şıkkı bana en yakın gelen seçenek oldu. Bol şans diliyorum!”`;
+            }
+
+            showModal("📞 Yapay Zeka Asistanı Telefonda...", `<div class="italic bg-blue-900/30 p-4 rounded-xl border border-blue-500/30">${advice}</div>`);
+        }
+
+        function use2x() {
+            const btn = document.getElementById('joker-2x');
+            btn.disabled = true;
+            btn.dataset.used = "true";
+            btn.classList.add('opacity-30', 'cursor-not-allowed', 'animate-none');
+            
+            is2xActive = true;
+            document.getElementById('status-message').innerText = "✨ 2x Joker Aktif! İlk tahminde ayrılsan bile 2. şansın olacak!";
+        }
+
+        function showModal(title, content) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-content').innerHTML = content;
+            document.getElementById('modal').style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = "none";
+            if (document.getElementById('modal-title').innerText === "Oyun Bitti!" || document.getElementById('modal-title').innerText === "Süre Doldu!") {
+                location.reload(); 
+            }
+        }
+    </script>
+</body>
+</html>
