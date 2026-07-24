@@ -3,508 +3,1107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kim Milyoner Olmak İster? - Hardcore Müzik Sınırlandırmalı Sürüm</title>
+    <title>Kim Milyoner Olmak İster? - TR/DE Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Orbitron:wght@600;800&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: radial-gradient(circle at center, #111827 0%, #030712 100%);
+            color: #f3f4f6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+
+        /* Oyun Alanı Glassmorphism ve Butonlar */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+        }
+
+        .btn-option {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            border: 2px solid #374151;
+            transition: all 0.2s ease;
+        }
+        .btn-option:hover:not(:disabled) {
+            border-color: #facc15;
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+            transform: translateX(5px);
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.3);
+        }
+        .btn-option.selected {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            border-color: #fef08a;
+            color: #fff;
+            animation: pulse 1s infinite;
+        }
+        .btn-option.correct {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
+            border-color: #86efac !important;
+            color: #fff !important;
+        }
+        .btn-option.wrong {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+            border-color: #fca5a5 !important;
+            color: #fff !important;
+        }
+
+        /* Para Ağacı Stili */
+        .money-step { transition: all 0.3s ease; }
+        .money-step.active {
+            background: linear-gradient(90deg, #ca8a04 0%, #eab308 100%);
+            color: #000;
+            font-weight: 800;
+            transform: scale(1.05);
+            border-radius: 6px;
+            padding-left: 10px;
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.5);
+        }
+        .money-step.passed { color: #9ca3af; opacity: 0.5; }
+        .money-step.safe { color: #38bdf8; font-weight: 700; }
+        .money-step.active.safe { color: #000; }
+
+        /* Siyah Beyaz Konfeti Efekti */
+        .confetti {
+            position: fixed;
+            width: 14px;
+            height: 14px;
+            z-index: 9999;
+            pointer-events: none;
+            animation: fall linear forwards;
+            border: 1px solid #333;
+            box-shadow: 0 0 8px rgba(0,0,0,0.8);
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Sağ Alt Beşiktaş Formalı Taraftar Butonu */
+        .bjk-fan-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 75px;
+            height: 75px;
+            background: #111827;
+            border: 3px solid #dc2626;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.9), 0 0 15px rgba(220, 38, 38, 0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding-bottom: 2px;
+        }
+        .bjk-fan-btn:hover {
+            transform: scale(1.15) translateY(-5px);
+            box-shadow: 0 0 25px rgba(220, 38, 38, 0.9), 0 0 35px rgba(255,255,255,0.4);
+            border-color: #fff;
+        }
+        .fan-avatar-head {
+            width: 26px;
+            height: 26px;
+            background: #fcd34d;
+            border-radius: 50%;
+            border: 2px solid #000;
+            position: relative;
+            z-index: 2;
+            margin-bottom: -4px;
+            box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2);
+        }
+        .fan-avatar-head::before {
+            content: '';
+            position: absolute;
+            top: -4px; left: -2px; width: 26px; height: 12px;
+            background: #000;
+            border-radius: 10px 10px 0 0;
+            border-bottom: 2px solid #fff;
+        }
+        .fan-avatar-jersey {
+            width: 54px;
+            height: 38px;
+            background: repeating-linear-gradient(90deg, #000 0px, #000 10px, #fff 10px, #fff 20px);
+            border-radius: 10px 10px 0 0;
+            border: 2px solid #000;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 2px 0 #dc2626;
+        }
+        .fan-avatar-jersey::after {
+            content: '1903';
+            background: #dc2626;
+            color: #fff;
+            font-size: 8px;
+            font-weight: 900;
+            padding: 1px 3px;
+            border-radius: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Uçan Kutlama Yazıları */
+        .celebrate-text {
+            position: fixed;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: #fff;
+            text-shadow: 0 0 10px #dc2626, 0 0 20px #000, 0 0 30px #dc2626;
+            pointer-events: none;
+            z-index: 9998;
+            animation: floatBanner 2s forwards ease-out;
+        }
+        @keyframes floatBanner {
+            0% { opacity: 0; transform: translateY(0) scale(0.5); }
+            20% { opacity: 1; transform: translateY(-30px) scale(1.1); }
+            80% { opacity: 1; transform: translateY(-100px) scale(1); }
+            100% { opacity: 0; transform: translateY(-150px) scale(0.8); }
+        }
+
+        /* Dil Seçim Butonları */
+        .lang-btn {
+            background: rgba(31, 41, 55, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+        }
+        .lang-btn.active {
+            background: #eab308;
+            color: #000;
+            font-weight: 800;
+            border-color: #facc15;
+        }
+        
+        /* Özelleştirilmiş Audio Oynatıcı */
+        audio::-webkit-media-controls-panel {
+            background-color: #1f2937;
+            border: 1px solid #eab308;
+        }
+        audio::-webkit-media-controls-current-time-display,
+        audio::-webkit-media-controls-time-remaining-display {
+            color: #facc15;
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between relative">
+
+    <!-- SOL ÜST DİL SEÇİMİ (TR / DE) -->
+    <div class="fixed top-4 left-4 z-50 flex space-x-1 bg-gray-900/90 p-1.5 rounded-xl border border-gray-700 shadow-xl">
+        <button onclick="setLanguage('TR')" id="lang-TR" class="lang-btn active px-3 py-1 rounded-lg text-xs md:text-sm font-bold flex items-center space-x-1">
+            <span>🇹🇷 TR</span>
+        </button>
+        <button onclick="setLanguage('DE')" id="lang-DE" class="lang-btn px-3 py-1 rounded-lg text-xs md:text-sm font-bold flex items-center space-x-1 text-gray-300">
+            <span>🇩🇪 DE</span>
+        </button>
+    </div>
+
+    <!-- SAĞ ALT BEŞİKTAŞ FORMALI TARAFTAR BUTONU -->
+    <button class="bjk-fan-btn" onclick="celebrateBJK(this)" title="Şampiyon Beşiktaş!">
+        <div class="fan-avatar-head"></div>
+        <div class="fan-avatar-jersey"></div>
+    </button>
+
+    <!-- ANA İÇERİK ALANI -->
+    <main class="container mx-auto px-4 py-8 flex-grow flex items-center justify-center relative z-20 mb-20 mt-12 md:mt-4">
+        
+        <!-- 1. EKRAN: KATEGORİ VE OYUN BAŞLANGICI -->
+        <div id="screen-lobby" class="w-full max-w-4xl glass-panel rounded-2xl p-6 md:p-10 text-center border-t-4 border-yellow-500 shadow-2xl">
+            <div id="ui-badge" class="inline-block bg-yellow-500 text-black font-extrabold px-4 py-1 rounded-full text-xs mb-4 tracking-widest uppercase shadow-md">
+                Ultra Gelişmiş Sürüm
+            </div>
+            <h1 id="ui-title" class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-200 to-yellow-500 orbitron">
+                KİM MİLYONER OLMAK İSTER?
+            </h1>
+            <p id="ui-subtitle" class="text-gray-300 max-w-2xl mx-auto mb-8 text-sm md:text-base leading-relaxed">
+                15 Zorlu Seviye, 9 Dev Kategori! Yeni Seyirci ve Telefon jokerleri eklendi. 8. seviyede <span class="text-yellow-400 font-bold">2X Çift Cevap</span> jokeri açılacak!
+            </p>
+
+            <div class="mb-8">
+                <label id="ui-select-label" class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Oynamak İstediğin Temayı Seç:</label>
+                <div class="inline-block relative w-full max-w-md">
+                    <select id="category-select" class="w-full bg-gray-900/90 text-yellow-400 border-2 border-yellow-500/50 rounded-xl px-5 py-3 font-bold text-lg focus:outline-none focus:border-yellow-400 transition cursor-pointer shadow-inner">
+                        <option value="Karışık">🎲 Tüm Kategoriler (Karışık)</option>
+                        <option value="Müzik & Sanat">🎵 Müzik & Sanat</option>
+                        <option value="Coğrafya">🌍 Coğrafya</option>
+                        <option value="Biyoloji & Bilim">🔬 Biyoloji & Bilim</option>
+                        <option value="Edebiyat & Yazarlar">📚 Edebiyat & Yazarlar</option>
+                        <option value="Matematik & Mantık">📐 Matematik & Mantık</option>
+                        <option value="Tarih & Medeniyet">📜 Tarih & Medeniyet</option>
+                        <option value="Sinema & TV">🎬 Sinema & TV</option>
+                        <option value="Genel Kültür">💡 Genel Kültür</option>
+                        <option value="Spor & Oyun">⚽ Spor & Oyun</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="startGame()" id="ui-start-btn" class="w-full max-w-md bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-600 hover:from-yellow-400 hover:to-amber-500 text-gray-950 font-black py-4 px-8 rounded-xl text-xl uppercase tracking-wider shadow-lg hover:shadow-yellow-500/30 transition transform hover:-translate-y-1 active:translate-y-0">
+                <i class="fa-solid fa-play mr-2"></i> Yarışmaya Başla
+            </button>
+        </div>
+
+        <!-- 2. EKRAN: OYUN EKRANI -->
+        <div id="screen-game" class="w-full max-w-6xl hidden grid-cols-1 lg:grid-cols-4 gap-6">
+            
+            <!-- Sol ve Orta: Soru Alanı (3 Kolon) -->
+            <div class="lg:col-span-3 flex flex-col justify-between glass-panel rounded-2xl p-6 md:p-8 relative border-t-2 border-yellow-500/30">
+                
+                <!-- Üst Bilgi Barı & Jokerler -->
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-800">
+                    <div class="flex items-center space-x-3">
+                        <span id="game-category-badge" class="bg-gray-800 text-yellow-400 border border-yellow-500/30 font-bold px-3 py-1 rounded-lg text-xs md:text-sm uppercase">
+                            Kategori
+                        </span>
+                        <span id="question-number-badge" class="bg-yellow-500/10 text-yellow-300 font-bold px-3 py-1 rounded-lg text-xs md:text-sm border border-yellow-500/20">
+                            Soru 1/15
+                        </span>
+                    </div>
+
+                    <!-- Sayaç -->
+                    <div id="timer-box" class="flex items-center space-x-2 bg-gray-900/80 px-4 py-1.5 rounded-full border border-red-500/40">
+                        <i class="fa-solid fa-clock text-red-500 animate-pulse"></i>
+                        <span id="timer-text" class="orbitron font-bold text-lg text-red-400">30</span>
+                    </div>
+
+                    <!-- Joker Butonları -->
+                    <div class="flex items-center space-x-2">
+                        <button id="joker-50" onclick="useJoker50()" title="%50 Jokeri" class="bg-gray-800 hover:bg-gray-700 border border-yellow-500/40 text-yellow-400 font-extrabold w-10 h-10 rounded-full flex items-center justify-center transition shadow-md">
+                            ½
+                        </button>
+                        <button id="joker-audience" onclick="useJokerAudience()" title="Seyirci Jokeri" class="bg-gray-800 hover:bg-gray-700 border border-yellow-500/40 text-yellow-400 font-extrabold w-10 h-10 rounded-full flex items-center justify-center transition shadow-md">
+                            <i class="fa-solid fa-users"></i>
+                        </button>
+                        <button id="joker-phone" onclick="useJokerPhone()" title="Telefon Jokeri" class="bg-gray-800 hover:bg-gray-700 border border-yellow-500/40 text-yellow-400 font-extrabold w-10 h-10 rounded-full flex items-center justify-center transition shadow-md">
+                            <i class="fa-solid fa-phone"></i>
+                        </button>
+                        <button id="joker-2x" onclick="useJoker2X()" title="2X Jokeri" disabled class="bg-gray-900 border border-gray-700 text-gray-600 font-extrabold w-10 h-10 rounded-full flex items-center justify-center transition cursor-not-allowed">
+                            2X
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Soru Metni & YEREL GÖMÜLÜ ŞARKI ÇALAR (HTML5 Audio) -->
+                <div class="my-auto py-4">
+                    <h2 id="question-text" class="text-xl md:text-2xl font-semibold text-center leading-relaxed mb-4 min-h-[80px] flex items-center justify-center">
+                        Soru yükleniyor...
+                    </h2>
+                    
+                    <!-- Doğrudan Sitede Çalan Hızlı Müzik Oynatıcı -->
+                    <div id="music-player-container" class="hidden my-4 p-5 bg-gray-900/95 rounded-2xl border-2 border-yellow-500/60 flex flex-col items-center justify-center shadow-2xl w-full max-w-md mx-auto">
+                        <div class="flex items-center space-x-2 text-yellow-400 font-bold mb-3 text-sm md:text-base animate-pulse">
+                            <i class="fa-solid fa-compact-disc text-xl text-red-500 animate-spin" style="animation-duration: 3s;"></i>
+                            <span id="ui-intro-text">🎵 Şarkı Doğrudan Sitede Çalıyor (Dinle & Cevapla!)</span>
+                        </div>
+                        <audio id="intro-player" controls preload="auto" class="w-full rounded-lg shadow-inner"></audio>
+                    </div>
+                </div>
+
+                <!-- Şıklar Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <button id="btn-0" onclick="selectOption(0)" class="btn-option rounded-xl p-4 text-left font-semibold flex items-center text-sm md:text-base">
+                        <span class="text-yellow-400 font-bold mr-3 orbitron text-lg">A:</span>
+                        <span id="text-0" class="flex-grow">Seçenek A</span>
+                    </button>
+                    <button id="btn-1" onclick="selectOption(1)" class="btn-option rounded-xl p-4 text-left font-semibold flex items-center text-sm md:text-base">
+                        <span class="text-yellow-400 font-bold mr-3 orbitron text-lg">B:</span>
+                        <span id="text-1" class="flex-grow">Seçenek B</span>
+                    </button>
+                    <button id="btn-2" onclick="selectOption(2)" class="btn-option rounded-xl p-4 text-left font-semibold flex items-center text-sm md:text-base">
+                        <span class="text-yellow-400 font-bold mr-3 orbitron text-lg">C:</span>
+                        <span id="text-2" class="flex-grow">Seçenek C</span>
+                    </button>
+                    <button id="btn-3" onclick="selectOption(3)" class="btn-option rounded-xl p-4 text-left font-semibold flex items-center text-sm md:text-base">
+                        <span class="text-yellow-400 font-bold mr-3 orbitron text-lg">D:</span>
+                        <span id="text-3" class="flex-grow">Seçenek D</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Sağ: Para Ağacı (1 Kolon) -->
+            <div class="glass-panel rounded-2xl p-6 flex flex-col justify-between border-t-2 border-yellow-500/30 order-first lg:order-last">
+                <h3 id="ui-tree-title" class="text-sm font-bold uppercase tracking-wider text-gray-400 border-b border-gray-800 pb-2 mb-3 text-center orbitron">
+                    Para Ağacı
+                </h3>
+                <div id="money-list" class="flex flex-col-reverse justify-between flex-grow text-sm font-semibold space-y-1 space-y-reverse">
+                    <!-- Javascript ile dinamik dolacak -->
+                </div>
+                <button onclick="withdrawMoney()" id="ui-withdraw-btn" class="mt-4 w-full bg-red-600/80 hover:bg-red-600 border border-red-400/30 text-white font-bold py-2.5 px-4 rounded-xl transition text-xs md:text-sm uppercase tracking-wider shadow">
+                    <i class="fa-solid fa-sack-dollar mr-1"></i> Çekil ve Parayı Al
+                </button>
+            </div>
+
+        </div>
+
+        <!-- 3. EKRAN: OYUN BİTTİ / SONUÇ EKRANI -->
+        <div id="screen-result" class="w-full max-w-xl hidden glass-panel rounded-2xl p-8 text-center border-t-4 border-yellow-500 shadow-2xl">
+            <div id="result-icon" class="text-6xl mb-4">🏆</div>
+            <h2 id="result-title" class="text-3xl font-extrabold text-white mb-2">TEBRİKLER!</h2>
+            <p id="result-desc" class="text-gray-300 text-sm md:text-base mb-6">Harika bir yarışma çıkardın.</p>
+            
+            <div class="bg-gray-900/80 rounded-xl p-6 border border-yellow-500/30 mb-8">
+                <span id="ui-won-prize" class="text-xs uppercase tracking-widest text-gray-400 block mb-1 font-bold">Kazanılan Ödül</span>
+                <span id="result-prize" class="text-4xl font-black text-yellow-400 orbitron">5.000.000 TL</span>
+            </div>
+
+            <button onclick="location.reload()" id="ui-play-again" class="w-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-gray-950 font-black py-4 px-8 rounded-xl text-lg uppercase tracking-wider shadow-lg transition">
+                <i class="fa-solid fa-rotate-right mr-2"></i> Yeniden Oyna
+            </button>
+        </div>
+
+    </main>
+
+    <!-- TR / DE DİL SÖZLÜĞÜ VE YÖNETİMİ -->
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        studio: '#030b1e',
-                        gold: '#d4af37',
-                        goldHover: '#f3e5ab'
-                    }
+        let currentLang = 'TR';
+
+        const DICTIONARY = {
+            TR: {
+                badge: "Ultra Gelişmiş Sürüm",
+                title: "KİM MİLYONER OLMAK İSTER?",
+                subtitle: "15 Zorlu Seviye, 9 Dev Kategori! Yeni Seyirci ve Telefon jokerleri eklendi. 8. seviyede <span class='text-yellow-400 font-bold'>2X Çift Cevap</span> jokeri açılacak!",
+                selectLabel: "Oynamak İstediğin Temayı Seç:",
+                startBtn: "<i class='fa-solid fa-play mr-2'></i> Yarışmaya Başla",
+                treeTitle: "Para Ağacı",
+                withdrawBtn: "<i class='fa-solid fa-sack-dollar mr-1'></i> Çekil ve Parayı Al",
+                introText: "🎵 Şarkı Doğrudan Sitede Çalıyor (Dinle & Cevapla!)",
+                wonPrize: "Kazanılan Ödül",
+                playAgain: "<i class='fa-solid fa-rotate-right mr-2'></i> Yeniden Oyna",
+                questionPrefix: "Soru",
+                timeUp: "Süre Doldu!",
+                wrongAns: "Yanlış Cevap!",
+                congrats: "TEBRİKLER!",
+                champion: "BÜYÜK ŞAMPİYON!",
+                champDesc: "Tüm soruları doğru cevaplayarak 15. Seviyeye ulaştın!",
+                gameOverDesc: "Maalesef elendin. Baraj garantili ödülün seninle!",
+                audienceTitle: "👥 SEYİRCİ OYLAMASI SONUCU:",
+                audienceDesc: "Seyircimiz büyük oranda [ANS] şıkkına güveniyor dostum!",
+                phoneSure: "📞 TELEFONDAKİ DOSTUN:\n\n'Kanka selam! Soruyu duydum. Bence cevap kesinlikle [ANS]. Hiç düşünme işaretle digga!'",
+                phoneUnsure: "📞 TELEFONDAKİ DOSTUN:\n\n'Dostum selam... Ya tam emin olamadım ama bana [ANS] gibi geliyor. Yine de son karar senin.'",
+                cats: {
+                    "Karışık": "🎲 Tüm Kategoriler (Karışık)",
+                    "Müzik & Sanat": "🎵 Müzik & Sanat",
+                    "Coğrafya": "🌍 Coğrafya",
+                    "Biyoloji & Bilim": "🔬 Biyoloji & Bilim",
+                    "Edebiyat & Yazarlar": "📚 Edebiyat & Yazarlar",
+                    "Matematik & Mantık": "📐 Matematik & Mantık",
+                    "Tarih & Medeniyet": "📜 Tarih & Medeniyet",
+                    "Sinema & TV": "🎬 Sinema & TV",
+                    "Genel Kültür": "💡 Genel Kültür",
+                    "Spor & Oyun": "⚽ Spor & Oyun"
+                }
+            },
+            DE: {
+                badge: "Ultra-Erweiterte Version",
+                title: "WER WIRD MILLIONÄR?",
+                subtitle: "15 anspruchsvolle Stufen, 9 große Kategorien! Publikums- & Telefonjoker sind dabei. Ab Stufe 8 schaltet sich der <span class='text-yellow-400 font-bold'>2X-Joker</span> frei!",
+                selectLabel: "Wähle dein gewünschtes Thema:",
+                startBtn: "<i class='fa-solid fa-play mr-2'></i> Spiel Starten",
+                treeTitle: "Gewinnbaum",
+                withdrawBtn: "<i class='fa-solid fa-sack-dollar mr-1'></i> Geld nehmen & aussteigen",
+                introText: "🎵 Musik läuft direkt auf der Seite (Anhören & Antworten!)",
+                wonPrize: "Gewonnener Preis",
+                playAgain: "<i class='fa-solid fa-rotate-right mr-2'></i> Nochmal spielen",
+                questionPrefix: "Frage",
+                timeUp: "Zeit abgelaufen!",
+                wrongAns: "Falsche Antwort!",
+                congrats: "HERZLICHEN GLÜCKWUNSCH!",
+                champion: "GROSSER CHAMPION!",
+                champDesc: "Du hast alle Fragen richtig beantwortet und Stufe 15 erreicht!",
+                gameOverDesc: "Leider ausgeschieden. Dein garantierter Gewinn gehört dir!",
+                audienceTitle: "👥 PUBLIKUMS-ABSTIMMUNG:",
+                audienceDesc: "Unser Publikum vertraut größtenteils auf Option [ANS], digga!",
+                phoneSure: "📞 DEIN TELEFONJOKER:\n\n'Hi digga! Habe die Frage gehört. Die Antwort ist definitiv [ANS]. Logg das direkt ein, mein Bester!'",
+                phoneUnsure: "📞 DEIN TELEFONJOKER:\n\n'Hey dostum... Ich bin mir nicht ganz sicher, aber ich tippe stark auf [ANS]. Die letzte Entscheidung liegt bei dir.'",
+                cats: {
+                    "Karışık": "🎲 Alle Kategorien (Gemischt)",
+                    "Müzik & Sanat": "🎵 Musik & Kunst",
+                    "Coğrafya": "🌍 Geographie",
+                    "Biyoloji & Bilim": "🔬 Biologie & Wissenschaft",
+                    "Edebiyat & Yazarlar": "📚 Literatur & Autoren",
+                    "Matematik & Mantık": "📐 Mathematik & Logik",
+                    "Tarih & Medeniyet": "📜 Geschichte & Zivilisation",
+                    "Sinema & TV": "🎬 Kino & TV",
+                    "Genel Kültür": "💡 Allgemeinwissen",
+                    "Spor & Oyun": "⚽ Sport & Spiele"
+                }
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-black');
+                btn.classList.add('text-gray-300');
+            });
+            const activeBtn = document.getElementById(`lang-${lang}`);
+            activeBtn.classList.add('active', 'text-black');
+            activeBtn.classList.remove('text-gray-300');
+
+            updateUI();
+        }
+
+        function updateUI() {
+            const d = DICTIONARY[currentLang];
+            document.getElementById('ui-badge').innerHTML = d.badge;
+            document.getElementById('ui-title').innerHTML = d.title;
+            document.getElementById('ui-subtitle').innerHTML = d.subtitle;
+            document.getElementById('ui-select-label').innerHTML = d.selectLabel;
+            document.getElementById('ui-start-btn').innerHTML = d.startBtn;
+            document.getElementById('ui-tree-title').innerHTML = d.treeTitle;
+            document.getElementById('ui-withdraw-btn').innerHTML = d.withdrawBtn;
+            document.getElementById('ui-intro-text').innerHTML = d.introText;
+            document.getElementById('ui-won-prize').innerHTML = d.wonPrize;
+            document.getElementById('ui-play-again').innerHTML = d.playAgain;
+
+            const selectEl = document.getElementById('category-select');
+            const currentVal = selectEl.value;
+            selectEl.innerHTML = '';
+            for (let key in d.cats) {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.innerText = d.cats[key];
+                if (key === currentVal) opt.selected = true;
+                selectEl.appendChild(opt);
+            }
+
+            if (!document.getElementById('screen-game').classList.contains('hidden') && currentQuestion) {
+                document.getElementById('game-category-badge').innerText = d.cats[currentQuestion.c] || currentQuestion.c;
+                document.getElementById('question-number-badge').innerText = `${d.questionPrefix} ${currentLevel}/15`;
+                document.getElementById('question-text').innerText = currentLang === 'TR' ? currentQuestion.q_tr : currentQuestion.q_de;
+                for(let i=0; i<4; i++) {
+                    document.getElementById(`text-${i}`).innerText = currentLang === 'TR' ? currentQuestion.o_tr[i] : currentQuestion.o_de[i];
                 }
             }
         }
     </script>
-    <style>
-        body { background: radial-gradient(circle, #0a1b3a 0%, #020611 100%); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; min-height: 100vh; }
-        .btn-option { background: linear-gradient(180deg, #0f2b5c 0%, #071630 100%); border: 2px solid #5a83c5; transition: all 0.2s; }
-        .btn-option:hover { border-color: #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
-        .btn-selected { background: linear-gradient(180deg, #c58300 0%, #7a5000 100%); border-color: #ffc107; }
-        .btn-correct { background: linear-gradient(180deg, #1b7a00 0%, #0d3d00 100%); border-color: #4caf50; animation: pulse 1s infinite; }
-        .btn-wrong { background: linear-gradient(180deg, #7a0000 0%, #3d0000 100%); border-color: #f44336; }
-        .ladder-item { transition: all 0.3s; }
-        .ladder-active { background-color: #d4af37; color: #000; font-weight: bold; border-radius: 4px; padding: 2px 8px; transform: scale(1.05); }
-        .category-card { border: 2px solid #3b5998; transition: all 0.3s; cursor: pointer; }
-        .category-card.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.15); box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
-    </style>
-</head>
-<body class="p-4 md:p-8 max-w-7xl mx-auto flex flex-col justify-center min-h-screen">
 
-    <!-- 1. EKRAN: KATEGORİ SEÇİM LOBİSİ -->
-    <div id="lobby-screen" class="w-full max-w-5xl mx-auto bg-black/60 border-2 border-gold rounded-3xl p-6 md:p-10 text-center shadow-2xl">
-        <h1 class="text-3xl md:text-5xl font-extrabold text-gold tracking-wider mb-2">STÜDYOYA HOŞ GELDİNİZ</h1>
-        <p class="text-gray-300 text-base mb-6">Yarışmada karşınıza çıkmasını istediğiniz temaları seçin. (Müzik soruları oyun boyunca en fazla 2 adet ve hardcore seviyede çıkacaktır!)</p>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8 text-left text-sm">
-            <div onclick="toggleCategory('muzik')" id="cat-muzik" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
-                <div><h3 class="font-bold text-white">🎵 Müzik & Rock/Pop</h3><p class="text-xs text-gray-400">Max 2 adet zorlu dinlemeli/sözlü şarkı sorusu</p></div>
-                <div class="text-gold font-bold text-lg check-icon">✓</div>
-            </div>
-            <div onclick="toggleCategory('cografya')" id="cat-cografya" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
-                <div><h3 class="font-bold text-white">🌍 Coğrafya & Keşifler</h3><p class="text-xs text-gray-400">Başkentler, dağlar, derin çukurlar</p></div>
-                <div class="text-gold font-bold text-lg check-icon">✓</div>
-            </div>
-            <div onclick="toggleCategory('bilim')" id="cat-bilim" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
-                <div><h3 class="font-bold text-white">🔬 Biyoloji & Bilim</h3><p class="text-xs text-gray-400">Anatomi, hücre, fizik ve elementler</p></div>
-                <div class="text-gold font-bold text-lg check-icon">✓</div>
-            </div>
-            <div onclick="toggleCategory('edebiyat')" id="cat-edebiyat" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
-                <div><h3 class="font-bold text-white">📚 Edebiyat & Yazarlar</h3><p class="text-xs text-gray-400">Klasikler, şiirler, yazar-eser</p></div>
-                <div class="text-gold font-bold text-lg check-icon">✓</div>
-            </div>
-            <div onclick="toggleCategory('matematik')" id="cat-matematik" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
-                <div><h3 class="font-bold text-white">📐 Matematik & Mantık</h3><p class="text-xs text-gray-400">Sayiler, geometri, teoremler</p></div>
-                <div class="text-gold font-bold text-lg check-icon">✓</div>
-            </div>
-            <div onclick="toggleCategory('tarih')" id="cat-tarih" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
-                <div><h3 class="font-bold text-white">📜 Tarih & Medeniyet</h3><p class="text-xs text-gray-400">İmparatorluklar, savaşlar ve antlaşmalar</p></div>
-                <div class="text-gold font-bold text-lg check-icon">✓</div>
-            </div>
-            <div onclick="toggleCategory('sinema')" id="cat-sinema" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
-                <div><h3 class="font-bold text-white">🎬 Sinema & TV</h3><p class="text-xs text-gray-400">Yeşilçam, Hollywood ve efsane replikler</p></div>
-                <div class="text-gold font-bold text-lg check-icon">✓</div>
-            </div>
-            <div onclick="toggleCategory('genel')" id="cat-genel" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
-                <div><h3 class="font-bold text-white">💡 Genel Kültür</h3><p class="text-xs text-gray-400">Deyimler, kelime oyunları, gelenekler</p></div>
-                <div class="text-gold font-bold text-lg check-icon">✓</div>
-            </div>
-            <div onclick="toggleCategory('spor')" id="cat-spor" class="category-card selected bg-blue-950/60 p-4 rounded-2xl flex items-center justify-between">
-                <div><h3 class="font-bold text-white">⚽ Spor & Oyun</h3><p class="text-xs text-gray-400">Futbol kuralları, olimpiyatlar ve rekorlar</p></div>
-                <div class="text-gold font-bold text-lg check-icon">✓</div>
-            </div>
-        </div>
-
-        <button onclick="startGame()" class="bg-gold hover:bg-goldHover text-black font-extrabold text-xl px-12 py-4 rounded-full shadow-lg transform hover:scale-105 transition-all">
-            YARIŞMAYI BAŞLAT 🚀
-        </button>
-    </div>
-
-    <!-- 2. EKRAN: OYUN SAHNESİ -->
-    <div id="game-screen" class="hidden flex-col md:flex-row items-center justify-between w-full">
-        
-        <!-- SOL ALAN: Soru ve Butonlar -->
-        <div class="flex-1 w-full md:mr-8 flex flex-col justify-between min-h-[80vh]">
-            
-            <!-- Üst Bar -->
-            <div class="flex justify-between items-center bg-black/40 p-3 md:p-4 rounded-xl border border-blue-900/50 mb-4">
-                <div class="flex gap-2 flex-wrap">
-                    <button id="joker-50" onclick="use5050()" class="bg-blue-900/80 hover:bg-blue-800 border border-gold px-3 py-1.5 rounded-full font-bold text-xs shadow-lg">50:50</button>
-                    <button id="joker-aud" onclick="useAudience()" class="bg-blue-900/80 hover:bg-blue-800 border border-gold px-3 py-1.5 rounded-full font-bold text-xs shadow-lg">👥 Seyirci</button>
-                    <button id="joker-phone" onclick="usePhone()" class="bg-blue-900/80 hover:bg-blue-800 border border-gold px-3 py-1.5 rounded-full font-bold text-xs shadow-lg">📞 Telefon</button>
-                    <button id="joker-2x" onclick="use2x()" class="bg-blue-900/80 hover:bg-blue-800 border border-gold px-3 py-1.5 rounded-full font-bold text-xs shadow-lg hidden animate-bounce">✨ 2x Cevap</button>
-                </div>
-                <div class="text-xs text-blue-300 ml-2 flex items-center gap-3">
-                    <span id="active-category-tag" class="bg-blue-900 px-3 py-1 rounded-full border border-blue-500 text-gold font-semibold uppercase">Genel</span>
-                    <div><span>Zorluk: </span><span id="difficulty-display" class="text-gold font-bold">Seviye 1</span></div>
-                </div>
-            </div>
-
-            <!-- 30 SANİYE SÜRE SAYACI (1-7. Sorular İçin) -->
-            <div id="timer-box" class="hidden mb-4 bg-gradient-to-r from-red-950/80 via-red-900/50 to-red-950/80 border-2 border-red-500/80 p-2.5 rounded-xl text-center shadow-lg animate-pulse">
-                <span class="text-red-300 font-bold text-sm uppercase tracking-widest mr-2">⏱️ Kalan Süre:</span>
-                <span id="timer-seconds" class="text-white font-black text-2xl font-mono">30</span>
-                <span class="text-red-300 font-bold text-sm ml-1">Saniye</span>
-            </div>
-
-            <!-- Soru Kutusu -->
-            <div class="my-auto">
-                <div class="bg-gradient-to-b from-blue-950 to-black border-2 border-gold rounded-2xl p-6 md:p-8 text-center shadow-2xl relative mb-6">
-                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-black font-extrabold px-6 py-0.5 rounded-full text-sm uppercase tracking-widest">
-                        Soru <span id="question-number">1</span>
-                    </div>
-                    <h2 id="question-text" class="text-lg md:text-2xl font-semibold leading-relaxed mt-4">Soru yükleniyor...</h2>
-                </div>
-
-                <!-- Cevap Şıkları -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <button onclick="selectAnswer('A')" id="btn-A" class="btn-option p-4 rounded-xl text-left font-medium flex items-center text-lg">
-                        <span class="text-gold font-bold mr-3 text-xl">A:</span> <span id="text-A">...</span>
-                    </button>
-                    <button onclick="selectAnswer('B')" id="btn-B" class="btn-option p-4 rounded-xl text-left font-medium flex items-center text-lg">
-                        <span class="text-gold font-bold mr-3 text-xl">B:</span> <span id="text-B">...</span>
-                    </button>
-                    <button onclick="selectAnswer('C')" id="btn-C" class="btn-option p-4 rounded-xl text-left font-medium flex items-center text-lg">
-                        <span class="text-gold font-bold mr-3 text-xl">C:</span> <span id="text-C">...</span>
-                    </button>
-                    <button onclick="selectAnswer('D')" id="btn-D" class="btn-option p-4 rounded-xl text-left font-medium flex items-center text-lg">
-                        <span class="text-gold font-bold mr-3 text-xl">D:</span> <span id="text-D">...</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Alt Bilgi / Durum -->
-            <div id="status-message" class="h-10 text-center font-bold text-lg text-gold tracking-wide mt-4 flex items-center justify-center"></div>
-        </div>
-
-        <!-- SAĞ ALAN: Para Ağacı -->
-        <div class="w-full md:w-72 bg-black/60 border border-blue-900/50 rounded-2xl p-4 flex flex-col justify-between mt-6 md:mt-0 shadow-2xl">
-            <h3 class="text-center font-extrabold text-gold tracking-wider border-b border-blue-900/50 pb-2 mb-2 uppercase text-sm">Ödül Merdiveni</h3>
-            <ul id="prize-ladder" class="flex flex-col-reverse gap-1 text-sm font-medium"></ul>
-        </div>
-    </div>
-
-    <!-- MODAL -->
-    <div id="modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4 z-50">
-        <div class="bg-gradient-to-b from-blue-950 to-studio border-2 border-gold rounded-2xl max-w-md w-full p-6 text-center shadow-2xl">
-            <h3 id="modal-title" class="text-2xl font-bold text-gold mb-4">Joker</h3>
-            <div id="modal-content" class="text-lg mb-6 text-gray-200 leading-relaxed"></div>
-            <button onclick="closeModal()" class="bg-gold hover:bg-goldHover text-black font-extrabold px-8 py-2 rounded-full shadow-lg">Anladım</button>
-        </div>
-    </div>
-
+    <!-- Ses ve Beşiktaş Kutlama Efektleri -->
     <script>
-        const prizes = [
-            { step: 1, amount: "1.000 TL", safe: false },
-            { step: 2, amount: "2.000 TL", safe: false },
-            { step: 3, amount: "3.000 TL", safe: true },
-            { step: 4, amount: "5.000 TL", safe: false },
-            { step: 5, amount: "7.500 TL", safe: false },
-            { step: 6, amount: "10.000 TL", safe: false },
-            { step: 7, amount: "30.000 TL", safe: true },
-            { step: 8, amount: "50.000 TL", safe: false },
-            { step: 9, amount: "100.000 TL", safe: false },
-            { step: 10, amount: "200.000 TL", safe: false },
-            { step: 11, amount: "300.000 TL", safe: false },
-            { step: 12, amount: "500.000 TL", safe: false },
-            { step: 13, amount: "1.000.000 TL", safe: false },
-            { step: 14, amount: "2.000.000 TL", safe: false },
-            { step: 15, amount: "5.000.000 TL", safe: true }
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'select') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            } else if (type === 'correct') {
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.6);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.4);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+            } else if (type === 'cheer') {
+                osc.type = 'square'; osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+            }
+        }
+
+        // Hem Yazı Çıkaran Hem Siyah-Beyaz Konfeti Patlatan Beşiktaş Fonksiyonu!
+        function celebrateBJK(btn) {
+            playSound('cheer');
+
+            // 1. Siyah Beyaz Konfetileri Yağdır
+            for (let i = 0; i < 70; i++) {
+                let conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.backgroundColor = Math.random() > 0.5 ? '#000000' : '#ffffff';
+                conf.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                conf.style.animationDelay = (Math.random() * 0.5) + 's';
+                document.body.appendChild(conf);
+                setTimeout(() => conf.remove(), 4000);
+            }
+
+            // 2. Uçan Kutlama Yazılarını Fırlat
+            const slogans = ["🦅 SİYAH!", "🤍 BEYAZ!", "🖤 ŞAMPİYON BEŞİKTAŞ!", "🔥 ÇARŞI 1903!", "🦅 EN BÜYÜK KARTAL!"];
+            const chosen = slogans[Math.floor(Math.random() * slogans.length)];
+            
+            const banner = document.createElement('div');
+            banner.className = 'celebrate-text';
+            banner.innerText = chosen;
+            banner.style.left = (Math.random() * 50 + 20) + 'vw';
+            banner.style.top = (Math.random() * 40 + 30) + 'vh';
+            document.body.appendChild(banner);
+
+            setTimeout(() => banner.remove(), 2000);
+        }
+    </script>
+
+    <!-- OYUN VERİTABANI VE MANTIK: 1-2 KOLAY | 3-5 ORTA (+MÜZİK) | 6-9 ZOR | 10-15 ÇOK ZOR & YARATICI! -->
+    <script>
+        const MONEY_TREE = [
+            { level: 1, amount: "5.000 TL", safe: false },
+            { level: 2, amount: "10.000 TL", safe: false },
+            { level: 3, amount: "20.000 TL", safe: true },
+            { level: 4, amount: "30.000 TL", safe: false },
+            { level: 5, amount: "50.000 TL", safe: false },
+            { level: 6, amount: "75.000 TL", safe: false },
+            { level: 7, amount: "150.000 TL", safe: true },
+            { level: 8, amount: "200.000 TL", safe: false },
+            { level: 9, amount: "300.000 TL", safe: false },
+            { level: 10, amount: "500.000 TL", safe: false },
+            { level: 11, amount: "750.000 TL", safe: false },
+            { level: 12, amount: "1.000.000 TL", safe: true },
+            { level: 13, amount: "1.500.000 TL", safe: false },
+            { level: 14, amount: "2.500.000 TL", safe: false },
+            { level: 15, amount: "5.000.000 TL", safe: true }
         ];
 
-        let selectedCategories = ['muzik', 'cografya', 'bilim', 'edebiyat', 'matematik', 'tarih', 'sinema', 'genel', 'spor'];
-        let categoryUsageCounts = {};
-        let musicQuestionCount = 0; // Müzik sorularını max 2 ile sınırlamak için sayaç!
+        // Yeni Zorluk ve ATV Tarzı Yaratıcı Sorularla Revize Edildi!
+        const RAW_QUESTIONS = [
+            // ==================== SEVİYE 1 & 2 (ÇOK KOLAY / GÜNLÜK YAŞAM & DEYİMLER) ====================
+            { 
+                c: "Genel Kültür", l: 1, a: 0,
+                q_tr: "'Damlayan su taşı deler; gücüyle değil...' atasözünün doğru devamı hangisidir?",
+                q_de: "Wie endet das bekannte Sprichwort 'Der stete Tropfen höhlt den Stein; nicht durch seine Kraft, sondern durch...'?",
+                o_tr: ["Sürekliliğiyle", "Sıcaklığıyla", "Ağırlığıyla", "Hızıyla"],
+                o_de: ["Seine Ausdauer / Beständigkeit", "Seine Wärme", "Sein Gewicht", "Seine Schnelligkeit"]
+            },
+            { 
+                c: "Genel Kültür", l: 1, a: 0,
+                q_tr: "Geleneksel Türk kahvesinin yanında su dışında en sık ikram edilen geleneksel tatlı hangisidir?",
+                q_de: "Welche traditionelle Süßigkeit wird in der Türkei am häufigsten zusammen mit Türkischem Kaffee gereicht?",
+                o_tr: ["Lokum", "Baklava", "Künefe", "Güllaç"],
+                o_de: ["Lokum (Türkischer Honig)", "Baklava", "Künefe", "Güllaç"]
+            },
+            { 
+                c: "Edebiyat & Yazarlar", l: 2, a: 0,
+                q_tr: "Geleneksel Türk masallarının sonunda genellikle gökten kaç tane elma düşer?",
+                q_de: "Wie viele Äpfel fallen am Ende traditioneller türkischer Märchen üblicherweise vom Himmel?",
+                o_tr: ["3", "5", "7", "10"],
+                o_de: ["3", "5", "7", "10"]
+            },
+            { 
+                c: "Matematik & Mantık", l: 2, a: 0,
+                q_tr: "Standart bir destede (kalem, kağıt vb.) toplam kaç adet ürün bulunur?",
+                q_de: "Wie viele Stück befinden sich in einem traditionellen 'Deste' (Zehnerpack)?",
+                o_tr: ["10", "12", "20", "24"],
+                o_de: ["10", "12", "20", "24"]
+            },
 
-        function toggleCategory(cat) {
-            const el = document.getElementById(`cat-${cat}`);
-            if (selectedCategories.includes(cat)) {
-                if (selectedCategories.length === 1) {
-                    alert("En az bir kategori seçili kalmalıdır digga!");
-                    return;
-                }
-                selectedCategories = selectedCategories.filter(c => c !== cat);
-                el.classList.remove('selected');
-                el.querySelector('.check-icon').innerText = "";
-            } else {
-                selectedCategories.push(cat);
-                el.classList.add('selected');
-                el.querySelector('.check-icon').innerText = "✓";
+            // ==================== SEVİYE 3 - 5 (ORTA SEVİYE / MÜZİKLİ VEYA ŞAŞIRTICI GENEL KÜLTÜR) ====================
+            { 
+                c: "Müzik & Sanat", l: 3, audioUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e5/Vivaldi_-_Spring_-_mvt_1_Allegro_-_John_Harrison_violin.ogg", a: 0,
+                q_tr: "Dinlediğiniz, keman sesleriyle baharın gelişini müjdeleyen 'Dört Mevsim' (Le quattro stagioni) konçertolarının en ünlüsü kime aittir?",
+                q_de: "Von welchem italienischen Komponisten stammt dieses weltberühmte Violinkonzert 'Der Frühling' aus dem Zyklus 'Die vier Jahreszeiten'?",
+                o_tr: ["Antonio Vivaldi", "Giuseppe Verdi", "Giacomo Puccini", "Gioachino Rossini"],
+                o_de: ["Antonio Vivaldi", "Giuseppe Verdi", "Giacomo Puccini", "Gioachino Rossini"]
+            },
+            { 
+                c: "Spor & Oyun", l: 3, a: 0,
+                q_tr: "Tenis maçlarında 0 (sıfır) puanını ifade etmek için uluslararası olarak hangi kelime kullanılır?",
+                q_de: "Mit welchem englischen Wort wird beim Tennis der Punktestand von 0 (Null) international bezeichnet?",
+                o_tr: ["Love", "Zero", "Null", "Nothing"],
+                o_de: ["Love", "Zero", "Null", "Nothing"]
+            },
+            { 
+                c: "Müzik & Sanat", l: 4, audioUrl: "https://upload.wikimedia.org/wikipedia/commons/2/24/Mozart_-_Eine_kleine_Nachtmusik_-_1._Allegro.ogg", a: 0,
+                q_tr: "Dinlediğiniz, klasik müziğin en tanınan ve en neşeli melodilerinden biri olan 'Eine kleine Nachtmusik' (Küçük Bir Gece Müziği) kime aittir?",
+                q_de: "Wer komponierte diese weltbekannte Serenade 'Eine kleine Nachtmusik', die zu den populärsten Werken der Klassik gehört?",
+                o_tr: ["Wolfgang Amadeus Mozart", "Joseph Haydn", "Franz Schubert", "Johannes Brahms"],
+                o_de: ["Wolfgang Amadeus Mozart", "Joseph Haydn", "Franz Schubert", "Johannes Brahms"]
+            },
+            { 
+                c: "Coğrafya", l: 4, a: 0,
+                q_tr: "Dünyanın en uzun nehirlerinden biri sayılan ve Afrika kıtasını güneyden kuzeye kat ederek Akdeniz'e dökülen nehir hangisidir?",
+                q_de: "Welcher Fluss gilt als einer der längsten der Erde, durchfließt den afrikanischen Kontinent von Süden nach Norden und mündet ins Mittelmeer?",
+                o_tr: ["Nil Nehri", "Amazon Nehri", "Mississippi Nehri", "Kongo Nehri"],
+                o_de: ["Nil", "Amazonas", "Mississippi", "Kongo"]
+            },
+            { 
+                c: "Müzik & Sanat", l: 5, audioUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Beethoven_Symphony_No_5_-_1._Allegro_con_brio.ogg", a: 0,
+                q_tr: "Dinlediğiniz, sinema ve popüler kültürde 'kaderin kapıyı çalışı' olarak bilinen meşhur 'Ta-da-da-damm!' girişli 5. Senfoni kime aittir?",
+                q_de: "Von wem stammt die 5. Sinfonie mit dem berühmten 'Ta-da-da-damm!'-Motiv, das oft als 'Das Schicksal klopft an die Pforte' bezeichnet wird?",
+                o_tr: ["Ludwig van Beethoven", "Wolfgang Amadeus Mozart", "Johann Sebastian Bach", "Antonio Vivaldi"],
+                o_de: ["Ludwig van Beethoven", "Wolfgang Amadeus Mozart", "Johann Sebastian Bach", "Antonio Vivaldi"]
+            },
+            { 
+                c: "Biyoloji & Bilim", l: 5, a: 0,
+                q_tr: "Güneş sistemindeki en büyük gezegen olan ve üzerinde 'Büyük Kırmızı Leke' adında dev bir fırtına barındıran gezegen hangisidir?",
+                q_de: "Welcher ist der größte Planet unseres Sonnensystems, der für seinen 'Großen Roten Fleck' (ein riesiges Sturmgebiet) bekannt ist?",
+                o_tr: ["Jüpiter", "Satürn", "Neptün", "Uranüs"],
+                o_de: ["Jupiter", "Saturn", "Neptun", "Uranus"]
+            },
+
+            // ==================== SEVİYE 6 - 9 (ZOR SEVİYE / ENTERESAN GENEL KÜLTÜR DETAYLARI) ====================
+            { 
+                c: "Tarih & Medeniyet", l: 6, a: 0,
+                q_tr: "1969 yılında Apollo 11 görevinde Ay'a ayak basan astronotlar Neil Armstrong ve Buzz Aldrin'in Ay yüzeyinde yedikleri ilk besin hangisidir?",
+                q_de: "Was war die erste Nahrung, die die Astronauten Neil Armstrong und Buzz Aldrin 1969 auf der Mondoberfläche verzehrten?",
+                o_tr: ["Şeftali ve Bacon", "Elma Püresi ve Kurutulmuş Dana Eti", "Çikolata ve Biskuvi", "Kurutulmuş Tavuk ve Bezelye"],
+                o_de: ["Pfirsiche und Speck", "Apfelmus und Dörrfleisch", "Schokolade und Kekse", "Getrocknetes Hühnchen und Erbsen"]
+            },
+            { 
+                c: "Sinema & TV", l: 6, a: 0,
+                q_tr: "Sinema tarihindeki ilk animasyon uzun metrajlı film olarak bilinen 1937 yapımı Disney şaheseri hangisidir?",
+                q_de: "Welcher Disney-Meisterwerk aus dem Jahr 1937 gilt als der weltweit erste abendfüllende Zeichentrickfilm der Kinogeschichte?",
+                o_tr: ["Pamuk Prenses ve Yedi Cüceler", "Pinokyo", "Fantasia", "Bambi"],
+                o_de: ["Schneewittchen und die sieben Zwerge", "Pinocchio", "Fantasia", "Bambi"]
+            },
+            { 
+                c: "Biyoloji & Bilim", l: 7, a: 0,
+                q_tr: "Arkeolojik ve genetik bulgulara göre, insanlık tarihinde evcilleştirilen İLK kuş türü hangisidir?",
+                q_de: "Welche Vogelart war laut archäologischen und genetischen Funden die erste, die in der Menschheitsgeschichte domestiziert wurde?",
+                o_tr: ["Kaz / Ördek giller", "Tavuk", "Güvercin", "Doğan / Şahin"],
+                o_de: ["Gänse- und Entenvögel", "Huhn", "Taube", "Falke / Habicht"]
+            },
+            { 
+                c: "Coğrafya", l: 7, a: 0,
+                q_tr: "Eski Adı 'Constantinople' veya 'Byzantium' olmayan ama tarih boyunca adı muazzam şekilde 3 kez tamamen değişerek bugün başkent olan şehir hangisidir?",
+                q_de: "Welche heutige Hauptstadt hieß nicht Konstantinopel oder Byzanz, änderte aber im Laufe der Geschichte dennoch dreimal komplett ihren Namen?",
+                o_tr: ["Saint Petersburg (Leningrad / Petrograd)", "Oslo (Christiania)", "Tokyo (Edo)", "Pekin (Dadu)"],
+                o_de: ["Sankt Petersburg (Leningrad / Petrograd)", "Oslo (Christiania)", "Tokio (Edo)", "Peking (Dadu)"]
+            },
+            { 
+                c: "Müzik & Sanat", l: 8, a: 0,
+                q_tr: "1911 yılında Louvre Müzesi'nden çalınan ve bu hırsızlık olayı sayesinde dünya çapında bir fenomene dönüşen ünlü tablo hangisidir?",
+                q_de: "Welches berühmte Gemälde wurde 1911 aus dem Louvre gestohlen und erst durch diesen spektakulären Diebstahl zu einem weltweiten Mythos?",
+                o_tr: ["Mona Lisa", "İnci Küpeli Kız", "Venüs'ün Doğuşu", "Son Akşam Yemeği"],
+                o_de: ["Mona Lisa", "Das Mädchen mit dem Perlengehänge", "Die Geburt der Venus", "Das Abendmahl"]
+            },
+            { 
+                c: "Genel Kültür", l: 8, a: 0,
+                q_tr: "Koltuk, kanepe veya sandalye gibi mobilyaların döşemesinde sıkça kullanılan 'Chesterfield' aslında ilk kez neyi tanımlamak için türetilmiş bir kelimedir?",
+                q_de: "Wofür wurde das Wort 'Chesterfield', das wir heute vor allem von Ledersofas kennen, ursprünglich verwendet?",
+                o_tr: ["Düğmeli ve derin kapitone bir deri palto", "İngiliz Kraliyet At Arabası", "Bir tür tütün ve pipo çeşidi", "Erkek kol saati kordonu"],
+                o_de: ["Ein geknöpfter und tief gesteppter Ledermantel", "Eine britische königliche Kutsche", "Eine Tabak- und Pfeifenart", "Ein Herren-Armbanduhrarmband"]
+            },
+            { 
+                c: "Tarih & Medeniyet", l: 9, a: 0,
+                q_tr: "18. yüzyılda İngiltere'de çıkarılan 'Pencere Vergisi' nedeniyle insanlar vergi ödememek için evlerinde nasıl bir tuhaf yönteme başvurdu?",
+                q_de: "Zu welcher skurrilen Methode griffen die Menschen im England des 18. Jahrhunderts, um der damaligen 'Fenstersteuer' zu entgehen?",
+                o_tr: ["Pencerelerini tuğla ve harçla örerek kapattılar", "Pencerelere cam yerine kağıt gerildiler", "Tüm evleri yer altına inşa etmeye başladılar", "Pencereleri sadece geceleri açtılar"],
+                o_de: ["Sie mauerten ihre Fenster mit Ziegeln und Mörtel zu", "Sie spülten Papier statt Glas in die Fenster", "Sie bauten Häuser nur noch unterirdisch", "Sie öffneten Fenster nur nachts"]
+            },
+            { 
+                c: "Biyoloji & Bilim", l: 9, a: 0,
+                q_tr: "Günümüzdeki modern muzların çekirdeksiz ve kolay yenilebilir olmasını sağlayan, neredeyse dünyadaki tüm ticari muzların türetildiği ana muz çeşidi hangisidir?",
+                q_de: "Wie heißt die dominierende Bananensorte, von der heute fast alle kommerziellen, kernlosen und leicht verzehrbaren Bananen weltweit abstammen?",
+                o_tr: ["Cavendish", "Gros Michel", "Lady Finger", "Plantain"],
+                o_de: ["Cavendish", "Gros Michel", "Lady Finger", "Kochbanane (Plantain)"]
+            },
+
+            // ==================== SEVİYE 10 - 15 (ÇOK ZOR & YARATICI ZİRVE / ATV TARZI TUZAKLI VE ŞAŞIRTICI) ====================
+            { 
+                c: "Tarih & Medeniyet", l: 10, a: 0,
+                q_tr: "Avrupa'nın Coğrafi Keşifler sonrasında Yeni Dünya'dan (Amerika kıtası) tanıştığı aşağıdaki ürünlerden hangisi Avrupa topraklarına EN SON getirilmiştir?",
+                q_de: "Welches der folgenden Produkte aus der Neuen Welt (Amerika) fand nach den Entdeckungsreisen als LETZTES seinen Weg nach Europa?",
+                o_tr: ["Çilek", "Kakao (Çikolata)", "Patates", "Domates"],
+                o_de: ["Erdbeere", "Kakao (Schokolade)", "Kartoffel", "Tomate"]
+            },
+            { 
+                c: "Matematik & Mantık", l: 10, a: 0,
+                q_tr: "Klasik bir satranç tahtasının ilk karesine 1, ikinci karesine 2, üçüncüye 4 buğday tanesi koyarak her kalede iki katına çıkaran ünlü efsanede 64. kalede toplam buğday miktarı yaklaşık ne kadardır?",
+                q_de: "Wie viel Weizen kommt laut der berühmten Legende zusammen, wenn man auf dem 1. Feld eines Schachbretts 1 Korn, auf dem 2. Feld 2, auf dem 3. Feld 4 usw. (immer verdoppelnd) bis zum 64. Feld legt?",
+                o_tr: ["Dünyanın günümüzdeki bin yıllık toplam buğday üretiminden fazla", "Bir olimpiyat havuzunu tam olarak dolduracak kadar", "Sadece küçük bir tahıl ambarını dolduracak kadar", "Yaklaşık bir ton buğday ağırlığında"],
+                o_de: ["Mehr als die weltweite Weizenproduktion von tausend Jahren heute", "Genug, um ein olympisches Schwimmbecken genau zu füllen", "Genug, um nur einen kleinen Getreidespeicher zu füllen", "Etwa eine Tonne Weizengewicht"]
+            },
+            { 
+                c: "Spor & Oyun", l: 11, a: 0,
+                q_tr: "1900 yılında Paris'te düzenlenen Olimpiyat Oyunları'nda resmi bir spor dalı olarak madalya dağıtılan en tuhaf ve tek seferlik yarışma hangisidir?",
+                q_de: "Welcher skurrile Wettbewerb war bei den Olympischen Spielen 1900 in Paris tatsächlich eine offizielle Sportart, in der Medaillen vergeben wurden?",
+                o_tr: ["Canlı güvercin vurma yarışması", "Halat çekme ve çuval yarışı", "Sıcak hava balonuyla uzun mesafe yarışı", "İtfaiyecilik ve merdiven tırmanma yarışı"],
+                o_de: ["Taubenschießen auf lebende Tauber", "Tauziehen und Sackhüpfen", "Langstreckenrennen mit dem Heißluftballon", "Feuerwehr- und Treppensteigwettbewerb"]
+            },
+            { 
+                c: "Genel Kültür", l: 11, a: 0,
+                q_tr: "Günlük hayatta sıkça kullandığımız 'Boykot' kelimesi aslında nereden gelmektedir?",
+                q_de: "Woher stammt das Wort 'Boykott', das wir heute im Alltag für Protestverweigerung nutzen?",
+                o_tr: ["İrlandalı acımasız bir toprak yöneticisi olan Yüzbaşı Charles Boycott'un soyadından", "18. yüzyılda Fransa'daki bir ekmek fırını isyanının liderinden", "Almanca 'bükülmez' anlamına gelen eski bir gümrük teriminden", "Amerikan iç savaşındaki bir liman ablukası taktiğinden"],
+                o_de: ["Von Captain Charles Boycott, einem erbarmungslosen irischen Gutsverwalter", "Von einem Anführer eines französischen Bäckereiaufstands im 18. Jh.", "Von einem alten deutschen Zollbegriff für 'unbeugsam'", "Von einer Hafenblockade-Taktik im Amerikanischen Bürgerkrieg"]
+            },
+            { 
+                c: "Coğrafya", l: 12, a: 0,
+                q_tr: "Yüzölçümü bakımından incelendiğinde, dünyanın en büyük ÇÖLÜ hangisidir?",
+                q_de: "Welche ist flächenmäßig betrachtet die größte WÜSTE der Erde?",
+                o_tr: ["Antarktika Çölü", "Sahra Çölü", "Gobi Çölü", "Kalahari Çölü"],
+                o_de: ["Antarktische Wüste", "Sahara", "Gobi", "Kalahari"]
+            },
+            { 
+                c: "Edebiyat & Yazarlar", l: 12, a: 0,
+                q_tr: "Sherlock Holmes'un yazar Sir Arthur Conan Doyle tarafından kaleme alınan orijinal hikayelerinin HİÇBİRİNDE geçmeyen ama sinema ve popüler kültürle karaktere yapışan ünlü replik hangisidir?",
+                q_de: "Welches berühmte Zitat taucht in KEINER einzigen Originalgeschichte von Sherlock Holmes auf, wurde aber durch Film und Popkultur unsterblich mit ihm verbunden?",
+                o_tr: ["Basit, sevgili Watson! (Elementary, my dear Watson!)", "Oyun başladı! (The game is afoot!)", "İmkânsızı elediğinizde geriye kalan gerçektir.", "Bir ipucu, kanıttan daha değerlidir."],
+                o_de: ["Elementar, mein lieber Watson! (Elementary, my dear Watson!)", "Das Spiel beginnt! (The game is afoot!)", "Wenn man das Unmögliche ausschließt, ist das, was übrig bleibt, die Wahrheit.", "Ein Hinweis ist wertvoller als ein Beweis."]
+            },
+            { 
+                c: "Biyoloji & Bilim", l: 13, a: 0,
+                q_tr: "Botanikteki bilimsel sınıflandırmaya göre incelendiğinde; aşağıdaki meyve/sebze eşleştirmelerinden hangisi teknik olarak bir 'ÜZÜMSÜ MEYVE' (Berry) sayılmaz?",
+                q_de: "Welche der folgenden Früchte ist laut botanischer Klassifikation rein technisch gesehen KEINE 'Beere' (Berry)?",
+                o_tr: ["Çilek (Strawberry)", "Muz (Banana)", "Karpuz (Watermelon)", "Domates (Tomato)"],
+                o_de: ["Erdbeere (Strawberry)", "Banane", "Wassermelone", "Tomate"]
+            },
+            { 
+                c: "Tarih & Medeniyet", l: 13, a: 0,
+                q_tr: "Tarihte bilinen en kısa savaş olan ve 1896 yılında İngiltere ile Zanzibar Sultanlığı arasında gerçekleşen 'İngiliz-Zanzibar Savaşı' toplam ne kadar sürmüştür?",
+                q_de: "Wie lange dauerte der kürzeste Krieg der Weltgeschichte, der 'Britisch-Sansibar-Krieg' zwischen dem Vereinigten Königreich und dem Sultanat Sansibar im Jahr 1896?",
+                o_tr: ["Yaklaşık 38 ila 45 dakika", "Tam olarak 6 saat", "3 gün 3 gece", "Yalnızca 14 saniye"],
+                o_de: ["Etwa 38 bis 45 Minuten", "Genau 6 Stunden", "3 Tage und 3 Nächte", "Nur 14 Sekunden"]
+            },
+            { 
+                c: "Sinema & TV", l: 14, a: 0,
+                q_tr: "1980 yapımı Stanley Kubrick şaheseri 'The Shining' (Cinnet) filminde, Jack Nicholson'ın baltayı kapıya vurarak içeri baktığı o ikonik 'Here's Johnny!' sahnesi kaç kez tekrar çekilerek rekor kırmıştır?",
+                q_de: "Wie oft musste die ikonische Szene in Stanley Kubricks 'Shining' (1980), in der Jack Nicholson die Tür mit einer Axt einschlägt und 'Here's Johnny!' ruft, wiederholt werden?",
+                o_tr: ["127 kez", "15 kez", "62 kez", "3 kez (İlk çekimler beğenilmişti)"],
+                o_de: ["127-mal", "15-mal", "62-mal", "3-mal (Die ersten Takes waren perfekt)"]
+            },
+            { 
+                c: "Genel Kültür", l: 14, a: 0,
+                q_tr: "İtalyan ressam Michelangelo, Roma'daki Sistin Şapeli'nin efsanevi tavan fresklerini yaparken 4 yıl boyunca hangi pozisyonda çalışmıştır?",
+                q_de: "In welcher Körperhaltung arbeitete der italienische Meister Michelangelo 4 Jahre lang, während er die legendären Deckenfresken der Sixtinischen Kapelle malte?",
+                o_tr: ["Ayakta durup başını ve boynunu sürekli geriye bükerek", "Sırtüstü bir iskele üzerinde yatarak", "Özel bir ip sarkaçla tavandan baş aşağı sarkarak", "Dizlerinin üzerinde eğilip aynaya bakarak"],
+                o_de: ["Stehend mit ständig nach hinten gebeugtem Kopf und Nacken", "Liegend auf dem Rücken auf einem Gerüst", "Kopfüber von der Decke hängend an einem Spezialseil", "Auf den Knieend über einen Spiegel blickend"]
+            },
+            { 
+                c: "Matematik & Mantık", l: 15, a: 0,
+                q_tr: "Monty Hall problemi olarak bilinen ünlü olasılık paradoksunda; yarışmacı 3 kapıdan birini seçer, sunucu arkası boş olan bir kapıyı açar ve yarışmacıya fikrini değiştirme hakkı sunar. Matematiksel olarak kazanma şansını en yüksek yapmak için doğru strateji nedir?",
+                q_de: "Beim berühmten Ziegenproblem (Monty-Hall-Dilemma) wählt der Kandidat eine von 3 Türen, der Moderator öffnet eine leere Tür und bietet den Wechsel an. Was ist mathematisch die beste Strategie?",
+                o_tr: ["Kararı KESİNLİKLE değiştirmek (Kazanma şansını %66,6'ya çıkarır)", "İlk seçilen kapıda KALMAK (İlk his her zaman %50 daha şanslıdır)", "Fark etmez, şans her iki kapı için de tam olarak %50'dir", "Sunucunun gözlerine bakarak rastgele yazı tura atmak"],
+                o_de: ["Die Tür UNBEDINGT wechseln (Erhöht die Gewinnchance auf 66,6 %)", "Bei der ersten Wahl BLEIBEN (Der erste Instinkt hat 50 % Chance)", "Es macht keinen Unterschied, die Chance beträgt exakt 50 zu 50", "Münzwurf machen und den Moderator beobachten"]
+            },
+            { 
+                c: "Genel Kültür", l: 15, a: 0,
+                q_tr: "Dünyanın en uzun süreli ve kesintisiz yanan yapay ateşi olan, ABD'nin Kaliforniya eyaletindeki bir itfaiye istasyonunda bulunan 'Centennial Light' adlı ampul ilk kez hangi yılda yakılmıştır?",
+                q_de: "In welchem Jahr wurde die 'Centennial Light', eine Glühbirne in einer Feuerwache in Kalifornien, die als die am längsten ununterbrochen brennende Lichtquelle der Welt gilt, erstmals eingeschaltet?",
+                o_tr: ["1901 yılında", "1889 yılında", "1923 yılında", "1945 yılında"],
+                o_de: ["Im Jahr 1901", "Im Jahr 1889", "Im Jahr 1923", "Im Jahr 1945"]
             }
+        ];
+
+        let currentLevel = 1;
+        let selectedCategory = "Karışık";
+        let currentQuestion = null;
+        let timer = null;
+        let timeLeft = 30;
+        let isLocked = false;
+        let musicQuestionCount = 0;
+        let isJoker2XActive = false;
+        let joker2XChances = 2;
+
+        // ARKA PLANDA ÖN YÜKLEME SİSTEMİ (0 Gecikme İçin!)
+        const PRELOADED_AUDIOS = {};
+        function preloadAudioFiles() {
+            RAW_QUESTIONS.forEach(q => {
+                if (q.audioUrl && !PRELOADED_AUDIOS[q.audioUrl]) {
+                    const bgAudio = new Audio();
+                    bgAudio.src = q.audioUrl;
+                    bgAudio.preload = "auto";
+                    PRELOADED_AUDIOS[q.audioUrl] = bgAudio;
+                }
+            });
+        }
+
+        function renderMoneyTree() {
+            const list = document.getElementById('money-list');
+            list.innerHTML = '';
+            MONEY_TREE.forEach(item => {
+                const div = document.createElement('div');
+                div.id = `tree-${item.level}`;
+                div.className = `money-step py-1 px-2 flex justify-between items-center ${item.safe ? 'safe' : ''}`;
+                div.innerHTML = `<span>${item.level}.</span><span>${item.amount}</span>`;
+                list.appendChild(div);
+            });
         }
 
         function startGame() {
-            categoryUsageCounts = {};
+            playSound('select');
+            selectedCategory = document.getElementById('category-select').value;
+            currentLevel = 1;
             musicQuestionCount = 0;
-            selectedCategories.forEach(c => categoryUsageCounts[c] = 0);
-            document.getElementById('lobby-screen').style.display = 'none';
-            document.getElementById('game-screen').style.display = 'flex';
-            initLadder();
-            loadQuestion();
+
+            document.getElementById('screen-lobby').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+            document.getElementById('screen-game').classList.add('grid');
+
+            renderMoneyTree();
+            loadNextQuestion();
         }
 
-        // TÜRK POP & ROCK ARŞİVİ (Zorlaştırılmış, Maksimum 2 Müzik Sorusu Sınırı)
-        const allQuestions = [
-            // --- MÜZİK KATEGORİSİ (Zorlu & Dinletmeli Türk Pop/Rock) ---
-            { level: 3, cat: 'muzik', isAudio: true, soru: "[🎵 DİNLEMELİ SORU - ŞARKIYI ÇALIN!] Türk rock müziğinin efsane isimlerinden Yavuz Çetin'in, hüzünlü ve virtüöz gitar sololarıyla hafızalara kazınan ve erken yaşta kaybettiğimiz sanatçının anısına adanan o kült şarkısı hangisidir?", A: "Dünya", B: "Sokak Kedisi", C: "Kimse Bilemez", D: "Bodrum", cevap: "A" },
-            { level: 6, cat: 'muzik', isAudio: true, soru: "[🎵 DİNLEMELİ SORU - ŞARKIYI ÇALIN!] Türkçe alternatif rock sahnesinin öncülerinden Kurban grubunun, 1999 çıkışlı ilk albümünde yer alan ve grubun en sert, en dinamik parçalarından biri olan şarkı hangisidir?", A: "Yalan", B: "Sııra", C: "Tövbeler Olsun", D: "Ağlama", cevap: "A" },
-            { level: 8, cat: 'muzik', isAudio: false, soru: "Türk pop müziğinin devleşmesinde en büyük aranjörlerden biri olan, Sezen Aksu'nun 'Seni Seviyorum' ve 'Gülümse' albümlerinin de müzik direktörlüğünü yapan efsane müzisyen kimdir?", A: "Onno Tunç", B: "Uzay Heparı", C: "Ozan Çolakoğlu", D: "Atilla Özdemiroğlu", cevap: "A" },
-            { level: 11, cat: 'muzik', isAudio: false, soru: "Mor ve Ötesi grubunun 2004 yılında yayımlanan ve grubun politik/protest duruşunu sert bir dille ortaya koyan 'Araf' albümünde yer alan, İsmet Özel'in aynı adlı şiirinden bestelenen şarkı hangisidir?", A: "Cambaz", B: "Açık Adres", C: "Desinler Ki", D: "Rezil", cevap: "C" },
-            { level: 13, cat: 'muzik', isAudio: false, soru: "Teoman'ın 2001 çıkışlı 'Gönülçelen' albümünde yer alan, sözleri Orhan Veli Kanık'ın meşhur şiirinden uyarlanan ve albüme adını veren şarkının adı nedir?", A: "İstanbul'da Sonbahar", B: "Gönülçelen", C: "Paramparça", D: "Uykusuz Her Gece", cevap: "B" },
-
-            // --- DİĞER KATEGORİLER (Akademik & Hardcore Zorluk) ---
-            { level: 1, cat: 'cografya', soru: "Türkiye'nin en fazla yağış alan ve çayıyla meşhur olan Karadeniz ilimiz hangisidir?", A: "Trabzon", B: "Rize", C: "Artvin", D: "Samsun", cevap: "B" },
-            { level: 1, cat: 'matematik', soru: "Bir destede bulunan ürün sayısı ile bir düzinede bulunan ürün sayısının toplamı kaçtır?", A: "20", B: "22", C: "24", D: "25", cevap: "B" },
-            { level: 1, cat: 'bilim', soru: "İnsan vücudunda kanı damarlar aracılığıyla tüm vücuda pompalamakla görevli organ hangisidir?", A: "Akciğer", B: "Karaciğer", C: "Kalp", D: "Böbrek", cevap: "C" },
-            { level: 2, cat: 'cografya', soru: "Dünyanın en küçük yüzölçümüne sahip olan ve İtalya'nın Roma şehri içinde yer alan bağımsız devlet hangisidir?", A: "Monako", B: "San Marino", C: "Vatikan", D: "Andorra", cevap: "C" },
-            { level: 2, cat: 'matematik', soru: "Bir dik üçgenin dik kenarlarının uzunlukları 3 cm ve 4 cm ise, hipotenüsün uzunluğu kaç cm'dir?", A: "5", B: "6", C: "7", D: "8", cevap: "A" },
-            { level: 2, cat: 'bilim', soru: "Yeşil bitkilerin güneş ışığı, su ve karbondioksit kullanarak besin ve oksijen üretmesi olayına ne ad verilir?", A: "Solunum", B: "Fotosentez", C: "Mayalanma", D: "Buharlaşma", cevap: "B" },
-            { level: 3, cat: 'edebiyat', soru: "Edebiyatımızda 'Vatan Şairi' olarak anılan ve 'İntibah' ile 'Vatan Yahut Silistre' eserlerinin sahibi Tanzimat yazarı kimdir?", A: "Namık Kemal", B: "Ziya Paşa", C: "Şinasi", D: "Ahmet Mithat Efendi", cevap: "A" },
-            { level: 3, cat: 'tarih', soru: "Osmanlı Devleti'nde ilk resmi matbaayı kurarak Türk yayıncılık tarihinde çığır açan Macar asıllı Osmanlı müteferrikası kimdir?", A: "İbrahim Müteferrika", B: "Evliya Çelebi", C: "Katip Çelebi", D: "Lagari Hasan Çelebi", cevap: "A" },
-            { level: 4, cat: 'bilim', soru: "Periyodik tablodaki sembolü 'Fe' olan, kanımızdaki hemoglobinin yapısında da bulunan ve endüstride en çok kullanılan metal hangisidir?", A: "Flor", B: "Fosfor", C: "Demir", D: "Çinko", cevap: "C" },
-            { level: 4, cat: 'sinema', soru: "Quentin Tarantino'nun yönettiği 1994 yapımı 'Ucuz Roman' (Pulp Fiction) filminde Vincent Vega karakterini hangi aktör canlandırmıştır?", A: "Bruce Willis", B: "Samuel L. Jackson", C: "John Travolta", D: "Brad Pitt", cevap: "C" },
-            { level: 5, cat: 'matematik', soru: "1'den başlayıp kendisine kadar olan tüm pozitif tam sayıların çarpımını ifade eden ve ünlem (!) işaretiyle gösterilen matematiksel kavram nedir?", A: "Logaritma", B: "Faktöriyel", C: "Türev", D: "İntegral", cevap: "B" },
-            { level: 5, cat: 'cografya', soru: "Akdeniz'i Kızıldeniz'e bağlayan ve Mısır topraklarında yer alan dünyanın en önemli insan yapımı su kanalı hangisidir?", A: "Panama Kanalı", B: "Süveyş Kanalı", C: "Kiel Kanalı", D: "Korint Kanalı", cevap: "B" },
-            { level: 6, cat: 'edebiyat', soru: "Türk edebiyatının ilk yerli romanı olarak kabul edilen 'Taaşşuk-ı Talat ve Fitnat' adlı eserin yazarı kimdir?", A: "Şemseddin Sami", B: "Recaizade Mahmut Ekrem", C: "Samipaşazade Sezai", D: "Halit Ziya Uşaklıgil", cevap: "A" },
-            { level: 6, cat: 'bilim', soru: "İnsan gözünün ağ tabakasında bulunan, renkli görmeyi ve gündüz net görmeyi sağlayan ışığa duyarlı hücrelere ne ad verilir?", A: "Çomak hücreleri", B: "Koni hücreleri", C: "Ganglion hücreleri", D: "Schwann hücreleri", cevap: "B" },
-            { level: 7, cat: 'matematik', soru: "Her terimin kendisinden önceki iki terimin toplamı olduğu meşhur sayı dizisinin (0, 1, 1, 2, 3, 5, 8...) 8. terimi kaçtır?", A: "11", B: "13", C: "15", D: "21", cevap: "B" },
-            { level: 7, cat: 'cografya', soru: "Avrupa ile Asya kıtalarını coğrafi olarak birbirinden ayıran ve Rusya topraklarında kuzey-güney doğrultusunda uzanan dağ silsilesi hangisidir?", A: "Alp Dağları", B: "Ural Dağları", C: "Kafkas Dağları", D: "Karpat Dağları", cevap: "B" },
-            { level: 8, cat: 'bilim', soru: "Hücre içinde hücresel solunum yoluyla enerji (ATP) üretiminden sorumlu olan ve 'hücrenin santrali' olarak bilinen çift zarlı organel hangisidir?", A: "Ribozom", B: "Mitokondri", C: "Golgi Aygıtı", D: "Lizozom", cevap: "B" },
-            { level: 9, cat: 'edebiyat', soru: "Oğuz Atay'ın 1971 yılında yayımlanan, Selim Işık ve Turgut Özben karakterleri üzerinden yabancılaşmayı anlatan ilk postmodern başyapıtı hangisidir?", A: "Anayurt Oteli", B: "Tutunamayanlar", C: "Saatleri Ayarlama Enstitüsü", D: "Aylak Adam", cevap: "B" },
-            { level: 9, cat: 'matematik', soru: "Bir dik üçgende dik kenarların karelerinin toplamının hipotenüsün karesine eşit olduğunu belirten teorem hangi antik Yunan matematikçinin adını taşır?", A: "Thales", B: "Öklid", C: "Pisagor", D: "Arşimet", cevap: "C" },
-            { level: 10, cat: 'cografya', soru: "Büyük Sahra Çölü'nde yer alan ve uzaydan bakıldığında devasa bir gözü anımsatan, 50 km çapındaki dairesel Richat Yapısı hangi ülkededir?", A: "Mısır", B: "Moritanya", C: "Cezayir", D: "Fas", cevap: "B" },
-            { level: 10, cat: 'bilim', soru: "Evrendeki tüm maddelerin kütle kazanmasını sağlayan mekanizmayı açıklayan ve 'Tanrı Parçacığı' olarak bilinen atomaltı parçacık hangisidir?", A: "Higgs Bozonu", B: "Muon", C: "Pozitron", D: "Tau Nötrinosu", cevap: "A" },
-            { level: 11, cat: 'edebiyat', soru: "Divan edebiyatında şairlerin şiirlerinde kullandıkları takma ad veya mahlaslara ne ad verilir?", A: "Nazire", B: "Mahlas / Tapşırma", C: "Tevriye", D: "Mazmun", cevap: "B" },
-            { level: 12, cat: 'bilim', soru: "Sinir hücreleri arasındaki sinaptik boşlukta kimyasal iletişimi sağlayan dopamin, serotonin ve asetilkolin gibi moleküllere ne denir?", A: "Hormon", B: "Nörotransmitter", C: "Enzim", D: "Antikor", cevap: "B" },
-            { level: 12, cat: 'cografya', soru: "Dünyanın en derin ikinci deniz çukuru olan ve Atlantik Okyanusu'nda yer alan, yaklaşık 8.300 metre derinliğindeki çukurun adı nedir?", A: "Mariana Çukuru", B: "Porto Riko Çukuru", C: "Sunda Çukuru", D: "Tonga Çukuru", cevap: "B" },
-            { level: 13, cat: 'edebiyat', soru: "İrlandalı yazar James Joyce'un 'bilinçakışı' tekniğiyle yazdığı, 16 Haziran 1904 gününde Dublin'de geçen dev romanı hangisidir?", A: "Ulysses", B: "Finnegans Wake", C: "Sanatçının Gençlik Portresi", D: "Dublinliler", cevap: "A" },
-            { level: 14, cat: 'matematik', soru: "Asal sayıların dağılımını açıkladığı düşünülen ve Clay Matematik Enstitüsü'nün 1 Milyon Dolar ödüllü Milenyum Problemlerinden biri olan hipotez hangisidir?", A: "Goldbach Sanısı", B: "Riemann Hipotezi", C: "Poincaré Sanısı", D: "P=NP Problemi", cevap: "B" },
-            { level: 14, cat: 'bilim', soru: "1983 yılında Kary Mullis tarafından geliştirilen ve DNA dizilerinin kısa sürede milyonlarca kez kopyalanmasını sağlayan moleküler biyoloji tekniğinin kısaltması nedir?", A: "CRISPR", B: "ELISA", C: "PCR", D: "RNAi", cevap: "C" },
-            { level: 15, cat: 'edebiyat', soru: "Alman yazar Thomas Mann'a 1929 Nobel Edebiyat Ödülü'nü kazandıran, İsviçre Alplerinde bir sanatoryumda geçen dev eseri hangisidir?", A: "Buddenbrooklar", B: "Büyülü Dağ", C: "Venedik'te Ölüm", D: "Dr. Faustus", cevap: "B" },
-            { level: 15, cat: 'cografya', soru: "Dünyanın en yüksek şelalesi olan ve yaklaşık 979 metre yükseklikten dökülen Angel Şelalesi hangi Güney Amerika ülkesindedir?", A: "Brezilya", B: "Arjantin", C: "Kolombiya", D: "Venezuela", cevap: "D" }
-        ];
-
-        let currentStep = 1;
-        let currentQuestion = null;
-        let isAnswered = false;
-        let guaranteedPrize = "0 TL";
-        let is2xActive = false;
-        let secondChance = false;
-        let timerInterval = null;
-        let timeLeft = 30;
-
-        function initLadder() {
-            const ladder = document.getElementById('prize-ladder');
-            ladder.innerHTML = '';
-            prizes.forEach(p => {
-                const li = document.createElement('li');
-                li.id = `step-${p.step}`;
-                li.className = `ladder-item flex justify-between px-3 py-1 text-gray-400 ${p.safe ? 'text-gold font-bold' : ''}`;
-                li.innerHTML = `<span>${p.step}. ${p.safe ? '♦ ' : ''}</span><span>${p.amount}</span>`;
-                ladder.appendChild(li);
-            });
-            updateLadder();
-        }
-
-        function updateLadder() {
-            document.querySelectorAll('.ladder-item').forEach(el => el.classList.remove('ladder-active'));
-            const activeEl = document.getElementById(`step-${currentStep}`);
-            if (activeEl) activeEl.classList.add('ladder-active');
-        }
-
-        function startTimer() {
-            clearInterval(timerInterval);
-            const timerBox = document.getElementById('timer-box');
+        function loadNextQuestion() {
+            isLocked = false;
+            isJoker2XActive = false;
             
-            if (currentStep <= 7 && !currentQuestion.isAudio) {
-                timeLeft = 30;
-                document.getElementById('timer-seconds').innerText = timeLeft;
-                timerBox.classList.remove('hidden');
-                
-                timerInterval = setInterval(() => {
-                    timeLeft--;
-                    document.getElementById('timer-seconds').innerText = timeLeft;
-                    if (timeLeft <= 0) {
-                        clearInterval(timerInterval);
-                        timeOutGameOver();
-                    }
-                }, 1000);
+            document.querySelectorAll('.money-step').forEach(el => el.classList.remove('active'));
+            const currentTreeEl = document.getElementById(`tree-${currentLevel}`);
+            if(currentTreeEl) currentTreeEl.classList.add('active');
+
+            if (currentLevel >= 8) {
+                const j2x = document.getElementById('joker-2x');
+                j2x.disabled = false;
+                j2x.classList.remove('bg-gray-900', 'border-gray-700', 'text-gray-600', 'cursor-not-allowed');
+                j2x.classList.add('bg-gray-800', 'hover:bg-gray-700', 'border-yellow-500/40', 'text-yellow-400', 'cursor-pointer', 'shadow-md');
+            }
+
+            const d = DICTIONARY[currentLang];
+            for(let i=0; i<4; i++) {
+                const btn = document.getElementById(`btn-${i}`);
+                btn.className = 'btn-option rounded-xl p-4 text-left font-semibold flex items-center text-sm md:text-base cursor-pointer';
+                btn.disabled = false;
+                btn.style.visibility = 'visible';
+            }
+
+            let pool = RAW_QUESTIONS.filter(q => q.l === currentLevel);
+            if (selectedCategory !== "Karışık") pool = pool.filter(q => q.c === selectedCategory);
+            
+            // KISITLAMA MANTIĞI: 3 ile 5. seviyeler arasında değilse VEYA 2 müzik sorusu çıktıysa müziklileri eliyoruz!
+            if (currentLevel < 3 || currentLevel > 5 || musicQuestionCount >= 2) {
+                pool = pool.filter(q => !q.audioUrl);
+            }
+
+            if (pool.length === 0) pool = RAW_QUESTIONS.filter(q => q.l === currentLevel && !q.audioUrl);
+
+            const randomIndex = Math.floor(Math.random() * pool.length);
+            currentQuestion = pool[randomIndex];
+
+            if (currentQuestion.audioUrl) musicQuestionCount++;
+
+            document.getElementById('game-category-badge').innerText = d.cats[currentQuestion.c] || currentQuestion.c;
+            document.getElementById('question-number-badge').innerText = `${d.questionPrefix} ${currentLevel}/15`;
+            document.getElementById('question-text').innerText = currentLang === 'TR' ? currentQuestion.q_tr : currentQuestion.q_de;
+            
+            // Doğrudan Sitede Çalan Müzik Oynatıcı (Ön Yüklü Önbellekten Sıfır Gecikmeyle Çeker!)
+            const musicBox = document.getElementById('music-player-container');
+            const introPlayer = document.getElementById('intro-player');
+            if (currentQuestion.audioUrl) {
+                introPlayer.src = currentQuestion.audioUrl;
+                musicBox.classList.remove('hidden');
+                introPlayer.play().catch(() => {
+                    console.log("Tarayıcı otomatik çalma engeline takıldı, oynat butonuna basılabilir.");
+                });
             } else {
-                timerBox.classList.add('hidden');
+                introPlayer.pause();
+                introPlayer.src = "";
+                musicBox.classList.add('hidden');
+            }
+
+            for(let i=0; i<4; i++) {
+                document.getElementById(`text-${i}`).innerText = currentLang === 'TR' ? currentQuestion.o_tr[i] : currentQuestion.o_de[i];
+            }
+
+            if (currentLevel <= 7 && !currentQuestion.audioUrl) {
+                document.getElementById('timer-box').classList.remove('hidden');
+                startTimer(30);
+            } else {
+                document.getElementById('timer-box').classList.add('hidden');
+                clearInterval(timer);
             }
         }
 
-        function timeOutGameOver() {
-            if (isAnswered) return;
-            isAnswered = true;
-            document.getElementById('status-message').innerText = "⏱️ SÜRE BİTTİ! Elendiniz.";
+        function startTimer(seconds) {
+            clearInterval(timer);
+            timeLeft = seconds;
+            document.getElementById('timer-text').innerText = timeLeft;
             
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer-text').innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    gameOver(DICTIONARY[currentLang].timeUp);
+                }
+            }, 1000);
+        }
+
+        function selectOption(index) {
+            if (isLocked) return;
+            playSound('select');
+
+            const btn = document.getElementById(`btn-${index}`);
+            btn.classList.add('selected');
+
+            if (isJoker2XActive) {
+                if (index === currentQuestion.a) {
+                    isLocked = true;
+                    isJoker2XActive = false;
+                    clearInterval(timer);
+                    setTimeout(() => handleCorrect(btn), 1000);
+                } else {
+                    btn.classList.remove('selected');
+                    btn.classList.add('wrong');
+                    btn.disabled = true;
+                    playSound('wrong');
+                    joker2XChances--;
+                    if (joker2XChances === 0) {
+                        isLocked = true;
+                        isJoker2XActive = false;
+                        clearInterval(timer);
+                        setTimeout(() => gameOver(DICTIONARY[currentLang].wrongAns), 1000);
+                    }
+                }
+                return;
+            }
+
+            isLocked = true;
+            clearInterval(timer);
             setTimeout(() => {
-                showModal("Süre Doldu!", `30 saniyelik süre içinde cevap veremedin dostum! Kazandığın garanti baraj ödülü: ${guaranteedPrize}.\n\nYeniden oynamak için sayfayı yenilemen yeterli!`);
+                if (index === currentQuestion.a) {
+                    handleCorrect(btn);
+                } else {
+                    btn.classList.remove('selected');
+                    btn.classList.add('wrong');
+                    document.getElementById(`btn-${currentQuestion.a}`).classList.add('correct');
+                    playSound('wrong');
+                    setTimeout(() => gameOver(DICTIONARY[currentLang].wrongAns), 1500);
+                }
             }, 1500);
         }
 
-        function loadQuestion() {
-            isAnswered = false;
-            is2xActive = false;
-            secondChance = false;
-            clearInterval(timerInterval);
-            
-            document.getElementById('status-message').innerText = "";
-            document.getElementById('question-number').innerText = currentStep;
-            document.getElementById('difficulty-display').innerText = `Seviye ${currentStep}`;
-            
-            ['A', 'B', 'C', 'D'].forEach(opt => {
-                const btn = document.getElementById(`btn-${opt}`);
-                btn.className = "btn-option p-4 rounded-xl text-left font-medium flex items-center text-lg";
-                btn.disabled = false;
-                btn.style.visibility = "visible";
-            });
-
-            const btn2x = document.getElementById('joker-2x');
-            if (currentStep >= 8 && !btn2x.dataset.used) {
-                btn2x.classList.remove('hidden');
-            }
-
-            // MÜZİK KONTROLÜ: Eğer bu oyunda 2 müzik sorusu dolduysa, 'muzik' kategorisini havuzdan çıkar!
-            let activeCats = [...selectedCategories];
-            if (musicQuestionCount >= 2) {
-                activeCats = activeCats.filter(c => c !== 'muzik');
-            }
-
-            let pool = allQuestions.filter(q => q.level === currentStep && activeCats.includes(q.cat));
-            if (pool.length === 0) pool = allQuestions.filter(q => q.level === currentStep && q.cat !== 'muzik');
-            if (pool.length === 0) pool = allQuestions.filter(q => q.level === currentStep);
-
-            let availableCats = [...new Set(pool.map(q => q.cat))];
-            let minUsage = Math.min(...availableCats.map(c => categoryUsageCounts[c] || 0));
-            let balancedPool = pool.filter(q => (categoryUsageCounts[q.cat] || 0) === minUsage);
-            if (balancedPool.length === 0) balancedPool = pool;
-
-            const randomIndex = Math.floor(Math.random() * balancedPool.length);
-            currentQuestion = balancedPool[randomIndex];
-
-            // Eğer gelen soru müzikse sayacı 1 artır
-            if (currentQuestion.cat === 'muzik') {
-                musicQuestionCount++;
-            }
-
-            categoryUsageCounts[currentQuestion.cat] = (categoryUsageCounts[currentQuestion.cat] || 0) + 1;
-            
-            const catNames = { muzik: '🎵 Müzik', cografya: '🌍 Coğrafya', bilim: '🔬 Bilim', edebiyat: '📚 Edebiyat', matematik: '📐 Matematik', tarih: '📜 Tarih', sinema: '🎬 Sinema', genel: '💡 Genel Kültür', spor: '⚽ Spor' };
-            document.getElementById('active-category-tag').innerText = catNames[currentQuestion.cat] || 'Genel';
-
-            document.getElementById('question-text').innerText = currentQuestion.soru;
-            document.getElementById('text-A').innerText = currentQuestion.A;
-            document.getElementById('text-B').innerText = currentQuestion.B;
-            document.getElementById('text-C').innerText = currentQuestion.C;
-            document.getElementById('text-D').innerText = currentQuestion.D;
-            
-            updateLadder();
-            startTimer();
-        }
-
-        function selectAnswer(selectedOpt) {
-            if (isAnswered) return;
-            isAnswered = true;
-            clearInterval(timerInterval);
-
-            const btn = document.getElementById(`btn-${selectedOpt}`);
-            btn.classList.add('btn-selected');
-            
-            if (is2xActive && !secondChance) {
-                document.getElementById('status-message').innerText = "2x Joker aktif! İlk tahmin kilitlendi...";
-            } else {
-                document.getElementById('status-message').innerText = "Son kararınız mı? Milyoner motoru kilitlendi...";
-            }
+        function handleCorrect(btn) {
+            btn.classList.remove('selected');
+            btn.classList.add('correct');
+            playSound('correct');
 
             setTimeout(() => {
-                if (selectedOpt === currentQuestion.cevap) {
-                    btn.classList.remove('btn-selected');
-                    btn.classList.add('btn-correct');
-                    
-                    const currentPrizeObj = prizes.find(p => p.step === currentStep);
-                    if (currentPrizeObj && currentPrizeObj.safe) {
-                        guaranteedPrize = currentPrizeObj.amount;
-                    }
-
-                    document.getElementById('status-message').innerText = "DOĞRU CEVAP! Harikasın dostum!";
-                    
-                    setTimeout(() => {
-                        if (currentStep === 15) {
-                            showModal("Tebrikler Milyoner!", "İnanılmaz bir başarı! 15 soruyu da doğru yanıtlayarak 5.000.000 TL büyük ödülü kazandın digga!");
-                        } else {
-                            currentStep++;
-                            loadQuestion();
-                        }
-                    }, 2000);
+                if (currentLevel === 15) {
+                    showResult("5.000.000 TL", true);
                 } else {
-                    btn.classList.remove('btn-selected');
-                    btn.classList.add('btn-wrong');
-
-                    if (is2xActive && !secondChance) {
-                        secondChance = true;
-                        isAnswered = false;
-                        btn.disabled = true;
-                        document.getElementById('status-message').innerText = "İlk cevap yanlış! Ama 2x Jokerin var, hemen yeni bir şık seç digga!";
-                        startTimer();
-                        return;
-                    }
-
-                    document.getElementById(`btn-${currentQuestion.cevap}`).classList.add('btn-correct');
-                    document.getElementById('status-message').innerText = "YANLIŞ CEVAP! Elendiniz.";
-                    
-                    setTimeout(() => {
-                        showModal("Oyun Bitti!", `Maalesef yanlış cevap verdin dostum. Kazandığın garanti baraj ödülü: ${guaranteedPrize}.\n\nYeniden oynamak için lobiden yeni bir oyun başlatabilirsin!`);
-                    }, 1500);
+                    currentLevel++;
+                    loadNextQuestion();
                 }
-            }, 2000);
+            }, 1500);
         }
 
-        function use5050() {
+        function useJoker50() {
+            if (isLocked) return;
+            playSound('select');
             document.getElementById('joker-50').disabled = true;
             document.getElementById('joker-50').classList.add('opacity-30', 'cursor-not-allowed');
-            
-            const wrongOptions = ['A', 'B', 'C', 'D'].filter(opt => opt !== currentQuestion.cevap);
-            wrongOptions.slice(0, 2).forEach(opt => {
-                document.getElementById(`btn-${opt}`).style.visibility = "hidden";
-            });
-        }
 
-        function useAudience() {
-            document.getElementById('joker-aud').disabled = true;
-            document.getElementById('joker-aud').classList.add('opacity-30', 'cursor-not-allowed');
+            let wrongIndices = [0, 1, 2, 3].filter(i => i !== currentQuestion.a);
+            wrongIndices.sort(() => Math.random() - 0.5);
             
-            const correct = currentQuestion.cevap;
-            let percentCorrect = Math.max(20, 90 - (currentStep * 5));
-            let remaining = 100 - Math.floor(percentCorrect);
-            
-            let stats = { A: 0, B: 0, C: 0, D: 0 };
-            stats[correct] = Math.floor(percentCorrect);
-            
-            ['A', 'B', 'C', 'D'].filter(o => o !== correct).forEach((o, idx, arr) => {
-                if (idx === arr.length - 1) stats[o] = remaining;
-                else {
-                    let share = Math.floor(Math.random() * remaining);
-                    stats[o] = share;
-                    remaining -= share;
-                }
-            });
-
-            const chartHtml = `
-                <div class="space-y-3 text-left font-bold font-mono">
-                    <div>A: %${stats.A} <div class="bg-gold h-3 rounded" style="width: ${stats.A}%"></div></div>
-                    <div>B: %${stats.B} <div class="bg-gold h-3 rounded" style="width: ${stats.B}%"></div></div>
-                    <div>C: %${stats.C} <div class="bg-gold h-3 rounded" style="width: ${stats.C}%"></div></div>
-                    <div>D: %${stats.D} <div class="bg-gold h-3 rounded" style="width: ${stats.D}%"></div></div>
-                </div>
-                <p class="mt-4 text-sm text-gray-400">Seyircilerin oylama sonuçları yukarıdaki gibidir.</p>
-            `;
-            showModal("👥 Seyirci Oylaması", chartHtml);
-        }
-
-        function usePhone() {
-            document.getElementById('joker-phone').disabled = true;
-            document.getElementById('joker-phone').classList.add('opacity-30', 'cursor-not-allowed');
-            
-            const correct = currentQuestion.cevap;
-            let advice = "";
-            
-            if (currentStep <= 4) {
-                advice = `“Selam dostum! Ooo bu soru çok rahatmış ya, hiç canını sıkma. Adım gibi eminim cevap kesinlikle ${correct} şıkkı. Yapıştır geç!”`;
-            } else if (currentStep <= 9) {
-                advice = `“Selam digga! Hmm, soru biraz düşündürücü... İki şık arasında çok gittim geldim ama üniversitede okuduğum bir makaleden hatırladığım kadarıyla cevap büyük ihtimalle ${correct} gibi duruyor. Yine de son karar senin!”`;
-            } else {
-                advice = `“Dostum bu nasıl soru, profesör sorsan eler! Çok fazla risk almak istemem ama mantığımı yürüttüğümde ${correct} şıkkı bana en yakın gelen seçenek oldu. Bol şans diliyorum!”`;
+            for(let i=0; i<2; i++) {
+                const hiddenBtn = document.getElementById(`btn-${wrongIndices[i]}`);
+                hiddenBtn.style.visibility = 'hidden';
+                hiddenBtn.disabled = true;
             }
-
-            showModal("📞 Yapay Zeka Asistanı Telefonda...", `<div class="italic bg-blue-900/30 p-4 rounded-xl border border-blue-500/30">${advice}</div>`);
         }
 
-        function use2x() {
+        function useJokerAudience() {
+            if (isLocked) return;
+            playSound('select');
+            const btn = document.getElementById('joker-audience');
+            btn.disabled = true;
+            btn.classList.add('opacity-30', 'cursor-not-allowed');
+            
+            const labels = ["A", "B", "C", "D"];
+            let audienceVotes = [5, 5, 5, 5];
+            audienceVotes[currentQuestion.a] += 55;
+            for(let i = 0; i < 25; i++) audienceVotes[Math.floor(Math.random() * 4)]++;
+
+            const d = DICTIONARY[currentLang];
+            alert(`${d.audienceTitle}\n\n` + 
+                  `A: %${audienceVotes[0]} | B: %${audienceVotes[1]} | C: %${audienceVotes[2]} | D: %${audienceVotes[3]}\n\n` + 
+                  d.audienceDesc.replace("[ANS]", labels[currentQuestion.a]));
+        }
+
+        function useJokerPhone() {
+            if (isLocked) return;
+            playSound('select');
+            const btn = document.getElementById('joker-phone');
+            btn.disabled = true;
+            btn.classList.add('opacity-30', 'cursor-not-allowed');
+
+            const labels = ["A", "B", "C", "D"];
+            const isSure = Math.random() > 0.2;
+            const d = DICTIONARY[currentLang];
+            const template = isSure ? d.phoneSure : d.phoneUnsure;
+            
+            alert(template.replace("[ANS]", labels[currentQuestion.a]));
+        }
+
+        function useJoker2X() {
+            if (isLocked || currentLevel < 8) return;
+            playSound('select');
+            isJoker2XActive = true;
+            joker2XChances = 2;
+            
             const btn = document.getElementById('joker-2x');
             btn.disabled = true;
-            btn.dataset.used = "true";
-            btn.classList.add('opacity-30', 'cursor-not-allowed', 'animate-none');
-            
-            is2xActive = true;
-            document.getElementById('status-message').innerText = "✨ 2x Joker Aktif! İlk tahminde ayrılsan bile 2. şansın olacak!";
+            btn.classList.add('opacity-30', 'cursor-not-allowed');
+            btn.classList.remove('border-yellow-500/40', 'text-yellow-400');
         }
 
-        function showModal(title, content) {
-            document.getElementById('modal-title').innerText = title;
-            document.getElementById('modal-content').innerHTML = content;
-            document.getElementById('modal').style.display = "flex";
+        function withdrawMoney() {
+            if (isLocked || currentLevel === 1) return;
+            playSound('select');
+            clearInterval(timer);
+            const prize = MONEY_TREE[currentLevel - 2].amount;
+            showResult(prize, false);
         }
 
-        function closeModal() {
-            document.getElementById('modal').style.display = "none";
-            if (document.getElementById('modal-title').innerText === "Oyun Bitti!" || document.getElementById('modal-title').innerText === "Süre Doldu!") {
-                location.reload(); 
+        function gameOver(reason) {
+            let prize = "0 TL";
+            if (currentLevel > 12) prize = "1.000.000 TL";
+            else if (currentLevel > 7) prize = "150.000 TL";
+            else if (currentLevel > 3) prize = "20.000 TL";
+
+            const d = DICTIONARY[currentLang];
+            document.getElementById('result-title').innerText = reason;
+            document.getElementById('result-icon').innerText = "❌";
+            document.getElementById('result-desc').innerText = d.gameOverDesc;
+            showResult(prize, false);
+        }
+
+        function showResult(prize, isWinner) {
+            const introPlayer = document.getElementById('intro-player');
+            if (introPlayer) {
+                introPlayer.pause();
+                introPlayer.src = "";
             }
+            document.getElementById('music-player-container').classList.add('hidden');
+
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('grid');
+            const resScreen = document.getElementById('screen-result');
+            resScreen.classList.remove('hidden');
+
+            const d = DICTIONARY[currentLang];
+            if (isWinner) {
+                document.getElementById('result-title').innerText = d.champion;
+                document.getElementById('result-icon').innerText = "🦅🏆🦅";
+                document.getElementById('result-desc').innerText = d.champDesc;
+                playSound('cheer');
+                celebrateBJK(null);
+            }
+
+            document.getElementById('result-prize').innerText = prize;
         }
+
+        window.onload = () => {
+            updateUI();
+            preloadAudioFiles(); // Sayfa açıldığı an müzikleri arka planda indirmeye başla!
+        };
     </script>
 </body>
 </html>
